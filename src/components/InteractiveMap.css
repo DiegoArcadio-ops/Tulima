@@ -1,0 +1,339 @@
+/* Variables base para el Mapa */
+:root {
+  --map-primary: #0ea5e9; /* primary */
+  --map-primary-hover: rgba(14, 165, 233, 0.9);
+  --map-accent: #f59e0b; /* accent */
+  --map-bg: #f3f4f6; /* bg-secondary */
+  --map-text-main: #111827; /* text-foreground */
+  --map-text-muted: #6b7280; /* text-muted-foreground */
+  --map-border: #e5e7eb; /* border-border */
+}
+
+/* =========================================
+   Contenedores Principales
+   ========================================= */
+.map-section {
+  background-color: var(--map-bg);
+  padding: 4rem 0; /* py-16 */
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .map-section { padding: 6rem 0; /* md:py-24 */ }
+}
+
+.map-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) { .map-container { padding: 0 1.5rem; } }
+@media (min-width: 1024px) { .map-container { padding: 0 2rem; } }
+
+/* =========================================
+   Encabezado
+   ========================================= */
+.map-header {
+  text-align: center;
+  margin-bottom: 3rem; /* mb-12 */
+}
+
+.map-subtitle {
+  color: var(--map-primary);
+  font-weight: 500;
+  font-size: 0.875rem; /* text-sm */
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* tracking-wider */
+}
+
+.map-title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: var(--map-text-main);
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) { .map-title { font-size: 2.25rem; } }
+@media (min-width: 1024px) { .map-title { font-size: 3rem; } }
+
+.map-desc {
+  color: var(--map-text-muted);
+  font-size: 1.125rem; /* text-lg */
+  max-width: 42rem; /* max-w-2xl */
+  margin: 0 auto;
+}
+
+/* =========================================
+   Contenedor SVG
+   ========================================= */
+.map-svg-wrapper {
+  position: relative;
+  max-width: 56rem; /* max-w-4xl */
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.map-svg-container {
+  position: relative;
+  width: 100%;
+  max-width: 42rem; /* max-w-2xl */
+  aspect-ratio: 1.3 / 1;
+}
+
+.map-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.15));
+}
+
+.map-path {
+  transition: all 0.3s ease;
+}
+
+/* Puntos Interactivos */
+.map-point {
+  fill: var(--map-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.map-point:hover {
+  fill: var(--map-accent);
+}
+
+.map-point--selected {
+  fill: var(--map-accent);
+  stroke: #ffffff;
+  stroke-width: 0.5px;
+}
+
+/* Animación de Radar (Ping) */
+.map-point-ping {
+  fill: rgba(14, 165, 233, 0.3); /* fill-primary/30 */
+  animation: map-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes map-ping {
+  75%, 100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Etiquetas Flotantes */
+.map-point-label {
+  font-size: 3px;
+  font-weight: 700;
+  fill: var(--map-text-main);
+  pointer-events: none;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0px 1px 2px white, 0px -1px 2px white, 1px 0px 2px white, -1px 0px 2px white;
+}
+
+/* =========================================
+   Leyenda
+   ========================================= */
+.map-legend {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--map-border);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  font-size: 0.75rem; /* text-xs */
+  color: var(--map-text-main);
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.map-legend-item:last-child {
+  margin-bottom: 0;
+}
+
+.map-legend-color {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+}
+.map-legend-color--primary { background-color: var(--map-primary); }
+.map-legend-color--coast { background-color: #60a5fa; opacity: 0.5; }
+
+/* =========================================
+   Modal de Información
+   ========================================= */
+.map-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: map-fade-in 0.2s ease-out forwards;
+}
+
+@keyframes map-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.map-modal-card {
+  background-color: #ffffff;
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 32rem; /* max-w-lg */
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Modal Hero (Imagen) */
+.map-modal-hero {
+  position: relative;
+  height: 14rem; /* h-56 */
+}
+
+.map-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.map-modal-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.map-modal-title {
+  position: absolute;
+  bottom: 1rem;
+  left: 1.5rem;
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  color: #ffffff;
+  font-family: serif;
+  margin: 0;
+}
+
+.map-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.map-modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.map-modal-close-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Modal Body */
+.map-modal-body {
+  padding: 1.5rem;
+}
+@media (min-width: 768px) { .map-modal-body { padding: 2rem; } }
+
+.map-modal-desc-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--map-primary);
+}
+
+.map-modal-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.map-modal-desc-text {
+  color: #4b5563; /* text-gray-600 */
+  line-height: 1.625;
+  margin: 0;
+}
+
+/* Modal Tags */
+.map-modal-tags-section {
+  border-top: 1px solid #f3f4f6; /* border-gray-100 */
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.map-modal-tags-title {
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 700;
+  color: #9ca3af; /* text-gray-400 */
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.map-modal-tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.map-modal-tag {
+  padding: 0.25rem 0.75rem; /* px-3 py-1 */
+  background-color: var(--map-bg); /* bg-secondary */
+  color: #374151; /* text-gray-700 */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+/* Modal Button */
+.map-modal-btn {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 0.75rem 0; /* py-3 */
+  background-color: var(--map-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.75rem; /* rounded-xl */
+  cursor: pointer;
+  box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.2);
+  transition: all 0.3s ease;
+}
+
+.map-modal-btn:hover {
+  background-color: var(--map-primary-hover);
+}

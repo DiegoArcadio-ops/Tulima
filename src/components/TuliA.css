@@ -1,0 +1,198 @@
+/* Variables base para TuliA */
+:root {
+  --tulia-primary: #0ea5e9; /* Reemplaza con tu color principal */
+  --tulia-primary-hover: rgba(14, 165, 233, 0.9);
+  --tulia-bg: #ffffff;
+  --tulia-chat-bg: #f9fafb; /* gray-50 */
+  --tulia-border: #e5e7eb; /* gray-200 */
+  --tulia-text-main: #374151; /* gray-700 */
+  --tulia-text-dark: #1f2937; /* gray-800 */
+  --tulia-text-light: #9ca3af; /* gray-400 */
+}
+
+/* =========================================
+   Contenedor Principal
+   ========================================= */
+.tulia-wrapper {
+  position: fixed;
+  bottom: 1.5rem; /* bottom-6 */
+  right: 1.5rem; /* right-6 */
+  width: 22rem; /* aprox w-90 / ~350px */
+  background-color: var(--tulia-bg);
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+  overflow: hidden;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--tulia-border);
+}
+
+/* =========================================
+   Cabecera
+   ========================================= */
+.tulia-header {
+  background-color: var(--tulia-primary);
+  padding: 1rem; /* p-4 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+}
+
+.tulia-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+}
+
+.tulia-avatar {
+  width: 2rem; /* w-8 */
+  height: 2rem; /* h-8 */
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px; /* rounded-full */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700; /* font-bold */
+}
+
+.tulia-title {
+  font-weight: 700; /* font-bold */
+  font-size: 0.875rem; /* text-sm */
+  margin: 0;
+}
+
+.tulia-subtitle {
+  font-size: 0.75rem; /* text-xs */
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.tulia-close-btn {
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tulia-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* =========================================
+   Cuerpo del Chat
+   ========================================= */
+.tulia-chat-body {
+  height: 19rem; /* h-76 (aprox 304px) */
+  padding: 1rem; /* p-4 */
+  overflow-y: auto;
+  background-color: var(--tulia-chat-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* gap-3 */
+}
+
+/* Burbujas de Mensaje */
+.tulia-msg-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* gap-1 */
+  max-width: 85%;
+}
+
+.tulia-msg-user-wrapper {
+  align-self: flex-end; /* self-end */
+}
+
+.tulia-msg-bubble {
+  padding: 0.75rem; /* p-3 */
+  border-radius: 1rem; /* rounded-2xl */
+  font-size: 0.875rem; /* text-sm */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+.tulia-msg-bot {
+  background-color: #ffffff;
+  color: var(--tulia-text-main);
+  border: 1px solid #f3f4f6; /* border-gray-100 */
+  border-top-left-radius: 0.125rem; /* rounded-tl-sm */
+}
+
+.tulia-msg-user {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: var(--tulia-text-dark);
+  border-top-right-radius: 0.125rem; /* rounded-tr-sm */
+}
+
+/* Marcas de tiempo */
+.tulia-timestamp {
+  font-size: 10px;
+  color: var(--tulia-text-light);
+}
+
+.tulia-timestamp-bot {
+  margin-left: 0.25rem; /* ml-1 */
+}
+
+.tulia-timestamp-user {
+  margin-right: 0.25rem; /* mr-1 */
+  align-self: flex-end; /* self-end */
+}
+
+/* =========================================
+   Área de Input
+   ========================================= */
+.tulia-input-area {
+  padding: 0.75rem; /* p-3 */
+  background-color: #ffffff;
+  border-top: 1px solid #f3f4f6; /* border-gray-100 */
+  display: flex;
+  gap: 0.5rem; /* gap-2 */
+  align-items: center;
+}
+
+.tulia-input {
+  width: 100%;
+  background-color: #f3f4f6; /* bg-gray-100 */
+  border: 2px solid transparent;
+  border-radius: 9999px; /* rounded-full */
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  font-size: 0.875rem; /* text-sm */
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.tulia-input:focus {
+  background-color: #ffffff;
+  border-color: rgba(14, 165, 233, 0.5); /* ring-primary/50 */
+}
+
+.tulia-send-btn {
+  background-color: var(--tulia-primary);
+  color: #ffffff;
+  padding: 0.5rem; /* p-2 */
+  width: 2.5rem; /* w-10 */
+  height: 2.5rem; /* h-10 */
+  border: none;
+  border-radius: 9999px; /* rounded-full */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+  flex-shrink: 0;
+}
+
+.tulia-send-btn:hover {
+  background-color: var(--tulia-primary-hover);
+}
