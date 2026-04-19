@@ -1,0 +1,215 @@
+/* Variables base para el Footer */
+:root {
+  --primary-color: #0ea5e9; /* Reemplaza con tu color principal */
+  --footer-bg: #111827; /* Fondo oscuro (bg-foreground) */
+  --footer-text-main: #ffffff; /* Texto principal (text-card) */
+  --footer-text-muted: rgba(255, 255, 255, 0.7); /* text-card/70 */
+  --footer-text-light: rgba(255, 255, 255, 0.5); /* text-card/50 */
+  --footer-border: rgba(255, 255, 255, 0.1); /* border-card/10 */
+  --footer-social-bg: rgba(255, 255, 255, 0.1); /* bg-card/10 */
+}
+
+/* =========================================
+   Contenedores Principales
+   ========================================= */
+.footer-section {
+  background-color: var(--footer-bg);
+  color: var(--footer-text-main);
+}
+
+.footer-container {
+  max-width: 80rem; /* max-w-7xl */
+  margin: 0 auto;
+  padding: 0 1rem; /* px-4 */
+}
+
+@media (min-width: 640px) { .footer-container { padding: 0 1.5rem; } }
+@media (min-width: 1024px) { .footer-container { padding: 0 2rem; } }
+
+/* =========================================
+   Cuadrícula Principal
+   ========================================= */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem; /* gap-8 */
+  padding: 3rem 0; /* py-12 */
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 4rem 0; /* md:py-16 */
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* =========================================
+   Columna de Marca (Logo y Redes)
+   ========================================= */
+@media (min-width: 1024px) {
+  .footer-brand-col {
+    grid-column: span 1; /* lg:col-span-1 */
+  }
+}
+
+.footer-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  margin-bottom: 1rem; /* mb-4 */
+  text-decoration: none;
+  color: var(--footer-text-main);
+}
+
+.footer-logo-icon {
+  height: 2rem; /* h-8 */
+  width: 2rem; /* w-8 */
+  color: var(--primary-color);
+}
+
+.footer-logo-text {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+}
+
+.footer-brand-desc {
+  color: var(--footer-text-muted);
+  margin-top: 0;
+  margin-bottom: 1.5rem; /* mb-6 */
+  line-height: 1.5;
+}
+
+/* Redes Sociales */
+.footer-socials {
+  display: flex;
+  gap: 1rem; /* gap-4 */
+}
+
+.footer-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem; /* p-2 */
+  background-color: var(--footer-social-bg);
+  color: var(--footer-text-main);
+  border-radius: 9999px; /* rounded-full */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.footer-social-link:hover {
+  background-color: var(--primary-color);
+}
+
+.footer-social-icon {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+}
+
+/* =========================================
+   Columnas de Enlaces y Contacto
+   ========================================= */
+.footer-heading {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600; /* font-semibold */
+  margin-top: 0;
+  margin-bottom: 1rem; /* mb-4 */
+  color: var(--footer-text-main);
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* space-y-3 */
+}
+
+.footer-link,
+.footer-link-text {
+  color: var(--footer-text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--primary-color);
+}
+
+/* Contacto Específico */
+.footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* space-y-4 */
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* gap-3 */
+}
+
+.footer-contact-item:first-child {
+  align-items: flex-start; /* items-start */
+}
+
+.footer-contact-icon {
+  height: 1.25rem; /* h-5 */
+  width: 1.25rem; /* w-5 */
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.footer-contact-icon--offset {
+  margin-top: 0.125rem; /* mt-0.5 */
+}
+
+/* =========================================
+   Barra Inferior (Bottom Bar)
+   ========================================= */
+.footer-bottom {
+  padding: 1.5rem 0; /* py-6 */
+  border-top: 1px solid var(--footer-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem; /* gap-4 */
+}
+
+@media (min-width: 768px) {
+  .footer-bottom {
+    flex-direction: row; /* md:flex-row */
+  }
+}
+
+.footer-copyright {
+  color: var(--footer-text-light);
+  font-size: 0.875rem; /* text-sm */
+  margin: 0;
+}
+
+.footer-legal-links {
+  display: flex;
+  gap: 1.5rem; /* gap-6 */
+  font-size: 0.875rem; /* text-sm */
+}
+
+.footer-legal-link {
+  color: var(--footer-text-light);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-legal-link:hover {
+  color: var(--primary-color);
+}

@@ -1,0 +1,208 @@
+/* Variables base para el Header */
+:root {
+  --primary-color: #0ea5e9; /* Cambia esto al azul que uses */
+  --primary-hover: #0284c7;
+  --primary-foreground: #ffffff;
+  
+  /* Colores del tema */
+  --header-bg-transparent: rgba(255, 255, 255, 0.8); /* bg-background/80 */
+  --header-bg-solid: #ffffff; /* Para el menú móvil */
+  --header-text: #111827; /* text-foreground */
+  --header-text-muted: #6b7280; /* text-muted-foreground */
+  --header-border: #e5e7eb; /* border-border */
+}
+
+/* =========================================
+   Contenedor Principal y Efecto Cristal
+   ========================================= */
+.header-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: var(--header-bg-transparent);
+  backdrop-filter: blur(12px); /* backdrop-blur-md */
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--header-border);
+}
+
+.header-container {
+  max-width: 80rem; /* max-w-7xl */
+  margin: 0 auto;
+  padding: 0 1rem; /* px-4 */
+}
+
+@media (min-width: 640px) { .header-container { padding: 0 1.5rem; } }
+@media (min-width: 1024px) { .header-container { padding: 0 2rem; } }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem; /* h-16 */
+}
+
+@media (min-width: 768px) {
+  .header-inner {
+    height: 5rem; /* md:h-20 */
+  }
+}
+
+/* =========================================
+   Logo
+   ========================================= */
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* gap-2 */
+  text-decoration: none;
+}
+
+.header-logo-icon {
+  height: 1.5rem; /* h-6 */
+  width: 1.5rem; /* w-6 */
+  color: var(--primary-color);
+}
+
+.header-logo-text {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 700;
+  color: var(--header-text);
+}
+
+@media (min-width: 768px) {
+  .header-logo-icon {
+    height: 2rem; /* md:h-8 */
+    width: 2rem; /* md:w-8 */
+  }
+  .header-logo-text {
+    font-size: 1.5rem; /* md:text-2xl */
+  }
+}
+
+/* =========================================
+   Navegación Escritorio (Desktop)
+   ========================================= */
+.header-desktop-nav {
+  display: none; /* hidden por defecto en móvil */
+}
+
+@media (min-width: 768px) {
+  .header-desktop-nav {
+    display: flex; /* md:flex */
+    align-items: center;
+    gap: 2rem; /* gap-8 */
+  }
+}
+
+.header-nav-link {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--header-text-muted);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+}
+
+.header-nav-link:hover {
+  color: var(--primary-color);
+}
+
+/* =========================================
+   Botones y Llamados a la Acción
+   ========================================= */
+.header-cta-wrapper {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .header-cta-wrapper {
+    display: block; /* md:block */
+  }
+}
+
+.header-btn-primary {
+  background-color: var(--primary-color);
+  color: var(--primary-foreground);
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border: none;
+  border-radius: 0.5rem; /* rounded-lg */
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.header-btn-primary:hover {
+  background-color: var(--primary-hover); /* hover:bg-primary/90 */
+}
+
+.header-btn-primary--full {
+  width: 100%;
+  margin-top: 0.5rem; /* mt-2 */
+  padding: 0.5rem 0; /* py-2 */
+}
+
+/* =========================================
+   Navegación Móvil (Toggle y Menú)
+   ========================================= */
+.header-mobile-toggle {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0.5rem; /* p-2 */
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .header-mobile-toggle {
+    display: none; /* md:hidden */
+  }
+}
+
+.header-icon {
+  height: 1.5rem; /* h-6 */
+  width: 1.5rem; /* w-6 */
+  color: var(--header-text);
+}
+
+.header-mobile-nav {
+  display: block;
+  padding: 1rem 0; /* py-4 */
+  border-top: 1px solid var(--header-border);
+  background-color: var(--header-bg-solid);
+}
+
+@media (min-width: 768px) {
+  .header-mobile-nav {
+    display: none; /* md:hidden */
+  }
+}
+
+.header-mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* gap-4 */
+}
+
+.header-mobile-link {
+  display: block;
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--header-text-muted);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 0; /* py-2 */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.header-mobile-link:hover {
+  color: var(--primary-color);
+}

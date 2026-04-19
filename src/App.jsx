@@ -1,0 +1,26 @@
+// src/App.jsx
+import React from 'react';
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/home";    
+import Hoteles from "./components/Hoteles";
+import Restaurantes from "./components/Restaurantes";
+import Tours from "./components/Tours";
+import Login from "./components/login";
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainLayout><Home /></MainLayout>} />
+        <Route path="/hoteles" element={<MainLayout><Hoteles /></MainLayout>} />
+        <Route path="/restaurantes" element={<MainLayout><Restaurantes /></MainLayout>} />
+        <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
+        <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+      </Routes>
+    </BrowserRouter>
+
+  )
+}
+
+export default App;
