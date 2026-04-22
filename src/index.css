@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -12,6 +16,13 @@ html, body {
   color: #020617;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  padding-top: 4rem;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-top: 1rem;
+  }
 }
 
 img, picture, video, canvas, svg {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
 
 
 function Login() {
@@ -10,15 +11,19 @@ function Login() {
     console.log('Email:', email, 'Password:', password);
   };
 
+  const handleError = () => {
+    console.error('El inicio de sesión falló');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Iniciar Sesión en Tulima
+            Iniciar Sesión
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Accede a tu cuenta para planear tu viaje
+            Accede a tu cuenta
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -73,6 +78,13 @@ function Login() {
                 Regístrate aquí
               </a>
             </p>
+                <GoogleLogin
+            onSuccess={handleSubmit}
+            onError={handleError}
+            useOneTap
+            shape="rectangular"
+            theme="outline"
+          />
           </div>
         </form>
       </div>

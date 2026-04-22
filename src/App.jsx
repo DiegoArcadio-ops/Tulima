@@ -2,10 +2,11 @@
 import React from 'react';
 import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/home";    
-import Hoteles from "./components/Hoteles";
-import Restaurantes from "./components/Restaurantes";
-import Tours from "./components/Tours";
-import Login from "./components/login";
+import Hoteles from "./pages/Hoteles";
+import Restaurantes from "./pages/Restaurantes";
+import Tours from "./pages/Tours";
+import Login from "./pages/login";
+import Admin from "./pages/admin";
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/restaurantes" element={<MainLayout><Restaurantes /></MainLayout>} />
         <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+        <Route path="/admin" element={<MainLayout><Admin /></MainLayout>} />
       </Routes>
     </BrowserRouter>
 
