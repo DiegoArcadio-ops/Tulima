@@ -1,37 +1,28 @@
 import React from 'react';
 import './Restaurantes.css'; 
 
-const restaurantesData = [
-  {
-    id: 1,
-    categoria: 'Mariscos',
-    imagen: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Manzanillo',
-    nombre: 'Mariscos El Bigotes',
-    calificacion: '4.8',
-    horario: '12:00 PM - 8:00 PM'
-  },
-  {
-    id: 2,
-    categoria: 'Tradicional',
-    imagen: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Comala',
-    nombre: 'Los Portales de Suchitlán',
-    calificacion: '4.9',
-    horario: '8:00 AM - 6:00 PM'
-  },
-  {
-    id: 3,
-    categoria: 'Cortes',
-    imagen: 'https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Colima',
-    nombre: 'Asador Campestre',
-    calificacion: '4.7',
-    horario: '1:00 PM - 11:00 PM'
-  },
-];
-
 function Restaurantes() {
+  const [restaurantes, setRestaurantes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch('/api/restaurantes') // ALAAAAAN
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al cargar la lista de restaurantes');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setRestaurantes(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hubo un problema al cargar los restaurantes:", err);
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
   return (
     <div className="restaurantes-seccion">
       <h2 className="restaurantes-titulo">Restaurantes Destacados</h2>

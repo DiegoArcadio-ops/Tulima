@@ -1,37 +1,28 @@
 import React from 'react';
 import './Hoteles.css';
 
-const hotelesData = [
-  {
-    id: 1,
-    categoria: 'Resort',
-    imagen: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Manzanillo',
-    nombre: 'Hotel Las Hadas',
-    calificacion: '4.8',
-    precio: '$2,500 MXN / noche'
-  },
-  {
-    id: 2,
-    categoria: 'Boutique',
-    imagen: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Comala',
-    nombre: 'Hacienda de San Antonio',
-    calificacion: '4.9',
-    precio: '$4,200 MXN / noche'
-  },
-  {
-    id: 3,
-    categoria: 'Centro Histórico',
-    imagen: 'https://images.unsplash.com/photo-1551882547-ff40c0d1398c?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Colima',
-    nombre: 'Concierge Plaza Colima',
-    calificacion: '4.5',
-    precio: '$1,200 MXN / noche'
-  },
-];
-
 function Hoteles() {
+  const [hoteles, setHoteles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch('/api/hoteles') // Alaaaaaaan
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al cargar la lista de hoteles');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setHoteles(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hubo un problema al cargar los hoteles:", err);
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
   return (
     <div className="hoteles-seccion">
       <h2 className="hoteles-titulo">Hoteles y Alojamientos</h2>

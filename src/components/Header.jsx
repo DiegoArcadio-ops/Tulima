@@ -27,7 +27,6 @@ export default function Header() {
         <div className="header-container">
           <div className="header-inner">
             
-            {/* Logo */}
             <a href="/" className="header-logo">
               <MapPin className="header-logo-icon" />
               <span className="header-logo-text">
@@ -35,7 +34,6 @@ export default function Header() {
               </span>
             </a>
 
-            {/* Desktop Navigation */}
             <nav className="header-desktop-nav">
               {navLinks.map((link) => (
                 link.label === "TuliA" ? (
@@ -66,14 +64,12 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* CTA Button (Desktop) */}
             <div className="header-cta-wrapper">
               <Link to="/login" className="header-btn-primary">
                 Iniciar Sesion
               </Link>
             </div>
 
-            {/* Mobile Menu Button */}
             <button 
               className="header-mobile-toggle" 
               onClick={() => setIsMenuOpen(!isMenuOpen)} 
@@ -83,7 +79,6 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
             <nav className="header-mobile-nav">
               <div className="header-mobile-nav-content">
@@ -128,7 +123,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* TuliA Chatbot*/}
       <TuliA isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </>
   );

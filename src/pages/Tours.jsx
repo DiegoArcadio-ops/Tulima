@@ -1,37 +1,28 @@
 import React from 'react';
 import './Tours.css';
 
-const toursData = [
-  {
-    id: 1,
-    categoria: 'Playas',
-    imagen: 'https://images.unsplash.com/photo-1596324121712-5bbc14482174?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Manzanillo',
-    nombre: 'Playa La Audiencia',
-    calificacion: '4.9',
-    duracion: 'Día completo'
-  },
-  {
-    id: 2,
-    categoria: 'Aventura',
-    imagen: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Colima',
-    nombre: 'Volcán de Colima',
-    calificacion: '4.8',
-    duracion: 'Medio día'
-  },
-  {
-    id: 3,
-    categoria: 'Cultura',
-    imagen: 'https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?q=80&w=600&auto=format&fit=crop',
-    municipio: 'Comala',
-    nombre: 'Pueblo Mágico Comala',
-    calificacion: '4.7',
-    duracion: 'Medio día'
-  },
-];
-
 function Tours() {
+  const [tours, setTours] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch('/api/tours') // alaaaan
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al cargar la lista de experiencias y tours');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTours(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hubo un problema al cargar los tours:", err);
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
   return (
     <div className="tours-seccion">
       <h2 className="tours-titulo">Tours y Experiencias</h2>

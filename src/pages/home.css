@@ -1,7 +1,7 @@
-/* Contenedor principal de la página Home */
+
 .home-page-container {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; /* Equivalente a gap-10 en Tailwind */
-  padding-bottom: 2.5rem; /* Equivalente a pb-10 en Tailwind */
+  gap: 2.5rem;
+  padding-bottom: 2.5rem; 
 }

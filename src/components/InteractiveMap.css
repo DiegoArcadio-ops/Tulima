@@ -337,3 +337,19 @@
 .map-modal-btn:hover {
   background-color: var(--map-primary-hover);
 }
+
+/* Quita el fondo y bordes de las etiquetas de los municipios */
+.leaflet-tooltip.label-municipio {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white; /* Color del texto */
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Sombra para que se lea bien sobre fondo claro/oscuro */
+}
+
+/* Quita la flechita predeterminada del tooltip */
+.leaflet-tooltip.label-municipio::before {
+  display: none !important;
+}

@@ -1,64 +1,31 @@
+import React, { useState, useEffect } from 'react';
 import { MapPin, Star, Clock } from "lucide-react";
 import './FeaturedDestinations.css';
 
-const destinations = [
-  {
-    id: "1",
-    title: "Playa La Audiencia",
-    location: "Manzanillo",
-    image: "destino1.jpg",
-    rating: 4.9,
-    duration: "Día completo",
-    category: "Playas",
-  },
-  {
-    id: "2",
-    title: "Volcán de Colima",
-    location: "Colima",
-    image: "destino2.jpg",
-    rating: 4.8,
-    duration: "Medio día",
-    category: "Aventura",
-  },
-  {
-    id: "3",
-    title: "Pueblo Mágico Comala",
-    location: "Comala",
-    image: "destino3.jpg",
-    rating: 4.7,
-    duration: "Medio día",
-    category: "Cultura",
-  },
-  {
-    id: "4",
-    title: "Laguna de Cuyutlán",
-    location: "Armería",
-    image: "destino4.jpg",
-    rating: 4.6,
-    duration: "3-4 horas",
-    category: "Naturaleza",
-  },
-  {
-    id: "5",
-    title: "Zona Arqueológica El Chanal",
-    location: "Colima",
-    image: "destino5.jpg",
-    rating: 4.5,
-    duration: "2-3 horas",
-    category: "Historia",
-  },
-  {
-    id: "6",
-    title: "Centro Histórico de Colima",
-    location: "Colima",
-    image: "destino6.jpg",
-    rating: 4.7,
-    duration: "Medio día",
-    category: "Cultura",
-  },
-];
-
 export default function FeaturedDestinations() {
+  const [destinations, setDestinations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    /* Aqui endpoint*/
+    fetch('/api/colima/destinations') // Cambia URL
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al obtener los destinos desde el servidor');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setDestinations(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Hubo un problema con el fetch de destinos:", error);
+        setError(error.message);
+        setIsLoading(false);
+      });
+  }, []);
   return (
     <section id="destinos" className="destinations-section">
       <div className="destinations-container">
