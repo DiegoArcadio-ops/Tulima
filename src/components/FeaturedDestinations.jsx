@@ -76,7 +76,7 @@ export default function FeaturedDestinations() {
 
     try {
       // TODO: reemplazar URL cuando Alan tenga el endpoint listo
-      // await fetch('/api/resenas', {
+      // await fetch(URL + '/resenas', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({
