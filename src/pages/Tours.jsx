@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState}from 'react';
 import './Tours.css';
 
+const URL = "http://127.0.0.1:8000/tours";
 function Tours() {
   const [tours, setTours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
-    fetch('/api/tours') // alaaaan
+    fetch(URL)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al cargar la lista de experiencias y tours');
@@ -23,16 +24,16 @@ function Tours() {
         setIsLoading(false);
       });
   }, []);
-  return (
+  return (  
     <div className="tours-seccion">
       <h2 className="tours-titulo">Tours y Experiencias</h2>
       
       <div className="tours-grid">
-        {toursData.map((tour) => (
-          <div key={tour.id} className="tour-card">
+        {tours.map((tour) => (
+          <div key={tour.id_proveedor} className="tour-card">
             
             <div className="tour-imagen-container">
-              <span className="tour-etiqueta">{tour.categoria}</span>
+              <span className="tour-etiqueta">{tour.tipoTour}</span>
               <img src={tour.imagen} alt={tour.nombre} className="tour-imagen" />
             </div>
 
@@ -43,7 +44,7 @@ function Tours() {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                {tour.municipio}
+                {tour.municipio?.nombre}
               </div>
 
               <h3 className="tour-titulo">{tour.nombre}</h3>
@@ -59,7 +60,6 @@ function Tours() {
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  {tour.duracion}
                 </div>
               </div>
             </div>

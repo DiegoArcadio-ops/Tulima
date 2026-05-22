@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './Restaurantes.css'; 
+const URL = "http://127.0.0.1:8000/restaurantes";
 
 function Restaurantes() {
   const [restaurantes, setRestaurantes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
-    fetch('/api/restaurantes') // ALAAAAAN
+    fetch(URL)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al cargar la lista de restaurantes');
@@ -23,17 +24,26 @@ function Restaurantes() {
         setIsLoading(false);
       });
   }, []);
+
+  const formatTime = (timeString) => {
+    if (!timeString) return "No disponible";
+    return timeString.substring(11, 16); 
+  };
+
+  if (isLoading) return <div className="restaurantes-seccion"><h2>Cargando restaurantes...</h2></div>;
+  if (error) return <div className="restaurantes-seccion"><h2>Error: {error}</h2></div>;
+
   return (
     <div className="restaurantes-seccion">
       <h2 className="restaurantes-titulo">Restaurantes Destacados</h2>
       
       <div className="restaurantes-grid">
-        {restaurantesData.map((restaurante) => (
-          <div key={restaurante.id} className="restaurante-card">
+        {restaurantes.map((restaurante) => (
+          <div key={restaurante.id_restaurante} className="restaurante-card">
             
             
             <div className="card-imagen-container">
-              <span className="card-etiqueta">{restaurante.categoria}</span>
+              <span className="card-etiqueta">{restaurante.tipo}</span>
               <img src={restaurante.imagen} alt={restaurante.nombre} className="card-imagen" />
             </div>
 
@@ -44,7 +54,7 @@ function Restaurantes() {
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                {restaurante.municipio}
+                {restaurante.municipio?.nombre}
               </div>
 
   
@@ -61,7 +71,7 @@ function Restaurantes() {
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  {restaurante.horario}
+                  <span>{formatTime(restaurante.horarioAbierto)} - {formatTime(restaurante.horarioCerrado)} </span>
                 </div>
               </div>
             </div>
