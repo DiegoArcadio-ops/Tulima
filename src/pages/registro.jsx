@@ -30,9 +30,11 @@ function Registro() {
     setExito('');
 
     try {
-      // Petición POST enviando los datos estructurados al backend
       const respuesta = await axios.post('http://localhost:8000/usuarios', {
         primerNombre: formData.primerNombre,
+        segundoNombre: formData.segundoNombre,
+        apellidoPaterno: formData.apellidoPaterno,
+        apellidoMaterno: formData.apellidoMaterno,
         nombreUsuario: formData.nombreUsuario,
         contraseña: formData.contraseña,
         telefono: formData.telefono ? formData.telefono : null,
