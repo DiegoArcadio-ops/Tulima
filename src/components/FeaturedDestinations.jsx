@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Star, Clock, X, Phone, Mail, Globe } from "lucide-react";
+import { MapPin, Star, Clock, X } from "lucide-react";
 import './FeaturedDestinations.css';
 
 export default function FeaturedDestinations() {
@@ -8,17 +8,21 @@ export default function FeaturedDestinations() {
   const [error, setError] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
 
+  // Estados para la reseña
+  const [stars, setStars] = useState(0);
+  const [hoverStar, setHoverStar] = useState(0);
+  const [comentario, setComentario] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
   useEffect(() => {
     fetch('/api/colima/destinos')
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error al obtener los destinos desde el servidor');
-        }
+        if (!response.ok) throw new Error('Error al obtener los destinos desde el servidor');
         return response.json();
       })
       .then((data) => {
         const mapped = data.map((d) => ({
-          // Campos del card principal
           id: d.id_destino,
           image: d.imagen,
           title: d.nombre,
@@ -29,7 +33,6 @@ export default function FeaturedDestinations() {
             d.horarioAbierto && d.horarioCerrado
               ? `${d.horarioAbierto.substring(0, 5)} - ${d.horarioCerrado.substring(0, 5)}`
               : 'Sin horario',
-          // Campos extra para el modal (todos los que vienen del backend)
           numeroCalle: d.numero_Calle ?? 'N/A',
           nombreCalle: d.nombre_Calle ?? 'N/A',
           codigoPostal: d.codifoPostal ?? 'N/A',
@@ -46,6 +49,51 @@ export default function FeaturedDestinations() {
         setIsLoading(false);
       });
   }, []);
+
+  const handleOpenModal = (destination) => {
+    setSelectedDestination(destination);
+    setStars(0);
+    setHoverStar(0);
+    setComentario('');
+    setEnviado(false);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedDestination(null);
+    setStars(0);
+    setHoverStar(0);
+    setComentario('');
+    setEnviado(false);
+  };
+
+  const handleEnviarResena = async () => {
+    if (stars === 0) {
+      alert('Por favor selecciona una calificación');
+      return;
+    }
+    setEnviando(true);
+
+    try {
+      // TODO: reemplazar URL cuando Alan tenga el endpoint listo
+      // await fetch('/api/resenas', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     id_destino: selectedDestination.id,
+      //     calificacion: stars,
+      //     descripcion: comentario,
+      //   }),
+      // });
+
+      // Simulación hasta que el backend esté listo
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setEnviado(true);
+    } catch (err) {
+      alert('Error al enviar la reseña');
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   if (isLoading) return <p>Cargando destinos...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -66,7 +114,7 @@ export default function FeaturedDestinations() {
             <div
               key={destination.id}
               className="destination-card group"
-              onClick={() => setSelectedDestination(destination)}
+              onClick={() => handleOpenModal(destination)}
               style={{ cursor: 'pointer' }}
             >
               <div className="destination-image-wrapper">
@@ -109,18 +157,10 @@ export default function FeaturedDestinations() {
 
       {/* MODAL */}
       {selectedDestination && (
-        <div
-          className="modal-overlay"
-          onClick={() => setSelectedDestination(null)}
-        >
-          <div
-            className="modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="modal-close"
-              onClick={() => setSelectedDestination(null)}
-            >
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+
+            <button className="modal-close" onClick={handleCloseModal}>
               <X size={20} />
             </button>
 
@@ -153,15 +193,56 @@ export default function FeaturedDestinations() {
                   <span><strong>Dirección:</strong> {selectedDestination.numeroCalle} {selectedDestination.nombreCalle}, CP {selectedDestination.codigoPostal}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <span>
-                    <strong>Convenio activo:</strong>{' '}
-                    {selectedDestination.estadoConvenio ? ' Sí' : ' No'}
-                  </span>
+                  <span><strong>Convenio activo:</strong> {selectedDestination.estadoConvenio ? 'Sí' : 'No'}</span>
                 </div>
                 <div className="modal-detail-row">
                   <span><strong>Reseña:</strong> {selectedDestination.resena}</span>
                 </div>
               </div>
+
+              {/* FORMULARIO DE RESEÑA */}
+              <div className="resena-seccion">
+                <h3 className="resena-titulo">Deja tu reseña</h3>
+
+                {enviado ? (
+                  <p className="resena-exito">¡Gracias por tu reseña!</p>
+                ) : (
+                  <>
+                    {/* Estrellas */}
+                    <div className="resena-estrellas">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <span
+                          key={n}
+                          className={`estrella ${n <= (hoverStar || stars) ? 'activa' : ''}`}
+                          onClick={() => setStars(n)}
+                          onMouseEnter={() => setHoverStar(n)}
+                          onMouseLeave={() => setHoverStar(0)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Comentario */}
+                    <textarea
+                      className="resena-textarea"
+                      placeholder="Escribe tu comentario..."
+                      value={comentario}
+                      onChange={(e) => setComentario(e.target.value)}
+                      rows={3}
+                    />
+
+                    <button
+                      className="resena-btn"
+                      onClick={handleEnviarResena}
+                      disabled={enviando}
+                    >
+                      {enviando ? 'Enviando...' : 'Enviar reseña'}
+                    </button>
+                  </>
+                )}
+              </div>
+
             </div>
           </div>
         </div>

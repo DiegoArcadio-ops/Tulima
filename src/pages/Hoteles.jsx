@@ -8,6 +8,13 @@ function Hoteles() {
   const [error, setError] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
 
+  // Estados reseña
+  const [stars, setStars] = useState(0);
+  const [hoverStar, setHoverStar] = useState(0);
+  const [comentario, setComentario] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
   useEffect(() => {
     fetch(URL)
       .then((response) => {
@@ -25,6 +32,48 @@ function Hoteles() {
       });
   }, []);
 
+  const handleOpenModal = (hotel) => {
+    setSelectedHotel(hotel);
+    setStars(0);
+    setHoverStar(0);
+    setComentario('');
+    setEnviado(false);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedHotel(null);
+    setStars(0);
+    setHoverStar(0);
+    setComentario('');
+    setEnviado(false);
+  };
+
+  const handleEnviarResena = async () => {
+    if (stars === 0) {
+      alert('Por favor selecciona una calificación');
+      return;
+    }
+    setEnviando(true);
+    try {
+      // TODO: reemplazar cuando Alan tenga el endpoint listo
+      // await fetch('/api/resenas', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     id_hotel: selectedHotel.id_hotel,
+      //     calificacion: stars,
+      //     descripcion: comentario,
+      //   }),
+      // });
+      await new Promise((resolve) => setTimeout(resolve, 800));
+      setEnviado(true);
+    } catch (err) {
+      alert('Error al enviar la reseña');
+    } finally {
+      setEnviando(false);
+    }
+  };
+
   if (isLoading) return <div className="hoteles-mensaje">Cargando hoteles...</div>;
   if (error) return <div className="hoteles-mensaje">Error: {error}</div>;
 
@@ -37,7 +86,7 @@ function Hoteles() {
           <div
             key={hotel.id_hotel}
             className="hotel-card"
-            onClick={() => setSelectedHotel(hotel)}
+            onClick={() => handleOpenModal(hotel)}
             style={{ cursor: 'pointer' }}
           >
             <div className="hotel-imagen-container">
@@ -83,10 +132,10 @@ function Hoteles() {
 
       {/* MODAL */}
       {selectedHotel && (
-        <div className="modal-overlay" onClick={() => setSelectedHotel(null)}>
+        <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
 
-            <button className="modal-close" onClick={() => setSelectedHotel(null)}>✕</button>
+            <button className="modal-close" onClick={handleCloseModal}>✕</button>
 
             <img
               src={selectedHotel.imagen}
@@ -137,6 +186,48 @@ function Hoteles() {
                   <span>{selectedHotel.estadoConvenio ? 'Sí' : 'No'}</span>
                 </div>
               </div>
+
+              {/* FORMULARIO RESEÑA */}
+              <div className="resena-seccion">
+                <h3 className="resena-titulo">Deja tu reseña</h3>
+
+                {enviado ? (
+                  <p className="resena-exito">¡Gracias por tu reseña!</p>
+                ) : (
+                  <>
+                    <div className="resena-estrellas">
+                      {[1, 2, 3, 4, 5].map((n) => (
+                        <span
+                          key={n}
+                          className={`estrella ${n <= (hoverStar || stars) ? 'activa' : ''}`}
+                          onClick={() => setStars(n)}
+                          onMouseEnter={() => setHoverStar(n)}
+                          onMouseLeave={() => setHoverStar(0)}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
+
+                    <textarea
+                      className="resena-textarea"
+                      placeholder="Escribe tu comentario..."
+                      value={comentario}
+                      onChange={(e) => setComentario(e.target.value)}
+                      rows={3}
+                    />
+
+                    <button
+                      className="resena-btn"
+                      onClick={handleEnviarResena}
+                      disabled={enviando}
+                    >
+                      {enviando ? 'Enviando...' : 'Enviar reseña'}
+                    </button>
+                  </>
+                )}
+              </div>
+
             </div>
           </div>
         </div>
