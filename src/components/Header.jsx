@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { Menu, X, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import TuliA from "./TuliA"; 
 import './Header.css'; 
+import axios from "axios";
 
 
 const navLinks = [
@@ -20,6 +21,21 @@ const navLinks = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false); 
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    const obtenerPerfil = async () => {
+      try{
+        const respuesta = await axios.get('http://localhost:8000/auth/me',{
+          withCredentials: true
+        });
+        setUsuario(respuesta.data);
+      }catch(error){
+        console.error('Error al obtener el perfil del usuario:', error);
+      }
+    };
+    obtenerPerfil();
+  },[]);
 
   return (
     <> 
@@ -65,9 +81,15 @@ export default function Header() {
             </nav>
 
             <div className="header-cta-wrapper">
-              <Link to="/login" className="header-btn-primary">
-                Iniciar Sesion
-              </Link>
+              {usuario ? (
+                <span className="header-user-name" style={{ fontWeight: 'bold', color: '#333' }}>
+                  Hola, {usuario.primerNombre}  {usuario.apellidoPaterno}
+                </span>
+              ) : (
+                <Link to="/login" className="header-btn-primary">
+                  Iniciar Sesion
+                </Link>
+              )}
             </div>
 
             <button 

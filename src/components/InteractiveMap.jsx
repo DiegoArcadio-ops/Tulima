@@ -3,13 +3,14 @@ import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import { X, MapPin } from "lucide-react";
 import colimaGeoData from "../data/colimaMunicipios.json"; 
 import './InteractiveMap.css';
+const URL="http://localhost:8000/municipios"
 
 export default function InteractiveMap() {
   const [selectedMunicipio, setSelectedMunicipio] = useState(null);
   const [municipiosData, setMunicipiosData] = useState([]);
 
   useEffect(() => {
-    fetch('/api/colima/municipios')
+    fetch(URL)
       .then((res) => res.json())
       .then((data) => setMunicipiosData(data))
       .catch((err) => console.warn("Backend no listo, usando datos locales"));
