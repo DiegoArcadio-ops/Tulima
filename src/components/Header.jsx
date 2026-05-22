@@ -14,7 +14,6 @@ const navLinks = [
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },
   { to: "/tours", label: "Tours" },
-  // { to: "#ChatBot", label: "TuliA" },
 ];
 
 export default function Header() {

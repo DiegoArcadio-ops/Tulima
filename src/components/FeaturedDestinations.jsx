@@ -8,8 +8,7 @@ export default function FeaturedDestinations() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    /* Aqui endpoint*/
-    fetch('/api/colima/destinations') // Cambia URL
+    fetch('/api/colima/destinations')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Error al obtener los destinos desde el servidor');
@@ -17,7 +16,20 @@ export default function FeaturedDestinations() {
         return response.json();
       })
       .then((data) => {
-        setDestinations(data);
+        // Mapeo de campos del modelo Prisma al componente
+        const mapped = data.map((d) => ({
+          id: d.id_destino,
+          image: d.imagen,
+          title: d.nombre,
+          category: d.categoria?.nombre ?? 'Sin categoría',
+          location: d.municipio?.nombre ?? 'Sin municipio',
+          rating: d.rese_a?.calificacion ?? 'N/A',
+          duration:
+            d.horarioAbierto && d.horarioCerrado
+              ? `${d.horarioAbierto.substring(0, 5)} - ${d.horarioCerrado.substring(0, 5)}`
+              : 'Sin horario',
+        }));
+        setDestinations(mapped);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -26,10 +38,13 @@ export default function FeaturedDestinations() {
         setIsLoading(false);
       });
   }, []);
+
+  if (isLoading) return <p>Cargando destinos...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   return (
     <section id="destinos" className="destinations-section">
       <div className="destinations-container">
-        
         <div className="destinations-header">
           <span className="destinations-subtitle">Lugares Imperdibles</span>
           <h2 className="destinations-title">Destinos Destacados</h2>
@@ -41,7 +56,6 @@ export default function FeaturedDestinations() {
         <div className="destinations-grid">
           {destinations.map((destination) => (
             <div key={destination.id} className="destination-card group">
-              
               <div className="destination-image-wrapper">
                 <img
                   src={destination.image}
@@ -50,24 +64,16 @@ export default function FeaturedDestinations() {
                   onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }}
                 />
                 <div className="destination-badge-wrapper">
-                  <span className="destination-badge">
-                    {destination.category}
-                  </span>
+                  <span className="destination-badge">{destination.category}</span>
                 </div>
               </div>
 
               <div className="destination-content">
-
                 <div className="destination-location">
                   <MapPin className="destination-icon-small" />
                   <span>{destination.location}</span>
                 </div>
-
-
-                <h3 className="destination-card-title">
-                  {destination.title}
-                </h3>
-
+                <h3 className="destination-card-title">{destination.title}</h3>
                 <div className="destination-meta">
                   <div className="destination-rating">
                     <Star className="destination-icon-small rating-star" />
@@ -79,17 +85,13 @@ export default function FeaturedDestinations() {
                   </div>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
 
         <div className="destinations-footer">
-          <button className="destinations-btn">
-            Ver todos los destinos
-          </button>
+          <button className="destinations-btn">Ver todos los destinos</button>
         </div>
-        
       </div>
     </section>
   );
