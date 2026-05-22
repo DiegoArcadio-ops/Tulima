@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Star, Clock } from "lucide-react";
 import './FeaturedDestinations.css';
-
-const URL = "http://127.0.0.1:8000/destinos";
+const URL = "http://localhost:8000/destinos";
 
 export default function FeaturedDestinations() {
   const [destinations, setDestinations] = useState([]);
@@ -17,21 +16,8 @@ export default function FeaturedDestinations() {
         }
         return response.json();
       })
-      .then((data) => {
-        // Mapeo de campos del modelo Prisma al componente
-        const mapped = data.map((d) => ({
-          id: d.id_destino,
-          image: d.imagen,
-          title: d.nombre,
-          category: d.categoria?.nombre ?? 'Sin categoría',
-          location: d.municipio?.nombre ?? 'Sin municipio',
-          rating: d.rese_a?.calificacion ?? 'N/A',
-          duration:
-            d.horarioAbierto && d.horarioCerrado
-              ? `${d.horarioAbierto.substring(0, 5)} - ${d.horarioCerrado.substring(0, 5)}`
-              : 'Sin horario',
-        }));
-        setDestinations(mapped);
+      .then((data) => {        
+        setDestinations(data);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -41,15 +27,14 @@ export default function FeaturedDestinations() {
       });
   }, []);
 
-  if (isLoading) return <p>Cargando destinos...</p>;
-  if (error) return <p>Error: {error}</p>;
-  const formatTime = (timeStr) => {
-    if (!timeStr) return "Horario no disponible";
-    return timeStr.substring(11, 16);
+  const formatTime = (timeString) => {
+    if (!timeString) return "No disponible";
+    return timeString.substring(11, 16); 
   };
 
-  if (isLoading) return <div className="destinations-section"><h2>Cargando destinos...</h2></div>;
-  if (error) return <div className="destinations-section"><h2>Error: {error}</h2></div>;
+
+  if (isLoading) return <p>Cargando destinos...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <section id="destinos" className="destinations-section">
@@ -65,8 +50,6 @@ export default function FeaturedDestinations() {
         <div className="destinations-grid">
           {destinations.map((destination) => (
             <div key={destination.id} className="destination-card group">
-            <div key={destination.id_destino} className="destination-card group">
-              
               <div className="destination-image-wrapper">
                 <img
                   src={destination.imagen}
@@ -74,30 +57,21 @@ export default function FeaturedDestinations() {
                   className="destination-image"
                   onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }}
                 />
-                <div className="destination-badge-wrapper">
+                {/* <div className="destination-badge-wrapper">
                   <span className="destination-badge">{destination.category}</span>
-                  <span className="destination-badge">
-                    {destination.categoria}
-                  </span>
-                </div>
+                </div> */}
               </div>
 
               <div className="destination-content">
                 <div className="destination-location">
                   <MapPin className="destination-icon-small" />
-                  <span>{destination.location || destination.municipio?.nombre}</span>
+                  <span>{destination.municipio?.nombre}</span>
                 </div>
-                <h3 className="destination-card-title">{destination.title}</h3>
-
-
-                <h3 className="destination-card-title">
-                  {destination.nombre}
-                </h3>
-
+                <h3 className="destination-card-title">{destination.nombre}</h3>
                 <div className="destination-meta">
                   <div className="destination-rating">
                     <Star className="destination-icon-small rating-star" />
-                    <span className="rating-value">{destination.rating || 4}</span>
+                    <span className="rating-value">{destination.calificacion}</span>
                   </div>
                   <div className="destination-duration">
                     <Clock className="destination-icon-small" />
