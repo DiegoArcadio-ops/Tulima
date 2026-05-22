@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import TuliA from "./TuliA"; 
 import './Header.css'; 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 const navLinks = [
@@ -22,6 +23,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false); 
   const [usuario, setUsuario] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const obtenerPerfil = async () => {
@@ -31,11 +33,25 @@ export default function Header() {
         });
         setUsuario(respuesta.data);
       }catch(error){
-        console.error('Error al obtener el perfil del usuario:', error);
+
       }
     };
     obtenerPerfil();
   },[]);
+
+  const cerrarSesion = async () => {
+    try {
+      await axios.post('http://localhost:8000/logout', {}, {
+        withCredentials: true
+      });
+      
+      setUsuario(null); 
+      navigate('/');
+      
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <> 
@@ -84,7 +100,15 @@ export default function Header() {
               {usuario ? (
                 <span className="header-user-name" style={{ fontWeight: 'bold', color: '#333' }}>
                   Hola, {usuario.primerNombre}  {usuario.apellidoPaterno}
+                  <button 
+                    onClick={cerrarSesion}
+                    className="header-btn-secondary" 
+                    style={{ background: 'transparent', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}
+                  >
+                    Salir
+                  </button>
                 </span>
+                
               ) : (
                 <Link to="/login" className="header-btn-primary">
                   Iniciar Sesion

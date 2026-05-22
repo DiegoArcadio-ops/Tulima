@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
-// ELIMINA LA IMPORTACIÓN DE @react-oauth/google
+import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
+const URL = "http://localhost:8000/login";
+
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async  (e) => {
     e.preventDefault();
-    console.log('Email:', email, 'Password:', password);
+    setError('');
+
+    try{
+      const respuesta = await axios.post(URL, 
+      { nombreUsuario: nombreUsuario, 
+        contraseña: contraseña 
+      },{
+        withCredentials: true
+      });
+
+      if(respuesta.status === 201){
+        window.location.href = '/';
+      }
+    }catch(error){
+      console.error("Error al iniciar sesión:", error);
+      setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+    }
   };
 
-  // Esta función llama a tu backend para iniciar el proceso de Passport
+
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:8000/auth/google';
   };
@@ -29,35 +50,35 @@ function Login() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Correo electrónico
+              <label htmlFor="nombreUsuario" className="sr-only">
+                Nombre de usuario
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
+                id="nombreUsuario"
+                name="nombreUsuario"
+                type="text"
+                autoComplete="nombreUsuario"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Correo electrónico"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Nombre de usuario"
+                value={nombreUsuario}
+                onChange={(e) => setNombreUsuario(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="contraseña" className="sr-only">
                 Contraseña
               </label>
               <input
-                id="password"
+                id="contraseña"
                 name="password"
                 type="password"
                 autoComplete="current-password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                 placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={contraseña}
+                onChange={(e) => setContraseña(e.target.value)}
               />
             </div>
           </div>
@@ -74,7 +95,7 @@ function Login() {
           <div className="text-center">
             <p className="text-sm text-gray-600 mb-4">
               ¿No tienes cuenta?{' '}
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <a href="/registro" className="font-medium text-blue-600 hover:text-blue-500">
                 Regístrate aquí
               </a>
             </p>

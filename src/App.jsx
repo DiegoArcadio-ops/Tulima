@@ -6,6 +6,7 @@ import Restaurantes from "./pages/Restaurantes";
 import Tours from "./pages/Tours";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
+import Registro from "./pages/registro";
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
         <Route path="/admin" element={<MainLayout><Admin /></MainLayout>} />
+        <Route path="/registro" element={<MainLayout><Registro /></MainLayout>} />
       </Routes>
     </BrowserRouter>
 
