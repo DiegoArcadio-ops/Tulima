@@ -2,16 +2,31 @@ import React from 'react';
 import { MapPin, LayoutDashboard, Map, Settings, Plus, Edit2, Trash2, MessageSquare } from 'lucide-react';
 
 export default function TulimaAdminPanel() {
-  const destinos = [
-    { id: 1, nombre: 'Playa La Audiencia', municipio: 'Manzanillo', categoria: 'Playas', rating: 4.9 },
-    { id: 2, nombre: 'Volcán de Colima', municipio: 'Colima', categoria: 'Aventura', rating: 4.8 },
-    { id: 3, nombre: 'Pueblo Mágico Comala', municipio: 'Comala', categoria: 'Cultura', rating: 4.7 },
-  ];
+  const [destinos, setDestinos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    fetch('/api/admin/destinos') // URLLL alnaa
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error al cargar la lista de destinos');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setDestinos(data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Hubo un problema al cargar el panel de admin:", err);
+        setError(err.message);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div className="flex h-screen bg-slate-50 font-sans">
       
-      {/* Barra Lateral (Sidebar) */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="p-6 flex items-center gap-2">
           <MapPin className="text-[#00a8ff] w-8 h-8" />
@@ -46,7 +61,6 @@ export default function TulimaAdminPanel() {
         </div>
       </aside>
 
-      {/* Contenido Principal */}
       <main className="flex-1 overflow-y-auto">
         <div className="p-8 max-w-6xl mx-auto">
           
@@ -62,7 +76,6 @@ export default function TulimaAdminPanel() {
             </button>
           </header>
 
-          {/* Tabla de Contenido */}
           <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
