@@ -9,7 +9,6 @@ export default function FeaturedDestinations() {
   const [error, setError] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
 
-  // Estados para la reseña
   const [stars, setStars] = useState(0);
   const [hoverStar, setHoverStar] = useState(0);
   const [comentario, setComentario] = useState('');
@@ -86,7 +85,6 @@ export default function FeaturedDestinations() {
       //   }),
       // });
 
-      // Simulación hasta que el backend esté listo
       await new Promise((resolve) => setTimeout(resolve, 800));
       setEnviado(true);
     } catch (err) {
@@ -201,7 +199,6 @@ export default function FeaturedDestinations() {
                 </div>
               </div>
 
-              {/* FORMULARIO DE RESEÑA */}
               <div className="resena-seccion">
                 <h3 className="resena-titulo">Deja tu reseña</h3>
 
@@ -209,7 +206,6 @@ export default function FeaturedDestinations() {
                   <p className="resena-exito">¡Gracias por tu reseña!</p>
                 ) : (
                   <>
-                    {/* Estrellas */}
                     <div className="resena-estrellas">
                       {[1, 2, 3, 4, 5].map((n) => (
                         <span
@@ -224,7 +220,6 @@ export default function FeaturedDestinations() {
                       ))}
                     </div>
 
-                    {/* Comentario */}
                     <textarea
                       className="resena-textarea"
                       placeholder="Escribe tu comentario..."

@@ -81,7 +81,6 @@ function Registro() {
           )}
 
           <div className="space-y-3">
-            {/* Campo: Nombre */}
             <div>
               <label htmlFor="primerNombre" className="block text-xs font-medium text-gray-700 mb-1">
                 Nombre completo o primer nombre
@@ -97,8 +96,6 @@ function Registro() {
                 onChange={handleChange}
               />
             </div>
-
-            {/* Campo: Nombre de Usuario */}
             <div>
               <label htmlFor="nombreUsuario" className="block text-xs font-medium text-gray-700 mb-1">
                 Nombre de usuario
@@ -115,7 +112,6 @@ function Registro() {
               />
             </div>
 
-            {/* Campo: Contraseña */}
             <div>
               <label htmlFor="contraseña" className="block text-xs font-medium text-gray-700 mb-1">
                 Contraseña
@@ -132,7 +128,6 @@ function Registro() {
               />
             </div>
 
-            {/* Campo: Teléfono */}
             <div>
               <label htmlFor="telefono" className="block text-xs font-medium text-gray-700 mb-1">
                 Número de teléfono
@@ -148,7 +143,6 @@ function Registro() {
               />
             </div>
 
-            {/* Fila doble: Género y Edad */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label htmlFor="genero" className="block text-xs font-medium text-gray-700 mb-1">
