@@ -1,36 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 const URL = "http://localhost:8000/login";
 
 
-function Login() {
+function Login() { 
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [csrfToken, setCsrfToken] = useState(null);
 
-  const handleSubmit = async  (e) => {
+  useEffect(() => {
+    const fetchCsrf = async () => {
+    try {
+    const { data } = await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true });
+    setCsrfToken(data.csrfToken);
+    } catch (e) {
+    console.warn('No se pudo obtener CSRF token', e);
+    }
+    };
+    fetchCsrf();
+    }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
-    try{
-      const respuesta = await axios.post(URL, 
-      { nombreUsuario: nombreUsuario, 
-        contraseña: contraseña 
-      },{
-        withCredentials: true
-      });
-
-      if(respuesta.status === 201){
-        window.location.href = '/';
-      }
-    }catch(error){
-      console.error("Error al iniciar sesión:", error);
-      setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+    try {
+    const token = csrfToken ?? (await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true })).data.csrfToken;
+    
+    const respuesta = await axios.post(URL,
+    { nombreUsuario: nombreUsuario, contraseña: contraseña },
+    {
+    headers: { 'X-CSRF-Token': token },
+    withCredentials: true
     }
-  };
-
+    );
+    
+    if (respuesta.status === 201) {
+    window.location.href = '/';
+    } else if (respuesta.data?.mfaRequired) {
+    }
+    
+    } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+    }
+    };
 
   const handleGoogleLogin = () => {
     window.location.href = 'http://localhost:8000/auth/google';

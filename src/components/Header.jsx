@@ -23,6 +23,8 @@ export default function Header() {
   const [isChatOpen, setIsChatOpen] = useState(false); 
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
+  const [csrfToken, setCsrfToken] = useState(null);
+
 
   useEffect(() => {
     const obtenerPerfil = async () => {
@@ -38,19 +40,28 @@ export default function Header() {
     obtenerPerfil();
   },[]);
 
-  const cerrarSesion = async () => {
-    try {
-      await axios.post('http://localhost:8000/logout', {}, {
+    useEffect(() => {
+      const fetchCsrf = async () => {
+      try {
+      const { data } = await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true });
+      setCsrfToken(data.csrfToken);
+      } catch (e) { console.warn('No se pudo obtener CSRF', e); }
+      };
+      fetchCsrf();
+      }, []);
+
+      const cerrarSesion = async () => {
+        try {
+        const token = csrfToken ?? (await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true })).data.csrfToken;
+        await axios.post('http://localhost:8000/logout', {}, {
+        headers: { 'X-CSRF-Token': token },
         withCredentials: true
-      });
-      
-      setUsuario(null); 
-      navigate('/');
-      
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
-  };
+        });
+        setUsuario(null); navigate('/');
+        } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        }
+        };
 
   return (
     <> 
