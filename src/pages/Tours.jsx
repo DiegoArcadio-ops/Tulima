@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Tours.css';
 
-const URL = "http://127.0.0.1:8000/tours";
+const URL = "https://tulima-backend.vercel.app/tours";
 
 function Tours() {
   const [tours, setTours] = useState([]);

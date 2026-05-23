@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Restaurantes.css';
-const URL = "http://127.0.0.1:8000/restaurantes";
+const URL = "https://tulima-backend.vercel.app/restaurantes";
 
 function Restaurantes() {
   const [restaurantes, setRestaurantes] = useState([]);

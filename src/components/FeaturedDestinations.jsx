@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Star, Clock, X } from "lucide-react";
 import './FeaturedDestinations.css';
-const URL = "http://localhost:8000/destinos";
+const URL = "https://tulima-backend.vercel.app/destinos";
 
 export default function FeaturedDestinations() {
   const [destinations, setDestinations] = useState([]);

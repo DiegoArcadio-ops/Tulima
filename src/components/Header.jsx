@@ -29,7 +29,7 @@ export default function Header() {
   useEffect(() => {
     const obtenerPerfil = async () => {
       try{
-        const respuesta = await axios.get('http://localhost:8000/auth/me',{
+        const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me',{
           withCredentials: true
         });
         setUsuario(respuesta.data);
@@ -43,7 +43,7 @@ export default function Header() {
     useEffect(() => {
       const fetchCsrf = async () => {
       try {
-      const { data } = await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true });
+      const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
       setCsrfToken(data.csrfToken);
       } catch (e) { console.warn('No se pudo obtener CSRF', e); }
       };
@@ -52,8 +52,8 @@ export default function Header() {
 
       const cerrarSesion = async () => {
         try {
-        const token = csrfToken ?? (await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true })).data.csrfToken;
-        await axios.post('http://localhost:8000/logout', {}, {
+        const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+        await axios.post('https://tulima-backend.vercel.app/logout', {}, {
         headers: { 'X-CSRF-Token': token },
         withCredentials: true
         });

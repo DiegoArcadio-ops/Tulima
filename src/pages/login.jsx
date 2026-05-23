@@ -1,7 +1,7 @@
 import React, { useState , useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-const URL = "http://localhost:8000/login";
+const URL = "https://tulima-backend.vercel.app/login";
 
 
 function Login() { 
@@ -14,7 +14,7 @@ function Login() {
   useEffect(() => {
     const fetchCsrf = async () => {
     try {
-    const { data } = await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true });
+    const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
     setCsrfToken(data.csrfToken);
     } catch (e) {
     console.warn('No se pudo obtener CSRF token', e);
@@ -27,7 +27,7 @@ function Login() {
     e.preventDefault();
     setError('');
     try {
-    const token = csrfToken ?? (await axios.get('http://localhost:8000/api/csrf-token', { withCredentials: true })).data.csrfToken;
+    const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
     
     const respuesta = await axios.post(URL,
     { nombreUsuario: nombreUsuario, contraseña: contraseña },
@@ -49,7 +49,7 @@ function Login() {
     };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:8000/auth/google';
+    window.location.href = 'https://tulima-backend.vercel.app/auth/google';
   };
 
   return (

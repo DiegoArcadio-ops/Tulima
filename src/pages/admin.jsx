@@ -3,10 +3,10 @@ import axios from 'axios';
 import { MapPin, LayoutDashboard, Map, Settings, Plus, Edit2, Trash2, MessageSquare, Utensils, Building2, Map as MapIcon, Compass, X } from 'lucide-react';
 
 const SECCIONES = {
-  destinos: { titulo: 'Destinos', url: 'http://localhost:8000/destinos', icono: Map, btn: 'Nuevo Destino' },
+  destinos: { titulo: 'Destinos', url: 'https://tulima-backend.vercel.app/destinos', icono: Map, btn: 'Nuevo Destino' },
   hoteles: { 
     titulo: 'Hoteles', 
-    url: 'http://localhost:8000/hoteles', 
+    url: 'https://tulima-backend.vercel.app/hoteles', 
     icono: Building2, 
     btn: 'Nuevo Hotel',
   
@@ -38,9 +38,9 @@ const SECCIONES = {
         labelKey: 'nombre' 
       },
   ]},
-  restaurantes: { titulo: 'Restaurantes', url: 'http://localhost:8000/restaurantes', icono: Utensils, btn: 'Nuevo Restaurante' },
-  municipios: { titulo: 'Municipios', url: 'http://localhost:8000/municipios', icono: MapIcon, btn: 'Nuevo Municipio' },
-  tours: { titulo: 'Tours', url: 'http://localhost:8000/tours', icono: Compass, btn: 'Nuevo Tour' },
+  restaurantes: { titulo: 'Restaurantes', url: 'https://tulima-backend.vercel.app/restaurantes', icono: Utensils, btn: 'Nuevo Restaurante' },
+  municipios: { titulo: 'Municipios', url: 'https://tulima-backend.vercel.app/municipios', icono: MapIcon, btn: 'Nuevo Municipio' },
+  tours: { titulo: 'Tours', url: 'https://tulima-backend.vercel.app/tours', icono: Compass, btn: 'Nuevo Tour' },
 };
 
 
@@ -73,8 +73,8 @@ export default function TulimaAdminPanel() {
   useEffect(() => {
     const cargarCatalogos = async () => {
       const [resMun, resCat] = await Promise.allSettled([
-        axios.get('http://localhost:8000/municipios'),
-        axios.get('http://localhost:8000/categorias') 
+        axios.get('https://tulima-backend.vercel.app/municipios'),
+        axios.get('https://tulima-backend.vercel.app/categorias') 
       ]);
       
       setCatalogos({
