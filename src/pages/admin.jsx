@@ -152,26 +152,21 @@ export default function TulimaAdminPanel() {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
 
-      const payload = {};
-      for (const key in formData) {
-        if (formData[key] !== '' && formData[key] !== null && formData[key] !== undefined) {
-          payload[key] = formData[key];
+
+      const payload = { ...formData };
+      for (const key in payload) {
+        if (payload[key] === '') {
+          delete payload[key];
         }
       }
 
-      seccionActual.campos.forEach(campo => {
-        if (campo.type === 'number' && payload[campo.name]) {
-          payload[campo.name] = Number(payload[campo.name]);
-        }
-      });
-
-      if (payload.calificacion) {
-        payload.calificacion = String(payload.calificacion);
-      }
-
-      if (payload.estadoConvenio !== undefined) {
-        payload.estadoConvenio = Boolean(payload.estadoConvenio);
-      }
+      if (payload.telefono) payload.telefono = String(payload.telefono);
+      if (payload.calificacion) payload.calificacion = String(payload.calificacion);
+      if (payload.numero_Calle) payload.numero_Calle = Number(payload.numero_Calle);
+      if (payload.codigoPostal) payload.codigoPostal = Number(payload.codigoPostal);
+      if (payload.id_municipio) payload.id_municipio = Number(payload.id_municipio);
+      if (payload.id_categoria) payload.id_categoria = Number(payload.id_categoria);
+      if (payload.estadoConvenio !== undefined) payload.estadoConvenio = Boolean(payload.estadoConvenio);
 
       if (!modoEdicion) {
         payload.estadoConvenio = payload.estadoConvenio ?? true;
@@ -190,7 +185,7 @@ export default function TulimaAdminPanel() {
       console.error("Error al guardar:", err);
       
       if (err.response?.data?.errors) {
-        const listaErrores = err.response.data.errors.map(e => `${e.path}: ${e.msg}`).join(' | ');
+        const listaErrores = err.response.data.errors.map(e => `${e.param || e.path}: ${e.msg}`).join(' | ');
         alert("Atención - " + listaErrores);
       } else {
         alert(err.response?.data?.error || "Ocurrió un error al guardar el registro.");
