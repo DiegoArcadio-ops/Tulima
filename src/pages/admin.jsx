@@ -160,9 +160,17 @@ export default function TulimaAdminPanel() {
         }
       });
 
+      if (payload.calificacion) {
+        payload.calificacion = String(payload.calificacion);
+      }
+
+      if (payload.estadoConvenio !== undefined) {
+        payload.estadoConvenio = Boolean(payload.estadoConvenio);
+      }
+
       if (!modoEdicion) {
-        payload.estadoConvenio = payload.estadoConvenio ?? true; // Enviamos Boolean
-        payload.id_rese_a = payload.id_rese_a ?? 1; // Usamos el formato con _a que pide tu backend
+        payload.estadoConvenio = payload.estadoConvenio ?? true; 
+        payload.id_rese_a = payload.id_rese_a ?? 1;
       }
 
       if (modoEdicion) {
@@ -175,7 +183,12 @@ export default function TulimaAdminPanel() {
       cargarDatos();
     } catch (err) {
       console.error("Error al guardar:", err);
-      alert(err.response?.data?.error || "Ocurrió un error al guardar el registro.");
+      if (err.response?.data?.errors) {
+        const listaErrores = err.response.data.errors.map(e => e.msg).join(' | ');
+        alert("Error de validación: " + listaErrores);
+      } else {
+        alert(err.response?.data?.error || "Ocurrió un error al guardar el registro.");
+      }
     }
   };
 
