@@ -15,7 +15,7 @@ const SECCIONES = {
     { name: 'nombre_Calle', label: 'Calle', type: 'text' },
     { name: 'numero_Calle', label: 'Número Exterior', type: 'number' },
     { name: 'codigoPostal', label: 'Código Postal', type: 'number' },
-    { name: 'telefono', label: 'Teléfono', type: 'number' },
+    { name: 'telefono', label: 'Teléfono', type: 'text' },
     { name: 'email', label: 'Correo Electrónico', type: 'email' },
     { name: 'descripcion', label: 'Descripción', type: 'textarea' },
     {name: 'imagen', label: 'URL de la Imagen', type: 'text'},
@@ -161,8 +161,8 @@ export default function TulimaAdminPanel() {
       });
 
       if (!modoEdicion) {
-        payload.estadoConvenio = payload.estadoConvenio ?? 1;
-        payload.id_reseña = payload.id_reseña ?? 1;
+        payload.estadoConvenio = payload.estadoConvenio ?? true; // Enviamos Boolean
+        payload.id_rese_a = payload.id_rese_a ?? 1; // Usamos el formato con _a que pide tu backend
       }
 
       if (modoEdicion) {
