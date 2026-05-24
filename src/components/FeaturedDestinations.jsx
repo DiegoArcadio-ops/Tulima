@@ -151,8 +151,8 @@ export default function FeaturedDestinations() {
             </button>
 
             <img
-              src={selectedDestination.image}
-              alt={selectedDestination.title}
+              src={selectedDestination.imagen}
+              alt={selectedDestination.nombre}
               className="modal-image"
               onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }}
             />
@@ -176,7 +176,7 @@ export default function FeaturedDestinations() {
                 </div>
                 <div className="modal-detail-row">
                   <MapPin size={16} />
-                  <span><strong>Dirección:</strong> {selectedDestination.numeroCalle} {selectedDestination.nombreCalle}, CP {selectedDestination.codigoPostal}</span>
+                  <span><strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codifoPostal}</span>
                 </div>
                 <div className="modal-detail-row">
                   <span><strong>Reseña:</strong> {selectedDestination.resena}</span>

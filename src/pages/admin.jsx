@@ -25,9 +25,9 @@ const SECCIONES = {
         name: 'id_municipio', 
         label: 'Municipio', 
         type: 'select', 
-        catalogo: 'municipios', // Dónde buscará la lista
-        valueKey: 'id_municipio', // Lo que se guarda en la BD
-        labelKey: 'nombre' // Lo que lee el usuario (ej. "Comala", "Manzanillo")
+        catalogo: 'municipios',
+        valueKey: 'id_municipio',
+        labelKey: 'nombre'
       },
       { 
         name: 'id_categoria', 
@@ -52,6 +52,7 @@ export default function TulimaAdminPanel() {
   const [datos, setDatos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [csrfToken, setCsrfToken] = useState(null);
   
   // Estados para el Modal
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -60,8 +61,19 @@ export default function TulimaAdminPanel() {
   const [formData, setFormData] = useState({
     nombre: '',
     calificacion: '',
-    // Nota: Agrega aquí otros campos que necesites (ej. descripcion, id_municipio, etc.)
   });
+
+  useEffect(() => {
+    const fetchCsrf = async () => {
+      try {
+        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+        setCsrfToken(data.csrfToken);
+      } catch (e) {
+        console.warn('No se pudo obtener CSRF token', e);
+      }
+    };
+    fetchCsrf();
+  }, []);
 
   const seccionActual = SECCIONES[seccionActiva];
 
@@ -123,40 +135,44 @@ export default function TulimaAdminPanel() {
       estadoInicial[campo.name] = campo.type === 'checkbox' ? false : '';
     });
 
-    setFormData({estadoInicial});
+    setFormData(estadoInicial);
     setModalAbierto(true);
   };
 
   const abrirModalEditar = (item) => {
     setModoEdicion(true);
     setIdActual(obtenerId(item));
-    setFormData({
-      nombre: item.nombre || '',
-      calificacion: item.calificacion || '',
-      imagen: item.imagen || '',
-    });
+    setFormData({ ...item });
     setModalAbierto(true);
   };
 
   const guardarRegistro = async (e) => {
     e.preventDefault();
     try {
-      // Ajustamos el payload asegurando los tipos de datos correctos
-      const payload = {
-        ...formData,
-        calificacion: formData.calificacion ? parseFloat(formData.calificacion) : null
-      };
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
+
+      const payload = { ...formData };
+
+      seccionActual.campos.forEach(campo => {
+        if (campo.type === 'number' && payload[campo.name]) {
+          payload[campo.name] = Number(payload[campo.name]);
+        }
+      });
+
+      if (!modoEdicion) {
+        payload.estadoConvenio = payload.estadoConvenio ?? 1;
+        payload.id_reseña = payload.id_reseña ?? 1;
+      }
 
       if (modoEdicion) {
-        // Petición PUT para modificar
-        await axios.put(`${seccionActual.url}/${idActual}`, payload, { withCredentials: true });
+        await axios.put(`${seccionActual.url}/${idActual}`, payload, config);
       } else {
-        // Petición POST para crear
-        await axios.post(seccionActual.url, payload, { withCredentials: true });
+        await axios.post(seccionActual.url, payload, config);
       }
       
       setModalAbierto(false);
-      cargarDatos(); // Recargamos la tabla para ver los cambios
+      cargarDatos();
     } catch (err) {
       console.error("Error al guardar:", err);
       alert(err.response?.data?.error || "Ocurrió un error al guardar el registro.");
@@ -165,9 +181,12 @@ export default function TulimaAdminPanel() {
 
   const eliminarRegistro = async (id) => {
     if (!window.confirm("¿Estás seguro de que deseas eliminar este registro?")) return;
-    
     try {
-      await axios.delete(`${seccionActual.url}/${id}`, { withCredentials: true });
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      await axios.delete(`${seccionActual.url}/${id}`, { 
+        withCredentials: true, 
+        headers: { 'X-CSRF-Token': token } 
+      });
       cargarDatos();
     } catch (err) {
       console.error("Error al eliminar:", err);
