@@ -152,7 +152,12 @@ export default function TulimaAdminPanel() {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
 
-      const payload = { ...formData };
+      const payload = {};
+      for (const key in formData) {
+        if (formData[key] !== '' && formData[key] !== null && formData[key] !== undefined) {
+          payload[key] = formData[key];
+        }
+      }
 
       seccionActual.campos.forEach(campo => {
         if (campo.type === 'number' && payload[campo.name]) {
@@ -169,7 +174,7 @@ export default function TulimaAdminPanel() {
       }
 
       if (!modoEdicion) {
-        payload.estadoConvenio = payload.estadoConvenio ?? true; 
+        payload.estadoConvenio = payload.estadoConvenio ?? true;
         payload.id_rese_a = payload.id_rese_a ?? 1;
       }
 
@@ -183,9 +188,10 @@ export default function TulimaAdminPanel() {
       cargarDatos();
     } catch (err) {
       console.error("Error al guardar:", err);
+      
       if (err.response?.data?.errors) {
-        const listaErrores = err.response.data.errors.map(e => e.msg).join(' | ');
-        alert("Error de validación: " + listaErrores);
+        const listaErrores = err.response.data.errors.map(e => `${e.path}: ${e.msg}`).join(' | ');
+        alert("Atención - " + listaErrores);
       } else {
         alert(err.response?.data?.error || "Ocurrió un error al guardar el registro.");
       }
