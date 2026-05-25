@@ -3,7 +3,41 @@ import axios from 'axios';
 import { MapPin, LayoutDashboard, Map, Settings, Plus, Edit2, Trash2, MessageSquare, Utensils, Building2, Map as MapIcon, Compass, X } from 'lucide-react';
 
 const SECCIONES = {
-  destinos: { titulo: 'Destinos', url: 'https://tulima-backend.vercel.app/destinos', icono: Map, btn: 'Nuevo Destino' },
+  destinos: { 
+  titulo: 'Destinos', 
+  url: 'https://tulima-backend.vercel.app/destinos', 
+  icono: Map, 
+  btn: 'Nuevo Destino',
+    
+  campos:[
+      {name:'nombre', label: 'Nombre del Destino', type: 'text'},
+      {name: 'nombre_Calle', label: 'Calle', type: 'text' },
+      {name: 'numero_Calle', label: 'Número Exterior', type: 'number' },
+      {name: 'codifoPostal', label: 'Código Postal', type: 'number' },
+      {name: 'calificacion', label: 'Calificación', type: 'text'},
+      {name: 'imagen', label: 'URL de la Imagen', type: 'text'},
+      {name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time'},
+      {name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time'},
+      
+      { 
+        name: 'id_municipio', 
+        label: 'Municipio', 
+        type: 'select', 
+        catalogo: 'municipios',
+        valueKey: 'id_municipio',
+        labelKey: 'nombre'
+      },
+      { 
+        name: 'id_categoria', 
+        label: 'Categoría', 
+        type: 'select', 
+        catalogo: 'categorias', 
+        valueKey: 'id_categoria', 
+        labelKey: 'nombre' 
+      },
+    ]},
+
+
   hoteles: { 
     titulo: 'Hoteles', 
     url: 'https://tulima-backend.vercel.app/hoteles', 
@@ -38,9 +72,81 @@ const SECCIONES = {
         labelKey: 'nombre' 
       },
   ]},
-  restaurantes: { titulo: 'Restaurantes', url: 'https://tulima-backend.vercel.app/restaurantes', icono: Utensils, btn: 'Nuevo Restaurante' },
-  municipios: { titulo: 'Municipios', url: 'https://tulima-backend.vercel.app/municipios', icono: MapIcon, btn: 'Nuevo Municipio' },
-  tours: { titulo: 'Tours', url: 'https://tulima-backend.vercel.app/tours', icono: Compass, btn: 'Nuevo Tour' },
+  restaurantes: { 
+    titulo: 'Restaurantes', 
+    url: 'https://tulima-backend.vercel.app/restaurantes', 
+    icono: Utensils, btn: 'Nuevo Restaurante' ,
+    
+    campos:[
+      {name:'nombre', label: 'Nombre del Restaurante', type: 'text'},
+      {name: 'tipo', label: 'Tipo de Restaurante', type: 'text'},
+      { name: 'nombre_Calle', label: 'Calle', type: 'text' },
+      { name: 'numero_Calle', label: 'Número Exterior', type: 'number' },
+      { name: 'codigoPostal', label: 'Código Postal', type: 'number' },
+      { name: 'telefono', label: 'Teléfono', type: 'text' },
+      { name: 'email', label: 'Correo Electrónico', type: 'email' },
+      {name: 'imagen', label: 'URL de la Imagen', type: 'text'},
+      {name: 'calificacion', label: 'Calificación', type: 'text'},
+      {name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time'},
+      {name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time'},
+
+
+      { 
+        name: 'id_municipio', 
+        label: 'Municipio', 
+        type: 'select', 
+        catalogo: 'municipios',
+        valueKey: 'id_municipio',
+        labelKey: 'nombre'
+      },
+      { 
+        name: 'id_categoria', 
+        label: 'Categoría', 
+        type: 'select', 
+        catalogo: 'categorias', 
+        valueKey: 'id_categoria', 
+        labelKey: 'nombre' 
+      },
+    ]
+
+  },
+  municipios: { 
+    titulo: 'Municipios', 
+    url: 'https://tulima-backend.vercel.app/municipios', 
+    icono: MapIcon, 
+    btn: 'Nuevo Municipio', 
+    
+    campos:[
+      {name:'nombre', label: 'Nombre del Municipio', type: 'text'},
+      {name: 'descripcion', label: 'Descripción', type: 'textarea'},
+      {name: 'url_imagen', label: 'URL de la Imagen', type: 'text'},
+    ]
+  },
+  tours: { 
+    titulo: 'Tours', 
+    url: 'https://tulima-backend.vercel.app/tours', 
+    icono: Compass, 
+    btn: 'Nuevo Tour',
+    
+    campos:[
+      {name:'nombre', label: 'Nombre del Tour', type: 'text'},
+      {name: 'tipoTour', label: 'Tipo de Tour', type: 'text'},
+      { name: 'telefono', label: 'Teléfono', type: 'text' },
+      {name: 'tipoServicio', label: 'Tipo de Servicio', type: 'text'},
+      {name: 'imagen', label: 'URL de la Imagen', type: 'text'},
+      {name: 'calificacion', label: 'Calificación', type: 'text'},
+      { 
+        name: 'id_municipio', 
+        label: 'Municipio', 
+        type: 'select', 
+        catalogo: 'municipios',
+        valueKey: 'id_municipio',
+        labelKey: 'nombre'
+      },
+    ]
+  },
+
+
 };
 
 
