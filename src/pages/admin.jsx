@@ -270,6 +270,7 @@ export default function TulimaAdminPanel() {
       if (payload.calificacion) payload.calificacion = String(payload.calificacion);
       if (payload.numero_Calle) payload.numero_Calle = Number(payload.numero_Calle);
       if (payload.codigoPostal) payload.codigoPostal = Number(payload.codigoPostal);
+      if (payload.codifoPostal) payload.codifoPostal = Number(payload.codifoPostal);
       if (payload.id_municipio) payload.id_municipio = Number(payload.id_municipio);
       if (payload.id_categoria) payload.id_categoria = Number(payload.id_categoria);
       if (payload.estadoConvenio !== undefined) payload.estadoConvenio = Boolean(payload.estadoConvenio);
