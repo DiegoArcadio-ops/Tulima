@@ -3,7 +3,6 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 const URL = "https://tulima-backend.vercel.app/login";
 
-
 function Login() { 
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
@@ -14,39 +13,53 @@ function Login() {
   useEffect(() => {
     const fetchCsrf = async () => {
     try {
-    const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
-    setCsrfToken(data.csrfToken);
+      const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+      setCsrfToken(data.csrfToken);
     } catch (e) {
-    console.warn('No se pudo obtener CSRF token', e);
+      console.warn('No se pudo obtener CSRF token', e);
     }
     };
     fetchCsrf();
-    }, []);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     try {
-    const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
-    
-    const respuesta = await axios.post(URL,
-    { nombreUsuario: nombreUsuario, contraseña: contraseña },
-    {
-    headers: { 'X-CSRF-Token': token },
-    withCredentials: true
-    }
-    );
-    
-    if (respuesta.status === 201) {
-    window.location.href = '/';
-    } else if (respuesta.data?.mfaRequired) {
-    }
-    
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      
+      const respuesta = await axios.post(URL,
+        { nombreUsuario: nombreUsuario, contraseña: contraseña },
+        {
+          headers: { 'X-CSRF-Token': token },
+          withCredentials: true
+        }
+      );
+      
+      if (respuesta.status === 200 || respuesta.status === 201) {
+
+        const usuarioLogueado = respuesta.data.usuario; 
+        
+        if (usuarioLogueado) {
+          localStorage.setItem('usuarioTulima', JSON.stringify(usuarioLogueado));
+
+          if (usuarioLogueado.rol === 'admin' || usuarioLogueado.id_rol === 1) {
+            navigate('/admin'); 
+          } else {
+            navigate('/'); 
+          }
+        } else {
+          navigate('/'); 
+        }
+
+      } else if (respuesta.data?.mfaRequired) {
+      }
+      
     } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-    setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+      console.error("Error al iniciar sesión:", error);
+      setError('Credenciales inválidas. Por favor, inténtalo de nuevo.');
     }
-    };
+  };
 
   const handleGoogleLogin = () => {
     window.location.href = 'https://tulima-backend.vercel.app/auth/google';

@@ -7,6 +7,8 @@ import Tours from "./pages/Tours";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Registro from "./pages/registro";
+import TulimaAdminPanel from "./pages/TulimaAdminPanel";
+import RutaProtegidaAdmin from "./components/RutaProtegidaAdmin";
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -18,7 +20,14 @@ function App() {
         <Route path="/restaurantes" element={<MainLayout><Restaurantes /></MainLayout>} />
         <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
-        <Route path="/admin" element={<MainLayout><Admin /></MainLayout>} />
+        <Route 
+          path="/admin" 
+          element={
+            <RutaProtegidaAdmin>
+              <TulimaAdminPanel />
+            </RutaProtegidaAdmin>
+          } 
+        />
         <Route path="/registro" element={<MainLayout><Registro /></MainLayout>} />
       </Routes>
     </BrowserRouter>
