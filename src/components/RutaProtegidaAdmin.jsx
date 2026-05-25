@@ -14,6 +14,7 @@ export default function RutaProtegidaAdmin({ children }) {
 
         const usuario = respuesta.data;
 
+        //verficacion
         console.log("Datos recibidos del backend:", usuario);
 
         if (usuario.rol === 'admin' || usuario.id_rol === 1) {
