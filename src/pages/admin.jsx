@@ -155,7 +155,7 @@ export default function TulimaAdminPanel() {
 
       const payload = { ...formData };
       for (const key in payload) {
-        if (payload[key] === '') {
+        if (payload[key] === '' || payload[key] === null || payload[key] === undefined) {
           delete payload[key];
         }
       }
