@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function RutaProtegidaAdmin({ children }) {
   const [estado, setEstado] = useState('cargando');
-
+//Verificación
   useEffect(() => {
     const verificarPermisos = async () => {
       try {
