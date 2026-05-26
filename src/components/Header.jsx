@@ -57,6 +57,8 @@ export default function Header() {
         headers: { 'X-CSRF-Token': token },
         withCredentials: true
         });
+        localStorage.removeItem('usuarioTulima');
+        localStorage.clear();
         setUsuario(null); navigate('/');
         } catch (error) {
         console.error('Error al cerrar sesión:', error);
