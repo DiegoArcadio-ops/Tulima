@@ -403,7 +403,7 @@ export default function TulimaAdminPanel() {
                         </td>
                         <td className="px-6 py-4">
                           <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
-                            {item.categoria?.nombre || 'N/A'}
+                            {item.categoria?.nombre || item.tipo || 'N/A'}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-slate-600">
