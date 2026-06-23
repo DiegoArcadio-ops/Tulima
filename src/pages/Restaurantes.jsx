@@ -168,12 +168,6 @@ function Restaurantes() {
                   <span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <span><strong>Disponibilidad:</strong> {selectedRestaurante.disponibilidad ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <span><strong>Convenio activo:</strong> {selectedRestaurante.estadoConvenio ? 'Sí' : 'No'}</span>
-                </div>
-                <div className="modal-detail-row">
                   <span><strong>Reseña:</strong> {selectedRestaurante.rese_a?.descripcion ?? 'Sin reseña'}</span>
                 </div>
               </div>

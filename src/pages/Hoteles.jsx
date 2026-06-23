@@ -166,10 +166,6 @@ function Hoteles() {
                   <span>{selectedHotel.email ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Disponibilidad:</strong>
-                  <span>{selectedHotel.disponibilidad ?? 'N/A'} habitaciones</span>
-                </div>
-                <div className="modal-detail-row">
                   <strong>Calificación:</strong>
                   <span>{selectedHotel.calificacion ?? 'N/A'}</span>
                 </div>
@@ -180,10 +176,6 @@ function Hoteles() {
                 <div className="modal-detail-row">
                   <strong>Reseña:</strong>
                   <span>{selectedHotel.rese_a?.descripcion ?? 'Sin reseña'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <strong>Convenio activo:</strong>
-                  <span>{selectedHotel.estadoConvenio ? 'Sí' : 'No'}</span>
                 </div>
               </div>
 

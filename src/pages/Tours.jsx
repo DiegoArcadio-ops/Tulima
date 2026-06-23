@@ -169,10 +169,6 @@ function Tours() {
                   <strong>Reseña:</strong>
                   <span>{selectedTour.rese_a?.descripcion ?? 'Sin reseña'}</span>
                 </div>
-                <div className="modal-detail-row">
-                  <strong>Convenio activo:</strong>
-                  <span>{selectedTour.estadoConvenio ? 'Sí' : 'No'}</span>
-                </div>
               </div>
 
               {/* FORMULARIO RESEÑA */}
