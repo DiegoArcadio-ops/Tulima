@@ -9,6 +9,11 @@ import Admin from "./pages/admin";
 import Registro from "./pages/registro";
 import RutaProtegidaAdmin from "./components/RutaProtegidaAdmin";
 import TulimaAdminPanel from "./pages/admin";
+
+// 1. Importamos tu nuevo archivo de registro de proveedores
+// (Asumiendo que lo guardaste en la carpeta 'pages' como los demás)
+import RegistroProveedor from "./pages/registro_pro"; 
+
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
@@ -20,6 +25,7 @@ function App() {
         <Route path="/restaurantes" element={<MainLayout><Restaurantes /></MainLayout>} />
         <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
+        
         <Route 
           path="/admin" 
           element={
@@ -28,10 +34,14 @@ function App() {
             </RutaProtegidaAdmin>
           } 
         />
+        
         <Route path="/registro" element={<MainLayout><Registro /></MainLayout>} />
+
+      
+        <Route path="/registro-proveedor" element={<MainLayout><RegistroProveedor /></MainLayout>} />
+        
       </Routes>
     </BrowserRouter>
-
   )
 }
 
