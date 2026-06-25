@@ -48,10 +48,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('usuarioTulima', JSON.stringify(datosUsuario));
   };
 
-  const value = { usuario, isLoading, login };
+  const logout = async () => {
+    await axios.post('https://tulima-backend.vercel.app/logout', {}, { withCredentials: true });
+    setUsuario(null);
+    localStorage.removeItem('usuarioTulima');
+  };
+
+  const value = { usuario, isLoading, login, logout };
 
   return (
     <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   );
 };
-
