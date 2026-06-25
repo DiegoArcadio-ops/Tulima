@@ -70,13 +70,6 @@ function Restaurantes() {
             style={{ cursor: 'pointer' }}
           >
             <div className="card-imagen-container">
-              <button 
-                className={`favorito-btn ${favoritos.has(restaurante.id_restaurante) ? 'activo' : ''}`}
-                onClick={(e) => toggleFavorito(restaurante.id_restaurante, e)}
-                aria-label="Añadir a favoritos"
-              >
-                <Heart className="favorito-icono" />
-              </button>
               <span className="card-etiqueta">{restaurante.tipo}</span>
               <img src={restaurante.imagen} alt={restaurante.nombre} className="card-imagen" />
             </div>
@@ -100,6 +93,13 @@ function Restaurantes() {
                   </svg>
                   <span>{formatTime(restaurante.horarioAbierto)} - {formatTime(restaurante.horarioCerrado)}</span>
                 </div>
+                <button 
+                  className={`favorito-btn ${favoritos.has(restaurante.id_restaurante) ? 'activo' : ''}`}
+                  onClick={(e) => toggleFavorito(restaurante.id_restaurante, e)}
+                  aria-label="Añadir a favoritos"
+                >
+                  <Heart className="favorito-icono" />
+                </button>
               </div>
             </div>
           </div>
@@ -139,6 +139,10 @@ function Restaurantes() {
                 </div>
                 <div className="modal-detail-row">
                   <span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span>
+                </div>
+                <div className="modal-detail-row">
+                  <strong>Descripción:</strong>
+                  <span>{selectedRestaurante.descripcion ?? 'Sin descripción'}</span>
                 </div>
               </div>
 

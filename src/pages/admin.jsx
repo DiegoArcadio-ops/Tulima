@@ -12,7 +12,6 @@ const SECCIONES = {
       { name: 'nombre_Calle', label: 'Calle', type: 'text' },
       { name: 'numero_Calle', label: 'Número Exterior', type: 'number' },
       { name: 'codifoPostal', label: 'Código Postal', type: 'number' },
-      { name: 'calificacion', label: 'Calificación', type: 'text' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
       { name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time' },
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
@@ -33,7 +32,6 @@ const SECCIONES = {
       { name: 'email', label: 'Correo Electrónico', type: 'email' },
       { name: 'descripcion', label: 'Descripción', type: 'textarea' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
-      { name: 'calificacion', label: 'Calificación', type: 'text' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
       { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre' },
     ],
@@ -51,7 +49,6 @@ const SECCIONES = {
       { name: 'telefono', label: 'Teléfono', type: 'text' },
       { name: 'email', label: 'Correo Electrónico', type: 'email' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
-      { name: 'calificacion', label: 'Calificación', type: 'text' },
       { name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time' },
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
@@ -78,7 +75,6 @@ const SECCIONES = {
       { name: 'telefono', label: 'Teléfono', type: 'text' },
       { name: 'tipoServicio', label: 'Tipo de Servicio', type: 'text' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
-      { name: 'calificacion', label: 'Calificación', type: 'text' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
   },
@@ -246,7 +242,6 @@ export default function TulimaAdminPanel() {
                     <th className="px-6 py-4 font-medium">Nombre</th>
                     <th className="px-6 py-4 font-medium">Categoría</th>
                     <th className="px-6 py-4 font-medium">Ubicación</th>
-                    <th className="px-6 py-4 font-medium">Calificación</th>
                     <th className="px-6 py-4 font-medium text-right">Estado</th>
                   </tr>
                 </thead>
@@ -267,11 +262,6 @@ export default function TulimaAdminPanel() {
                         </td>
                         <td className="px-6 py-4 text-slate-600">
                           {item.municipio?.nombre || 'N/A'}
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center gap-1 text-slate-700 font-medium">
-                            <span className="text-yellow-400">★</span> {item.calificacion || '-'}
-                          </div>
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex justify-end items-center gap-3">
