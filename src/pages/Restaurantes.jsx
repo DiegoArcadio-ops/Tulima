@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
+import axios from 'axios';
 import './Restaurantes.css';
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 
@@ -11,6 +12,28 @@ function Restaurantes() {
 
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
+
+  // Efecto para cargar los favoritos del usuario al iniciar
+  useEffect(() => {
+    const cargarFavoritos = async () => {
+      const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
+      if (!usuario) return;
+
+      try {
+        const respuesta = await axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true });
+        const idsFavoritos = new Set(
+          respuesta.data
+            .filter(fav => fav.id_restaurante != null) // Nos quedamos solo con los restaurantes
+            .map(fav => fav.id_restaurante)
+        );
+        setFavoritos(idsFavoritos);
+      } catch (error) {
+        console.error("Error al cargar los favoritos:", error);
+      }
+    };
+    cargarFavoritos();
+  }, []);
+
   useEffect(() => {
     fetch(URL)
       .then((response) => {
@@ -42,16 +65,34 @@ function Restaurantes() {
   };
 
   // Nueva función para manejar favoritos
-  const toggleFavorito = (restauranteId, e) => {
+  const toggleFavorito = async (restauranteId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
-    const nuevosFavoritos = new Set(favoritos);
-    if (nuevosFavoritos.has(restauranteId)) {
-      nuevosFavoritos.delete(restauranteId);
-    } else {
-      nuevosFavoritos.add(restauranteId);
+    
+    const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
+    if (!usuario) {
+      alert('Debes iniciar sesión para añadir a favoritos.');
+      return;
     }
-    setFavoritos(nuevosFavoritos);
-    // TODO: Aquí harías la llamada a tu API para guardar el favorito del usuario
+
+    const nuevosFavoritos = new Set(favoritos);
+    const esFavorito = nuevosFavoritos.has(restauranteId);
+
+    try {
+      const config = { withCredentials: true };
+      const data = { tipo: 'restaurante', id: restauranteId };
+
+      if (esFavorito) {
+        await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+        nuevosFavoritos.delete(restauranteId);
+      } else {
+        await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+        nuevosFavoritos.add(restauranteId);
+      }
+      setFavoritos(nuevosFavoritos);
+    } catch (error) {
+      console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
+      alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
+    }
   };
 
   if (isLoading) return <div className="restaurantes-seccion"><h2>Cargando restaurantes...</h2></div>;
