@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
 import axios from 'axios';
 import './Restaurantes.css';
+import { useAuth } from '../context/AuthContext';
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 
 function Restaurantes() {
@@ -10,14 +11,15 @@ function Restaurantes() {
   const [error, setError] = useState(null);
   const [selectedRestaurante, setSelectedRestaurante] = useState(null);
 
+  const { usuario } = useAuth();
+
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
 
   // Efecto para cargar los favoritos del usuario al iniciar
   useEffect(() => {
     const cargarFavoritos = async () => {
-      const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
-      if (!usuario) return;
+      if (!usuario) return; // Si no hay usuario, no hacemos nada
 
       try {
         const respuesta = await axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true });
@@ -32,7 +34,7 @@ function Restaurantes() {
       }
     };
     cargarFavoritos();
-  }, []);
+  }, [usuario]);
 
   useEffect(() => {
     fetch(URL)
@@ -68,7 +70,6 @@ function Restaurantes() {
   const toggleFavorito = async (restauranteId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
     
-    const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;

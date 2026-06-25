@@ -93,7 +93,7 @@ function Login() {
       if (respuesta.status === 200 || respuesta.status === 201) {
         const proveedorLogueado = respuesta.data.proveedor;
         if (proveedorLogueado) {
-          localStorage.setItem('proveedorTulima', JSON.stringify(proveedorLogueado));
+          auth.login(proveedorLogueado); // Usamos la función del contexto también para proveedores
           navigate('/panel-proveedor'); // Redirige al dashboard de proveedor
         }
       }

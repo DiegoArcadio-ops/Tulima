@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
 import axios from 'axios';
 import './Tours.css';
+import { useAuth } from '../context/AuthContext';
 
 const URL = "https://tulima-backend.vercel.app/tours";
 
@@ -11,14 +12,15 @@ function Tours() {
   const [error, setError] = useState(null);
   const [selectedTour, setSelectedTour] = useState(null);
 
+  const { usuario } = useAuth();
+
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
 
   // Efecto para cargar los favoritos del usuario al iniciar
   useEffect(() => {
     const cargarFavoritos = async () => {
-      const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
-      if (!usuario) return;
+      if (!usuario) return; // Si no hay usuario, no hacemos nada
 
       try {
         const respuesta = await axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true });
@@ -33,7 +35,7 @@ function Tours() {
       }
     };
     cargarFavoritos();
-  }, []);
+  }, [usuario]);
 
   useEffect(() => {
     fetch(URL)
@@ -64,7 +66,6 @@ function Tours() {
   const toggleFavorito = async (tourId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
     
-    const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;
