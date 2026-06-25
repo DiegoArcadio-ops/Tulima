@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
 import './Restaurantes.css';
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 
@@ -8,13 +9,8 @@ function Restaurantes() {
   const [error, setError] = useState(null);
   const [selectedRestaurante, setSelectedRestaurante] = useState(null);
 
-  // Estados reseña
-  const [stars, setStars] = useState(0);
-  const [hoverStar, setHoverStar] = useState(0);
-  const [comentario, setComentario] = useState('');
-  const [enviando, setEnviando] = useState(false);
-  const [enviado, setEnviado] = useState(false);
-
+  // Nuevo estado para favoritos
+  const [favoritos, setFavoritos] = useState(new Set());
   useEffect(() => {
     fetch(URL)
       .then((response) => {
@@ -39,44 +35,23 @@ function Restaurantes() {
 
   const handleOpenModal = (restaurante) => {
     setSelectedRestaurante(restaurante);
-    setStars(0);
-    setHoverStar(0);
-    setComentario('');
-    setEnviado(false);
   };
 
   const handleCloseModal = () => {
     setSelectedRestaurante(null);
-    setStars(0);
-    setHoverStar(0);
-    setComentario('');
-    setEnviado(false);
   };
 
-  const handleEnviarResena = async () => {
-    if (stars === 0) {
-      alert('Por favor selecciona una calificación');
-      return;
+  // Nueva función para manejar favoritos
+  const toggleFavorito = (restauranteId, e) => {
+    e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
+    const nuevosFavoritos = new Set(favoritos);
+    if (nuevosFavoritos.has(restauranteId)) {
+      nuevosFavoritos.delete(restauranteId);
+    } else {
+      nuevosFavoritos.add(restauranteId);
     }
-    setEnviando(true);
-    try {
-      // TODO: reemplazar cuando Alan tenga el endpoint listo
-      // await fetch('/api/resenas', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     id_restaurante: selectedRestaurante.id_restaurante,
-      //     calificacion: stars,
-      //     descripcion: comentario,
-      //   }),
-      // });
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      setEnviado(true);
-    } catch (err) {
-      alert('Error al enviar la reseña');
-    } finally {
-      setEnviando(false);
-    }
+    setFavoritos(nuevosFavoritos);
+    // TODO: Aquí harías la llamada a tu API para guardar el favorito del usuario
   };
 
   if (isLoading) return <div className="restaurantes-seccion"><h2>Cargando restaurantes...</h2></div>;
@@ -95,6 +70,13 @@ function Restaurantes() {
             style={{ cursor: 'pointer' }}
           >
             <div className="card-imagen-container">
+              <button 
+                className={`favorito-btn ${favoritos.has(restaurante.id_restaurante) ? 'activo' : ''}`}
+                onClick={(e) => toggleFavorito(restaurante.id_restaurante, e)}
+                aria-label="Añadir a favoritos"
+              >
+                <Heart className="favorito-icono" />
+              </button>
               <span className="card-etiqueta">{restaurante.tipo}</span>
               <img src={restaurante.imagen} alt={restaurante.nombre} className="card-imagen" />
             </div>
@@ -111,12 +93,6 @@ function Restaurantes() {
               <h3 className="card-titulo">{restaurante.nombre}</h3>
 
               <div className="card-footer">
-                <div className="card-calificacion">
-                  <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-estrella">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                  <span>{restaurante.calificacion}</span>
-                </div>
                 <div className="card-horario">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-reloj">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -159,58 +135,11 @@ function Restaurantes() {
                   <span><strong>Horario:</strong> {formatTime(selectedRestaurante.horarioAbierto)} - {formatTime(selectedRestaurante.horarioCerrado)}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <span><strong>Calificación:</strong> {selectedRestaurante.calificacion ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
                   <span><strong>Teléfono:</strong> {selectedRestaurante.telefono?.toString() ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
                   <span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span>
                 </div>
-                <div className="modal-detail-row">
-                  <span><strong>Reseña:</strong> {selectedRestaurante.rese_a?.descripcion ?? 'Sin reseña'}</span>
-                </div>
-              </div>
-
-              {/* FORMULARIO RESEÑA */}
-              <div className="resena-seccion">
-                <h3 className="resena-titulo">Deja tu reseña</h3>
-
-                {enviado ? (
-                  <p className="resena-exito">¡Gracias por tu reseña!</p>
-                ) : (
-                  <>
-                    <div className="resena-estrellas">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <span
-                          key={n}
-                          className={`estrella ${n <= (hoverStar || stars) ? 'activa' : ''}`}
-                          onClick={() => setStars(n)}
-                          onMouseEnter={() => setHoverStar(n)}
-                          onMouseLeave={() => setHoverStar(0)}
-                        >
-                          
-                        </span>
-                      ))}
-                    </div>
-
-                    <textarea
-                      className="resena-textarea"
-                      placeholder="Escribe tu comentario..."
-                      value={comentario}
-                      onChange={(e) => setComentario(e.target.value)}
-                      rows={3}
-                    />
-
-                    <button
-                      className="resena-btn"
-                      onClick={handleEnviarResena}
-                      disabled={enviando}
-                    >
-                      {enviando ? 'Enviando...' : 'Enviar reseña'}
-                    </button>
-                  </>
-                )}
               </div>
 
             </div>

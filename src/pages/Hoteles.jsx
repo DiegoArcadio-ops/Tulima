@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
 import './Hoteles.css';
 const URL = "https://tulima-backend.vercel.app/hoteles";
 
@@ -8,13 +9,8 @@ function Hoteles() {
   const [error, setError] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
 
-  // Estados reseña
-  const [stars, setStars] = useState(0);
-  const [hoverStar, setHoverStar] = useState(0);
-  const [comentario, setComentario] = useState('');
-  const [enviando, setEnviando] = useState(false);
-  const [enviado, setEnviado] = useState(false);
-
+  // Nuevo estado para favoritos
+  const [favoritos, setFavoritos] = useState(new Set());
   useEffect(() => {
     fetch(URL)
       .then((response) => {
@@ -34,44 +30,24 @@ function Hoteles() {
 
   const handleOpenModal = (hotel) => {
     setSelectedHotel(hotel);
-    setStars(0);
-    setHoverStar(0);
-    setComentario('');
-    setEnviado(false);
   };
 
   const handleCloseModal = () => {
     setSelectedHotel(null);
-    setStars(0);
-    setHoverStar(0);
-    setComentario('');
-    setEnviado(false);
   };
 
-  const handleEnviarResena = async () => {
-    if (stars === 0) {
-      alert('Por favor selecciona una calificación');
-      return;
+  // Nueva función para manejar favoritos
+  const toggleFavorito = (hotelId, e) => {
+    e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
+    const nuevosFavoritos = new Set(favoritos);
+    if (nuevosFavoritos.has(hotelId)) {
+      nuevosFavoritos.delete(hotelId);
+    } else {
+      nuevosFavoritos.add(hotelId);
     }
-    setEnviando(true);
-    try {
-      // TODO: reemplazar cuando Alan tenga el endpoint listo
-      // await fetch('/api/resenas', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({
-      //     id_hotel: selectedHotel.id_hotel,
-      //     calificacion: stars,
-      //     descripcion: comentario,
-      //   }),
-      // });
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      setEnviado(true);
-    } catch (err) {
-      alert('Error al enviar la reseña');
-    } finally {
-      setEnviando(false);
-    }
+    setFavoritos(nuevosFavoritos);
+    // TODO: Aquí harías la llamada a tu API para guardar el favorito del usuario
+    // ej. await axios.post(`/api/usuarios/favoritos`, { hotelId });
   };
 
   if (isLoading) return <div className="hoteles-mensaje">Cargando hoteles...</div>;
@@ -90,6 +66,13 @@ function Hoteles() {
             style={{ cursor: 'pointer' }}
           >
             <div className="hotel-imagen-container">
+              <button 
+                className={`favorito-btn ${favoritos.has(hotel.id_hotel) ? 'activo' : ''}`}
+                onClick={(e) => toggleFavorito(hotel.id_hotel, e)}
+                aria-label="Añadir a favoritos"
+              >
+                <Heart className="favorito-icono" />
+              </button>
               <span className="hotel-etiqueta">{hotel.categoria}</span>
               <img
                 src={hotel.imagen}
@@ -111,12 +94,6 @@ function Hoteles() {
               <h3 className="hotel-titulo">{hotel.nombre_hotel}</h3>
 
               <div className="hotel-footer">
-                <div className="hotel-calificacion">
-                  <svg viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-estrella">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                  </svg>
-                  <span>{hotel.calificacion}</span>
-                </div>
                 <div className="hotel-precio">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-precio">
                     <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -166,58 +143,9 @@ function Hoteles() {
                   <span>{selectedHotel.email ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Calificación:</strong>
-                  <span>{selectedHotel.calificacion ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
                   <strong>Descripción:</strong>
                   <span>{selectedHotel.descripcion ?? 'Sin descripción'}</span>
                 </div>
-                <div className="modal-detail-row">
-                  <strong>Reseña:</strong>
-                  <span>{selectedHotel.rese_a?.descripcion ?? 'Sin reseña'}</span>
-                </div>
-              </div>
-
-              {/* FORMULARIO RESEÑA */}
-              <div className="resena-seccion">
-                <h3 className="resena-titulo">Deja tu reseña</h3>
-
-                {enviado ? (
-                  <p className="resena-exito">¡Gracias por tu reseña!</p>
-                ) : (
-                  <>
-                    <div className="resena-estrellas">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <span
-                          key={n}
-                          className={`estrella ${n <= (hoverStar || stars) ? 'activa' : ''}`}
-                          onClick={() => setStars(n)}
-                          onMouseEnter={() => setHoverStar(n)}
-                          onMouseLeave={() => setHoverStar(0)}
-                        >
-                          ★
-                        </span>
-                      ))}
-                    </div>
-
-                    <textarea
-                      className="resena-textarea"
-                      placeholder="Escribe tu comentario..."
-                      value={comentario}
-                      onChange={(e) => setComentario(e.target.value)}
-                      rows={3}
-                    />
-
-                    <button
-                      className="resena-btn"
-                      onClick={handleEnviarResena}
-                      disabled={enviando}
-                    >
-                      {enviando ? 'Enviando...' : 'Enviar reseña'}
-                    </button>
-                  </>
-                )}
               </div>
 
             </div>
