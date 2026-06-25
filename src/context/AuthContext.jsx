@@ -19,10 +19,10 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Luego, verifica con el backend para confirmar la sesión (esto funciona para Google Login)
-        const respuesta = await axios.get('https://tulima-backend.vercel.app/perfil', { withCredentials: true });
+        const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
         
-        if (respuesta.data && respuesta.data.usuario) {
-          const usuarioActual = respuesta.data.usuario;
+        if (respuesta.data) {
+          const usuarioActual = respuesta.data;
           setUsuario(usuarioActual);
           localStorage.setItem('usuarioTulima', JSON.stringify(usuarioActual));
         } else {

@@ -13,11 +13,6 @@ import MainLayout from "./layouts/MainLayout";
 import RutaProtegidaAdmin from "./components/RutaProtegidaAdmin";
 import RegistroProveedor from "./pages/registro_pro"; 
 import RutaProtegidaProveedor from "./components/RutaProtegidaProveedor";
-import Perfil from './pages/Perfil';
-import MFASetup from './pages/mfa-setup';
-import MFAVerify from './pages/mfa-verify';
-import Suscripcion from './pages/Suscripcion';
-import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -32,10 +27,6 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
             <Route path="registro-proveedor" element={<RegistroProveedor />} />
-            <Route path="perfil" element={<Perfil />} />
-            <Route path="mfa-setup" element={<MFASetup />} />
-            <Route path="mfa-verify" element={<MFAVerify />} />
-            <Route path="suscripcion" element={<Suscripcion />} />
           </Route>
 
           <Route
@@ -54,7 +45,7 @@ function App() {
               </RutaProtegidaProveedor>
             }
           />
-          <Route path="*" element={<NotFound />} />
+
         </Routes>
       </AuthProvider>
     </BrowserRouter>
