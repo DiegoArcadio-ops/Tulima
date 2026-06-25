@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
+import axios from 'axios';
 import './Tours.css';
 
 const URL = "https://tulima-backend.vercel.app/tours";
@@ -12,6 +13,28 @@ function Tours() {
 
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
+
+  // Efecto para cargar los favoritos del usuario al iniciar
+  useEffect(() => {
+    const cargarFavoritos = async () => {
+      const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
+      if (!usuario) return;
+
+      try {
+        const respuesta = await axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true });
+        const idsFavoritos = new Set(
+          respuesta.data
+            .filter(fav => fav.id_provedor_tour != null) // Nos quedamos solo con los tours
+            .map(fav => fav.id_provedor_tour)
+        );
+        setFavoritos(idsFavoritos);
+      } catch (error) {
+        console.error("Error al cargar los favoritos:", error);
+      }
+    };
+    cargarFavoritos();
+  }, []);
+
   useEffect(() => {
     fetch(URL)
       .then((response) => {
@@ -38,16 +61,34 @@ function Tours() {
   };
 
   // Nueva función para manejar favoritos
-  const toggleFavorito = (tourId, e) => {
+  const toggleFavorito = async (tourId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
-    const nuevosFavoritos = new Set(favoritos);
-    if (nuevosFavoritos.has(tourId)) {
-      nuevosFavoritos.delete(tourId);
-    } else {
-      nuevosFavoritos.add(tourId);
+    
+    const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
+    if (!usuario) {
+      alert('Debes iniciar sesión para añadir a favoritos.');
+      return;
     }
-    setFavoritos(nuevosFavoritos);
-    // TODO: Aquí harías la llamada a tu API para guardar el favorito del usuario
+
+    const nuevosFavoritos = new Set(favoritos);
+    const esFavorito = nuevosFavoritos.has(tourId);
+
+    try {
+      const config = { withCredentials: true };
+      const data = { tipo: 'tour', id: tourId };
+
+      if (esFavorito) {
+        await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+        nuevosFavoritos.delete(tourId);
+      } else {
+        await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+        nuevosFavoritos.add(tourId);
+      }
+      setFavoritos(nuevosFavoritos);
+    } catch (error) {
+      console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
+      alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
+    }
   };
 
   if (isLoading) return <div className="tours-seccion"><h2>Cargando tours...</h2></div>;
@@ -60,7 +101,7 @@ function Tours() {
       <div className="tours-grid">
         {tours.map((tour) => (
           <div
-            key={tour.id_tour}
+            key={tour.id_provedor}
             className="tour-card"
             onClick={() => handleOpenModal(tour)}
             style={{ cursor: 'pointer' }}
@@ -94,8 +135,8 @@ function Tours() {
                   </svg>
                 </div>
                 <button 
-                  className={`favorito-btn ${favoritos.has(tour.id_tour) ? 'activo' : ''}`}
-                  onClick={(e) => toggleFavorito(tour.id_tour, e)}
+                  className={`favorito-btn ${favoritos.has(tour.id_provedor) ? 'activo' : ''}`}
+                  onClick={(e) => toggleFavorito(tour.id_provedor, e)}
                   aria-label="Añadir a favoritos"
                 >
                   <Heart className="favorito-icono" />
