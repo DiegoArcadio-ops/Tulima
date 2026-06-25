@@ -17,7 +17,6 @@ import RegistroProveedor from "./pages/registro_pro";
 
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import RutaProtegidaProveedor from "./components/RutaProtegidaProveedor";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
@@ -28,9 +27,7 @@ function App() {
         <Route path="/restaurantes" element={<MainLayout><Restaurantes /></MainLayout>} />
         <Route path="/tours" element={<MainLayout><Tours /></MainLayout>} />
         <Route path="/login" element={<MainLayout><Login /></MainLayout>} />
-        
-        <Route 
-          path="/admin" 
+    
         <Route path="/registro" element={<MainLayout><Registro /></MainLayout>} />
         <Route
           path="/admin"
