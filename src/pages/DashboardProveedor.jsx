@@ -5,6 +5,7 @@ import {
   Building2, Utensils, Compass, Map as MapIcon,
   CheckCircle, Clock, XCircle, ChevronRight
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const BASE = 'https://tulima-backend.vercel.app';
 
@@ -107,7 +108,7 @@ export default function DashboardProveedor() {
   const [error, setError] = useState(null);
   const [csrfToken, setCsrfToken] = useState(null);
   const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [] });
-  const [usuario, setUsuario] = useState(null);
+  const { usuario } = useAuth();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [idActual, setIdActual] = useState(null);
@@ -123,9 +124,6 @@ export default function DashboardProveedor() {
   };
 
   useEffect(() => {
-    const u = localStorage.getItem('usuarioTulima');
-    if (u) setUsuario(JSON.parse(u));
-
     const fetchCsrf = async () => {
       try {
         const { data } = await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true });
