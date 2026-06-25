@@ -66,13 +66,6 @@ function Hoteles() {
             style={{ cursor: 'pointer' }}
           >
             <div className="hotel-imagen-container">
-              <button 
-                className={`favorito-btn ${favoritos.has(hotel.id_hotel) ? 'activo' : ''}`}
-                onClick={(e) => toggleFavorito(hotel.id_hotel, e)}
-                aria-label="Añadir a favoritos"
-              >
-                <Heart className="favorito-icono" />
-              </button>
               <span className="hotel-etiqueta">{hotel.categoria}</span>
               <img
                 src={hotel.imagen}
@@ -101,6 +94,13 @@ function Hoteles() {
                   </svg>
                   {hotel.precio}
                 </div>
+                <button 
+                  className={`favorito-btn ${favoritos.has(hotel.id_hotel) ? 'activo' : ''}`}
+                  onClick={(e) => toggleFavorito(hotel.id_hotel, e)}
+                  aria-label="Añadir a favoritos"
+                >
+                  <Heart className="favorito-icono" />
+                </button>
               </div>
             </div>
           </div>
@@ -141,10 +141,6 @@ function Hoteles() {
                 <div className="modal-detail-row">
                   <strong>Email:</strong>
                   <span>{selectedHotel.email ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <strong>Descripción:</strong>
-                  <span>{selectedHotel.descripcion ?? 'Sin descripción'}</span>
                 </div>
               </div>
 

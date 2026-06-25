@@ -201,7 +201,6 @@ export default function DashboardProveedor() {
 
       if (!modoEdicion) {
         payload.estadoConvenio = true;
-        payload.id_rese_a = 1;
         payload.activo = false;
       }
 

@@ -66,13 +66,6 @@ function Tours() {
             style={{ cursor: 'pointer' }}
           >
             <div className="tour-imagen-container">
-              <button 
-                className={`favorito-btn ${favoritos.has(tour.id_tour) ? 'activo' : ''}`}
-                onClick={(e) => toggleFavorito(tour.id_tour, e)}
-                aria-label="Añadir a favoritos"
-              >
-                <Heart className="favorito-icono" />
-              </button>
               <span className="tour-etiqueta">{tour.tipoTour}</span>
               <img
                 src={tour.imagen}
@@ -100,6 +93,13 @@ function Tours() {
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                 </div>
+                <button 
+                  className={`favorito-btn ${favoritos.has(tour.id_tour) ? 'activo' : ''}`}
+                  onClick={(e) => toggleFavorito(tour.id_tour, e)}
+                  aria-label="Añadir a favoritos"
+                >
+                  <Heart className="favorito-icono" />
+                </button>
               </div>
             </div>
           </div>
@@ -136,6 +136,10 @@ function Tours() {
                 <div className="modal-detail-row">
                   <strong>Teléfono:</strong>
                   <span>{selectedTour.telefono?.toString() ?? 'N/A'}</span>
+                </div>
+                <div className="modal-detail-row">
+                  <strong>Descripción:</strong>
+                  <span>{selectedTour.descripcion ?? 'Sin descripción'}</span>
                 </div>
               </div>
 
