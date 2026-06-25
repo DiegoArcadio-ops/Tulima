@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const URL_USER = "https://tulima-backend.vercel.app/login";
 // Ajusta esta URL a la ruta de tu backend para proveedores
@@ -8,6 +9,7 @@ const URL_PROVIDER = "https://tulima-backend.vercel.app/login-proveedor";
 
 function Login() {
   const navigate = useNavigate();
+  const auth = useAuth(); // Usamos el contexto
   const [csrfToken, setCsrfToken] = useState(null);
 
   // Estados para Usuario Normal
@@ -51,7 +53,7 @@ function Login() {
       if (respuesta.status === 200 || respuesta.status === 201) {
         const usuarioLogueado = respuesta.data.usuario;
         if (usuarioLogueado) {
-          localStorage.setItem('usuarioTulima', JSON.stringify(usuarioLogueado));
+          auth.login(usuarioLogueado); // Usamos la función del contexto
           if (usuarioLogueado.rol === 'admin' || usuarioLogueado.id_rol === 1) {
             navigate('/admin');
           } else {
