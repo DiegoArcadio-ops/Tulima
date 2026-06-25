@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
 import axios from 'axios';
 import './Hoteles.css';
+import { useAuth } from '../context/AuthContext';
 const URL = "https://tulima-backend.vercel.app/hoteles";
 
 function Hoteles() {
@@ -10,14 +11,14 @@ function Hoteles() {
   const [error, setError] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
 
+  const { usuario } = useAuth(); // Usamos el contexto de autenticación
+
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
 
   // Efecto para cargar los favoritos del usuario al iniciar
   useEffect(() => {
     const cargarFavoritos = async () => {
-      // Asumimos que el usuario logueado se guarda en localStorage
-      const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
       if (!usuario) return; // Si no hay usuario, no hacemos nada
 
       try {
@@ -33,7 +34,7 @@ function Hoteles() {
       }
     };
     cargarFavoritos();
-  }, []);
+  }, [usuario]); // Se ejecuta cuando el usuario cambia
 
   useEffect(() => {
     fetch(URL)
@@ -64,7 +65,6 @@ function Hoteles() {
   const toggleFavorito = async (hotelId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
     
-    const usuario = JSON.parse(localStorage.getItem('usuarioTulima'));
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;
