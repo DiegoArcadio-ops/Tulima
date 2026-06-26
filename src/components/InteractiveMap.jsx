@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import { X, Info, Heart } from "lucide-react";
 import colimaGeoData from "../data/colimaMunicipios.json";
@@ -13,13 +13,15 @@ export default function InteractiveMap() {
   const [topAmados, setTopAmados] = useState([]);
   const [loadingTop, setLoadingTop] = useState(false);
 
+  // Referencia para guardar los datos sin perderlos en el evento del mapa
+  const municipiosRef = useRef([]);
+
   useEffect(() => {
     fetch(`${BACKEND_URL}/municipios`)
       .then((res) => res.json())
       .then((data) => {
-        // 👇 AQUÍ ESTÁ EL LOG NUEVO
-        console.log("Municipios recibidos:", data); 
         setMunicipiosData(data);
+        municipiosRef.current = data; // Guardamos los datos en la referencia
       })
       .catch((err) => console.warn("Backend no listo, usando datos locales", err));
   }, []);
@@ -57,11 +59,8 @@ export default function InteractiveMap() {
         e.target.setStyle(estiloMunicipio);
       },
       click: () => {
-        // 👇 AQUÍ ESTÁN LOS LOGS NUEVOS
-        console.log("nombreReal:", nombreReal);
-        console.log("municipiosData al momento del click:", municipiosData);
-
-        const info = municipiosData.find(m => 
+        // Usamos municipiosRef.current en lugar de municipiosData
+        const info = municipiosRef.current.find(m => 
           m.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() 
           === 
           nombreReal.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
