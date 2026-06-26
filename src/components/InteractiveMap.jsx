@@ -56,7 +56,7 @@ export default function InteractiveMap() {
         const info = municipiosData.find(m => m.nombre === nombreReal) || {
           nombre: nombreReal,
           descripcion: `Descubre la magia de ${nombreReal} pronto...`,
-          url_imagen: "https://images.unsplash.com/photo-1596324121712-5bbc14482174?w=400",
+          url_imagen: "https://estacionpacifico.com/wp-content/uploads/2018/11/LETRERO-COLIMA-1024x546.jpg",
         };
 
         setSelectedMunicipio(info);
