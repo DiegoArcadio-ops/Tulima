@@ -82,15 +82,23 @@ function Restaurantes() {
 
   // Nueva función para manejar favoritos
   const toggleFavorito = async (restauranteId, e) => {
-    e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
-    
+    e.stopPropagation();
+
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;
     }
 
+    const esFavorito = favoritos.has(restauranteId);
+
+    // Actualización optimista: cambia la UI de inmediato
     const nuevosFavoritos = new Set(favoritos);
-    const esFavorito = nuevosFavoritos.has(restauranteId);
+    if (esFavorito) {
+      nuevosFavoritos.delete(restauranteId);
+    } else {
+      nuevosFavoritos.add(restauranteId);
+    }
+    setFavoritos(nuevosFavoritos);
 
     try {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
@@ -99,13 +107,12 @@ function Restaurantes() {
 
       if (esFavorito) {
         await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-        nuevosFavoritos.delete(restauranteId);
       } else {
         await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
-        nuevosFavoritos.add(restauranteId);
       }
-      setFavoritos(nuevosFavoritos);
     } catch (error) {
+      // Revertir al estado anterior si el servidor falla
+      setFavoritos(favoritos);
       console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
       alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
     }
