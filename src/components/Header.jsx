@@ -16,6 +16,7 @@ const navLinks = [
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },
   { to: "/tours", label: "Tours" },
+  { to: "/eventos", label: "Eventos"},
 ];
 
 export default function Header() {
