@@ -53,11 +53,15 @@ export default function InteractiveMap() {
         e.target.setStyle(estiloMunicipio);
       },
       click: () => {
-        const info = municipiosData.find(m => m.nombre === nombreReal) || {
-          nombre: nombreReal,
-          descripcion: `Descubre la magia de ${nombreReal} pronto...`,
-          url_imagen: "https://estacionpacifico.com/wp-content/uploads/2018/11/LETRERO-COLIMA-1024x546.jpg",
-        };
+       const info = municipiosData.find(m => 
+  m.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() 
+  === 
+  nombreReal.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+) || {
+  nombre: nombreReal,
+  descripcion: `Descubre la magia de ${nombreReal} pronto...`,
+  url_imagen: "https://estacionpacifico.com/wp-content/uploads/2018/11/LETRERO-COLIMA-1024x546.jpg",
+};
 
         setSelectedMunicipio(info);
         setTopAmados([]);
