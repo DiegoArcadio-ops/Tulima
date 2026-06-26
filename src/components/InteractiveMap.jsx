@@ -16,7 +16,11 @@ export default function InteractiveMap() {
   useEffect(() => {
     fetch(`${BACKEND_URL}/municipios`)
       .then((res) => res.json())
-      .then((data) => setMunicipiosData(data))
+      .then((data) => {
+        // 👇 AQUÍ ESTÁ EL LOG NUEVO
+        console.log("Municipios recibidos:", data); 
+        setMunicipiosData(data);
+      })
       .catch((err) => console.warn("Backend no listo, usando datos locales", err));
   }, []);
 
@@ -53,15 +57,19 @@ export default function InteractiveMap() {
         e.target.setStyle(estiloMunicipio);
       },
       click: () => {
-       const info = municipiosData.find(m => 
-  m.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() 
-  === 
-  nombreReal.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
-) || {
-  nombre: nombreReal,
-  descripcion: `Descubre la magia de ${nombreReal} pronto...`,
-  url_imagen: "https://estacionpacifico.com/wp-content/uploads/2018/11/LETRERO-COLIMA-1024x546.jpg",
-};
+        // 👇 AQUÍ ESTÁN LOS LOGS NUEVOS
+        console.log("nombreReal:", nombreReal);
+        console.log("municipiosData al momento del click:", municipiosData);
+
+        const info = municipiosData.find(m => 
+          m.nombre.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() 
+          === 
+          nombreReal.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+        ) || {
+          nombre: nombreReal,
+          descripcion: `Descubre la magia de ${nombreReal} pronto...`,
+          url_imagen: "https://estacionpacifico.com/wp-content/uploads/2018/11/LETRERO-COLIMA-1024x546.jpg",
+        };
 
         setSelectedMunicipio(info);
         setTopAmados([]);
