@@ -1,0 +1,168 @@
+.eventos-seccion {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.eventos-titulo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.eventos-vacio {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+.eventos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.evento-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.evento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.evento-header {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.evento-tipo {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.evento-categoria {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.82rem;
+}
+
+.evento-info {
+  padding: 1.25rem;
+}
+
+.evento-nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.evento-fechas {
+  margin-bottom: 0.75rem;
+}
+
+.evento-fecha-item {
+  font-size: 0.88rem;
+  color: #444;
+  margin-bottom: 0.2rem;
+}
+
+.evento-ubicacion {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.icono-pin {
+  width: 14px;
+  height: 14px;
+  color: #0ea5e9;
+  flex-shrink: 0;
+}
+
+.evento-disponibilidad {
+  font-size: 0.85rem;
+  color: #0284c7;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: #555;
+  z-index: 1;
+}
+
+.modal-body {
+  padding: 2rem 1.75rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.modal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.92rem;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 0.5rem;
+  color: #333;
+}
