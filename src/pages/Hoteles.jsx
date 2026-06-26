@@ -13,6 +13,20 @@ function Hoteles() {
 
   const { usuario } = useAuth(); // Usamos el contexto de autenticación
 
+  const [csrfToken, setCsrfToken] = useState(null);
+
+  useEffect(() => {
+    const fetchCsrf = async () => {
+      try {
+        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+        setCsrfToken(data.csrfToken);
+      } catch (e) {
+        console.warn('No se pudo obtener CSRF token', e);
+      }
+    };
+    fetchCsrf();
+  }, []);
+
   // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
 
@@ -74,7 +88,8 @@ function Hoteles() {
     const esFavorito = nuevosFavoritos.has(hotelId);
 
     try {
-      const config = { withCredentials: true };
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
       const data = { tipo: 'hotel', id: hotelId };
 
       if (esFavorito) {
