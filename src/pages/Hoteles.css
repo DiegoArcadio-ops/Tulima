@@ -256,3 +256,33 @@
   font-weight: 600;
   font-size: 0.95rem;
 }
+/* BOTÓN FAVORITO */
+.favorito-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.favorito-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.15);
+}
+
+.favorito-icono {
+  width: 22px;
+  height: 22px;
+  stroke: #9ca3af;
+  fill: none;
+  transition: stroke 0.2s, fill 0.2s;
+}
+
+.favorito-btn.activo .favorito-icono {
+  stroke: #ef4444;
+  fill: #ef4444;
+}
