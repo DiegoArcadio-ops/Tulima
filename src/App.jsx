@@ -13,6 +13,8 @@ import MainLayout from "./layouts/MainLayout";
 import RutaProtegidaAdmin from "./components/RutaProtegidaAdmin";
 import RegistroProveedor from "./pages/registro_pro"; 
 import RutaProtegidaProveedor from "./components/RutaProtegidaProveedor";
+import Ayuda from './pages/Ayuda';
+import eventos from './pages/eventos';
 import Perfil from './pages/Perfil';
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
             <Route path="registro-proveedor" element={<RegistroProveedor />} />
+            <Route path="ayuda" element={<Ayuda />} />
+            <Route path="eventos" element={<eventos />} />
             <Route path="perfil" element={<Perfil />} />
           </Route>
 
