@@ -418,3 +418,23 @@
   color: #e11d48;
   flex-shrink: 0;
 }
+/* Forzar que el mapa quede debajo del modal */
+.leaflet-container {
+  z-index: 1;
+}
+
+/* El overlay oscuro encima de todo */
+.map-modal-overlay {
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* La card encima del overlay */
+.map-modal-card {
+  z-index: 1001;
+  position: relative;
+}
