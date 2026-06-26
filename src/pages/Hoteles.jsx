@@ -78,14 +78,22 @@ function Hoteles() {
   // Nueva función para manejar favoritos
   const toggleFavorito = async (hotelId, e) => {
     e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
-    
+
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;
     }
 
+    const esFavorito = favoritos.has(hotelId);
+
+    // Actualización optimista: cambia la UI de inmediato
     const nuevosFavoritos = new Set(favoritos);
-    const esFavorito = nuevosFavoritos.has(hotelId);
+    if (esFavorito) {
+      nuevosFavoritos.delete(hotelId);
+    } else {
+      nuevosFavoritos.add(hotelId);
+    }
+    setFavoritos(nuevosFavoritos);
 
     try {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
@@ -94,13 +102,12 @@ function Hoteles() {
 
       if (esFavorito) {
         await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-        nuevosFavoritos.delete(hotelId);
       } else {
         await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
-        nuevosFavoritos.add(hotelId);
       }
-      setFavoritos(nuevosFavoritos);
     } catch (error) {
+      // Revertir al estado anterior si el servidor falla
+      setFavoritos(favoritos);
       console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
       alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
     }

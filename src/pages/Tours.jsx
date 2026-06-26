@@ -78,15 +78,23 @@ function Tours() {
 
   // Nueva función para manejar favoritos
   const toggleFavorito = async (tourId, e) => {
-    e.stopPropagation(); // Evita que se abra el modal al hacer clic en el corazón
-    
+    e.stopPropagation();
+
     if (!usuario) {
       alert('Debes iniciar sesión para añadir a favoritos.');
       return;
     }
 
+    const esFavorito = favoritos.has(tourId);
+
+    // Actualización optimista: cambia la UI de inmediato
     const nuevosFavoritos = new Set(favoritos);
-    const esFavorito = nuevosFavoritos.has(tourId);
+    if (esFavorito) {
+      nuevosFavoritos.delete(tourId);
+    } else {
+      nuevosFavoritos.add(tourId);
+    }
+    setFavoritos(nuevosFavoritos);
 
     try {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
@@ -95,13 +103,12 @@ function Tours() {
 
       if (esFavorito) {
         await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-        nuevosFavoritos.delete(tourId);
       } else {
         await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
-        nuevosFavoritos.add(tourId);
       }
-      setFavoritos(nuevosFavoritos);
     } catch (error) {
+      // Revertir al estado anterior si el servidor falla
+      setFavoritos(favoritos);
       console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
       alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
     }
