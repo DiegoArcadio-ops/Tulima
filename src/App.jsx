@@ -13,8 +13,7 @@ import MainLayout from "./layouts/MainLayout";
 import RutaProtegidaAdmin from "./components/RutaProtegidaAdmin";
 import RegistroProveedor from "./pages/registro_pro"; 
 import RutaProtegidaProveedor from "./components/RutaProtegidaProveedor";
-import Eventos from "./pages/EventosNuevo";
-import Ayuda from "./pages/Ayuda";
+import Perfil from './pages/Perfil';
 
 function App() {
   return (
@@ -29,8 +28,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="registro" element={<Registro />} />
             <Route path="registro-proveedor" element={<RegistroProveedor />} />
-            <Route path="eventos" element={<Eventos />} />
-            <Route path="ayuda" element={<Ayuda />} />
+            <Route path="perfil" element={<Perfil />} />
           </Route>
 
           <Route
