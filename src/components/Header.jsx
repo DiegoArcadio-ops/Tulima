@@ -1,5 +1,5 @@
 import { useState , useEffect} from "react";
-import { Menu, X, MapPin } from "lucide-react";
+import { Menu, X, MapPin, UserCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import TuliA from "./TuliA"; 
 import './Header.css'; 
@@ -16,7 +16,6 @@ const navLinks = [
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },
   { to: "/tours", label: "Tours" },
-  { to: "/eventos", label: "Eventos" },
 ];
 
 export default function Header() {
@@ -111,8 +110,15 @@ export default function Header() {
 
             <div className="header-cta-wrapper">
               {usuario ? (
-                <span className="header-user-name" style={{ fontWeight: 'bold', color: '#333' }}>
-                  Hola, {usuario.primerNombre}  {usuario.apellidoPaterno}
+                <span className="header-user-name" style={{ fontWeight: 'bold', color: '#333', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  Hola, {usuario.primerNombre} {usuario.apellidoPaterno}
+                  <Link
+                    to="/perfil"
+                    title="Ver mi perfil"
+                    style={{ display: 'flex', alignItems: 'center', color: '#0088cc' }}
+                  >
+                    <UserCircle size={26} />
+                  </Link>
                   <button 
                     onClick={cerrarSesion}
                     className="header-btn-secondary" 
