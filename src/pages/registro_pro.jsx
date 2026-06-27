@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,8 +15,21 @@ function RegistroProveedor() {
   });
   const [error, setError] = useState('');
   const [exito, setExito] = useState('');
+  const [csrfToken, setCsrfToken] = useState(null);
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCsrf = async () => {
+      try {
+        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+        setCsrfToken(data.csrfToken);
+      } catch (e) {
+        console.warn('No se pudo obtener CSRF token', e);
+      }
+    };
+    fetchCsrf();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +45,8 @@ function RegistroProveedor() {
     setExito('');
 
     try {
-      // NOTA: Ajusta esta URL a la ruta de tu backend que procesa proveedores
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+
       const respuesta = await axios.post('https://tulima-backend.vercel.app/proveedores', {
         primerNombre: formData.primerNombre,
         nombreUsuario: formData.nombreUsuario,
@@ -42,6 +56,9 @@ function RegistroProveedor() {
         telefono: formData.telefono ? formData.telefono : null,
         genero: formData.genero,
         edad: formData.edad ? parseInt(formData.edad) : null
+      }, {
+        withCredentials: true,
+        headers: { 'X-CSRF-Token': token }
       });
 
       if (respuesta.status === 201) {
