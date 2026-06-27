@@ -41,7 +41,7 @@ export default function Perfil() {
   // Form editar
   const [form, setForm] = useState({
     nombreUsuario: '', telefono: '', edad: '',
-    contraseña: '', confirmarContraseña: ''
+    contraseñaActual: '', contraseña: '', confirmarContraseña: ''
   });
   const [verPass, setVerPass] = useState(false);
 
@@ -76,8 +76,11 @@ export default function Perfil() {
 
   const guardarCambios = async (e) => {
     e.preventDefault();
+    if (form.contraseña && !form.contraseñaActual) {
+      setError('Debes ingresar tu contraseña actual para cambiarla.'); return;
+    }
     if (form.contraseña && form.contraseña !== form.confirmarContraseña) {
-      setError('Las contraseñas no coinciden.'); return;
+      setError('Las contraseñas nuevas no coinciden.'); return;
     }
     setGuardando(true); setError(''); setExito('');
     try {
@@ -88,14 +91,17 @@ export default function Perfil() {
         telefono:      form.telefono || undefined,
         edad:          form.edad ? parseInt(form.edad) : undefined,
       };
-      if (form.contraseña) payload.contraseña = form.contraseña;
+      if (form.contraseña) {
+        payload.contraseñaActual = form.contraseñaActual;
+        payload.contraseña = form.contraseña;
+      }
 
       await axios.put(`${API}/usuarios/${usuario.id_usuario}`, payload, {
         withCredentials: true,
         headers: { 'X-CSRF-Token': token },
       });
       setExito('¡Perfil actualizado correctamente!');
-      setForm(prev => ({ ...prev, contraseña: '', confirmarContraseña: '' }));
+      setForm(prev => ({ ...prev, contraseñaActual: '', contraseña: '', confirmarContraseña: '' }));
       cargarDatos();
     } catch (err) {
       setError(err.response?.data?.error || 'Error al guardar los cambios.');
@@ -211,7 +217,6 @@ export default function Perfil() {
               <DatoItem icon={Phone}    label="Teléfono"  valor={perfil.telefono || 'No registrado'} />
               <DatoItem icon={Calendar} label="Edad"      valor={perfil.edad ? `${perfil.edad} años` : 'No registrada'} />
               <DatoItem icon={Mail}     label="Correo"    valor={perfil.correo || 'Vinculado con Google'} />
-              <DatoItem icon={Shield}   label="Rol"       valor={perfil.rol === 'admin' ? 'Administrador' : 'Usuario'} />
             </div>
           </div>
         )}
@@ -257,6 +262,14 @@ export default function Perfil() {
               <div className="perfil-form-seccion">
                 <h3 className="perfil-form-sub">Cambiar contraseña</h3>
                 <p className="perfil-form-nota">Deja en blanco si no quieres cambiar tu contraseña.</p>
+                <Campo
+                  label="Contraseña actual"
+                  icon={Lock}
+                  type={verPass ? 'text' : 'password'}
+                  value={form.contraseñaActual}
+                  onChange={v => setForm(p => ({ ...p, contraseñaActual: v }))}
+                  hint="Requerida solo si vas a cambiar tu contraseña"
+                />
                 <div className="perfil-campo-pass">
                   <Campo
                     label="Nueva contraseña"
