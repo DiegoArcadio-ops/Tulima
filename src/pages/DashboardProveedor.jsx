@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   MapPin, Plus, Edit2, Trash2, X, LogOut,
-  Building2, Utensils, Compass, Map as MapIcon,
+  Building2, Utensils, Compass, Map as MapIcon, Calendar,
   CheckCircle, Clock, XCircle, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -13,6 +13,7 @@ const SECCIONES = {
   hoteles: {
     titulo: 'Hoteles',
     url: `${BASE}/hoteles`,
+    urlMios: `${BASE}/hoteles/mios`,
     icono: Building2,
     nombreKey: 'nombre_hotel',
     campos: [
@@ -31,6 +32,7 @@ const SECCIONES = {
   restaurantes: {
     titulo: 'Restaurantes',
     url: `${BASE}/restaurantes`,
+    urlMios: `${BASE}/restaurantes/mios`,
     icono: Utensils,
     nombreKey: 'nombre',
     campos: [
@@ -51,6 +53,7 @@ const SECCIONES = {
   tours: {
     titulo: 'Tours',
     url: `${BASE}/tours`,
+    urlMios: `${BASE}/tours/mios`,
     icono: Compass,
     nombreKey: 'nombre',
     campos: [
@@ -65,10 +68,11 @@ const SECCIONES = {
   destinos: {
     titulo: 'Destinos',
     url: `${BASE}/destinos`,
+    urlMios: `${BASE}/destinos/mios`,
     icono: MapIcon,
     nombreKey: 'nombre',
     campos: [
-      { name: 'nombre', label: 'Nombre del destino / evento', type: 'text', required: true, placeholder: 'Ej. Festival de la Chayota 2026' },
+      { name: 'nombre', label: 'Nombre del destino', type: 'text', required: true, placeholder: 'Ej. Laguna La Maria' },
       { name: 'nombre_Calle', label: 'Calle o lugar', type: 'text', required: false, placeholder: 'Ej. Plaza Principal' },
       { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: false, placeholder: 'Ej. 1' },
       { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
@@ -78,10 +82,31 @@ const SECCIONES = {
       { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: false },
     ],
   },
+  eventos: {
+    titulo: 'Eventos',
+    url: `${BASE}/eventos`,
+    urlMios: `${BASE}/eventos/mios`,
+    icono: Calendar,
+    nombreKey: 'nombre_Evento',
+    campos: [
+      { name: 'nombre_Evento', label: 'Nombre del evento', type: 'text', required: true, placeholder: 'Ej. Festival del Fuego 2026' },
+      { name: 'tipoEvento', label: 'Tipo de evento', type: 'text', required: false, placeholder: 'Ej. Cultural, Gastronómico...' },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Av. Niños Héroes' },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 10' },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: true, placeholder: 'Ej. 28000' },
+      { name: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
+      { name: 'fechaTermino', label: 'Fecha de término', type: 'date', required: true },
+      { name: 'disponibilidad', label: 'Disponibilidad', type: 'text', required: false, placeholder: 'Ej. Lugares limitados, Entrada libre...' },
+      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
+      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
+      { name: 'id_destino', label: 'Destino turístico', type: 'select', catalogo: 'destinos', valueKey: 'id_destino', labelKey: 'nombre', required: true },
+    ],
+  },
 };
 
 const obtenerId = (item) =>
-  item.id_hotel || item.id_restaurante || item.id_tour || item.id_destino || item.id;
+  item.id_hotel || item.id_restaurante || item.id_provedor || item.id_destino || item.id_evento || item.id;
 
 function BadgeEstado({ activo }) {
   if (activo === true) return (
@@ -107,7 +132,7 @@ export default function DashboardProveedor() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [csrfToken, setCsrfToken] = useState(null);
-  const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [] });
+  const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [], destinos: [] });
   const { usuario } = useAuth();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -133,13 +158,15 @@ export default function DashboardProveedor() {
     fetchCsrf();
 
     const cargarCatalogos = async () => {
-      const [resMun, resCat] = await Promise.allSettled([
+      const [resMun, resCat, resDest] = await Promise.allSettled([
         axios.get(`${BASE}/municipios`),
         axios.get(`${BASE}/categorias`),
+        axios.get(`${BASE}/destinos`),
       ]);
       setCatalogos({
         municipios: resMun.status === 'fulfilled' ? resMun.value.data : [],
         categorias: resCat.status === 'fulfilled' ? resCat.value.data : [],
+        destinos: resDest.status === 'fulfilled' ? resDest.value.data : [],
       });
     };
     cargarCatalogos();
@@ -149,7 +176,8 @@ export default function DashboardProveedor() {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await axios.get(seccionActual.url, { withCredentials: true });
+      // USA urlMios para que solo cargue los del proveedor autenticado
+      const res = await axios.get(seccionActual.urlMios, { withCredentials: true });
       setDatos(res.data);
     } catch {
       setError('No se pudieron cargar los registros. Verifica tu conexión.');
@@ -195,6 +223,7 @@ export default function DashboardProveedor() {
       if (payload.codigoPostal) payload.codigoPostal = Number(payload.codigoPostal);
       if (payload.id_municipio) payload.id_municipio = Number(payload.id_municipio);
       if (payload.id_categoria) payload.id_categoria = Number(payload.id_categoria);
+      if (payload.id_destino) payload.id_destino = Number(payload.id_destino);
       if (payload.telefono) payload.telefono = String(payload.telefono);
 
       if (!modoEdicion) {
@@ -381,13 +410,14 @@ export default function DashboardProveedor() {
                     <tr key={obtenerId(item)} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="font-semibold text-slate-800 text-sm">
-                          {item[seccionActual.nombreKey] || item.nombre || item.nombre_hotel}
+                          {item[seccionActual.nombreKey] || item.nombre || item.nombre_hotel || item.nombre_Evento}
                         </div>
                         {item.tipo && <div className="text-xs text-slate-400 mt-0.5">{item.tipo}</div>}
                         {item.tipoTour && <div className="text-xs text-slate-400 mt-0.5">{item.tipoTour}</div>}
+                        {item.tipoEvento && <div className="text-xs text-slate-400 mt-0.5">{item.tipoEvento}</div>}
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-500">
-                        {item.municipio?.nombre || '—'}
+                        {item.municipio?.nombre || item.destino_turistico?.municipio?.nombre || '—'}
                       </td>
                       <td className="px-6 py-4">
                         <BadgeEstado activo={item.activo} />
