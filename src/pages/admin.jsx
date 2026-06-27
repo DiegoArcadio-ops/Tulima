@@ -78,10 +78,22 @@ const SECCIONES = {
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
   },
+  proveedores: {
+    titulo: 'Proveedores',
+    url: 'https://tulima-backend.vercel.app/usuarios',
+    icono: Settings,
+    campos: [],
+  },
 };
 
 const obtenerId = (item) =>
-  item.id_destino || item.id_hotel || item.id_restaurante || item.id_municipio || item.id_tour || item.id;
+  item.id_destino || item.id_hotel || item.id_restaurante || item.id_municipio || item.id_tour || item.id_usuario || item.id;
+
+const obtenerNombre = (item) =>
+  item.nombre_hotel ||
+  item.nombre ||
+  (item.primerNombre ? `${item.primerNombre} ${item.apellidoPaterno || ''}`.trim() : null) ||
+  '—';
 
 export default function TulimaAdminPanel() {
   const [seccionActiva, setSeccionActiva] = useState('hoteles');
@@ -124,7 +136,7 @@ export default function TulimaAdminPanel() {
     setError(null);
     try {
       const urlAdmin = seccionActual.url + '/admin/todos';
-      const respuesta = await axios.get(seccionActual.url, { withCredentials: true });
+      const respuesta = await axios.get(urlAdmin, { withCredentials: true });
       setDatos(respuesta.data);
     } catch (err) {
       console.error(`Error al cargar ${seccionActiva}:`, err);
@@ -252,16 +264,19 @@ export default function TulimaAdminPanel() {
                       <tr key={id} className="hover:bg-slate-50/50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="font-semibold text-slate-800">
-                            {item.nombre || item.nombre_hotel}
+                            {obtenerNombre(item)}
                           </div>
+                          {item.nombreUsuario && (
+                            <div className="text-xs text-slate-400 mt-0.5">@{item.nombreUsuario}</div>
+                          )}
                         </td>
                         <td className="px-6 py-4">
                           <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
-                            {item.categoria?.nombre || item.tipo || 'N/A'}
+                            {item.correo || item.categoria?.nombre || item.tipo || 'N/A'}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-slate-600">
-                          {item.municipio?.nombre || 'N/A'}
+                          {item.municipio?.nombre || item.rfc || 'N/A'}
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex justify-end items-center gap-3">
