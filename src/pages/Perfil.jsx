@@ -134,12 +134,12 @@ export default function Perfil() {
     if (filtroTipo !== 'todos' && tipo !== filtroTipo) return false;
     if (filtroBusq.trim()) {
       const mun = (
-        fav.hotel?.municipio || fav.restaurante?.municipio ||
-        fav.provedor_tour?.municipio || fav.destino_turistico?.municipio || ''
+        fav.hotel?.municipio?.nombre || fav.restaurante?.municipio?.nombre ||
+        fav.provedor_tour?.municipio?.nombre || fav.destino_turistico?.municipio?.nombre || ''
       ).toLowerCase();
       const nombre = (
-        fav.hotel?.nombre_hotel || fav.restaurante?.nombre_restaurante ||
-        fav.provedor_tour?.nombre_proveedor || fav.destino_turistico?.nombre || ''
+        fav.hotel?.nombre_hotel || fav.restaurante?.nombre ||
+        fav.provedor_tour?.nombre || fav.destino_turistico?.nombre || ''
       ).toLowerCase();
       const q = filtroBusq.toLowerCase();
       if (!mun.includes(q) && !nombre.includes(q)) return false;
@@ -423,19 +423,19 @@ function TarjetaFavorito({ fav }) {
   const esTour   = !!fav.provedor_tour;
 
   const nombre = fav.hotel?.nombre_hotel
-    || fav.restaurante?.nombre_restaurante
-    || fav.provedor_tour?.nombre_proveedor
+    || fav.restaurante?.nombre
+    || fav.provedor_tour?.nombre
     || fav.destino_turistico?.nombre || '—';
 
-  const municipio = fav.hotel?.municipio
-    || fav.restaurante?.municipio
-    || fav.provedor_tour?.municipio
-    || fav.destino_turistico?.municipio || '';
+  const municipio = fav.hotel?.municipio?.nombre
+    || fav.restaurante?.municipio?.nombre
+    || fav.provedor_tour?.municipio?.nombre
+    || fav.destino_turistico?.municipio?.nombre || '';
 
-  const imagen = fav.hotel?.imagen_url
-    || fav.restaurante?.imagen_url
-    || fav.provedor_tour?.imagen_url
-    || fav.destino_turistico?.imagen_url || null;
+  const imagen = fav.hotel?.imagen
+    || fav.restaurante?.imagen
+    || fav.provedor_tour?.imagen
+    || fav.destino_turistico?.imagen || null;
 
   const tipo = esHotel ? 'Hotel' : esRest ? 'Restaurante' : esTour ? 'Tour' : 'Destino';
   const TipoIcon = esHotel ? Hotel : esRest ? UtensilsCrossed : Bike;
