@@ -143,6 +143,13 @@ export default function DashboardProveedor() {
 
   const seccionActual = SECCIONES[seccionActiva];
 
+  // Al montar, fijar la sección según el tipo_servicio del proveedor
+  useEffect(() => {
+    if (usuario?.tipo_servicio && SECCIONES[usuario.tipo_servicio]) {
+      setSeccionActiva(usuario.tipo_servicio);
+    }
+  }, [usuario]);
+
   const mostrarToast = (mensaje, tipo = 'success') => {
     setToast({ mensaje, tipo });
     setTimeout(() => setToast(null), 3500);
@@ -320,7 +327,9 @@ export default function DashboardProveedor() {
         </div>
 
         <nav className="flex-1 px-4 space-y-1">
-          {Object.entries(SECCIONES).map(([key, config]) => {
+          {Object.entries(SECCIONES)
+            .filter(([key]) => !usuario?.tipo_servicio || key === usuario.tipo_servicio)
+            .map(([key, config]) => {
             const Icono = config.icono;
             const activo = seccionActiva === key;
             return (
