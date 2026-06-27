@@ -91,15 +91,16 @@ function Login() {
       );
 
       if (respuesta.status === 200 || respuesta.status === 201) {
-        const proveedorLogueado = respuesta.data.proveedor;
+        // El backend devuelve el usuario en respuesta.data.usuario y la sesión en cookie
+        const proveedorLogueado = respuesta.data.usuario;
         if (proveedorLogueado) {
-          auth.login(proveedorLogueado); // Usamos la función del contexto también para proveedores
-          navigate('/panel-proveedor'); // Redirige al dashboard de proveedor
+          auth.login(proveedorLogueado);
+          navigate('/dashboard-proveedor');
         }
       }
     } catch (error) {
       console.error("Error al iniciar sesión de proveedor:", error);
-      setErrorProveedor('Credenciales de proveedor inválidas. Verifica tus datos.');
+      setErrorProveedor(error.response?.data?.error || 'Credenciales de proveedor inválidas. Verifica tus datos.');
     }
   };
 
