@@ -19,7 +19,6 @@ function Login() {
 
   // Estados para Proveedor
   const [proveedorEmail, setProveedorEmail] = useState('');
-  const [proveedorRFC, setProveedorRFC] = useState('');
   const [proveedorContraseña, setProveedorContraseña] = useState('');
   const [errorProveedor, setErrorProveedor] = useState('');
 
@@ -81,7 +80,6 @@ function Login() {
       const respuesta = await axios.post(URL_PROVIDER,
         { 
           email: proveedorEmail, 
-          rfc: proveedorRFC, 
           contraseña: proveedorContraseña 
         },
         {
