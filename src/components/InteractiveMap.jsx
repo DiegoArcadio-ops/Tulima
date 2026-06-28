@@ -99,7 +99,7 @@ export default function InteractiveMap() {
   };
 
   return (
-    <section className="map-section">
+    <section id="mapa" className="map-section">
       <div className="map-container">
         <div style={{ height: "550px", width: "100%", borderRadius: "15px", overflow: "hidden" }}>
           <MapContainer
