@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
@@ -8,6 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const verificarSesion = async () => {
@@ -49,9 +51,20 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await axios.post('https://tulima-backend.vercel.app/logout', {}, { withCredentials: true });
-    setUsuario(null);
-    localStorage.removeItem('usuarioTulima');
+    try {
+      // Para mayor seguridad, obtenemos el token CSRF justo antes de la petición
+      const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+      await axios.post('https://tulima-backend.vercel.app/logout', {}, {
+        headers: { 'X-CSRF-Token': data.csrfToken },
+        withCredentials: true
+      });
+    } catch (error) {
+      console.error('Error en el backend al cerrar sesión, se procederá con la limpieza local:', error);
+    } finally {
+      setUsuario(null);
+      localStorage.removeItem('usuarioTulima');
+      navigate('/'); // Redirige al inicio después de cerrar sesión
+    }
   };
 
   const value = { usuario, isLoading, login, logout };

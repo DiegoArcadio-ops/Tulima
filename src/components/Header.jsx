@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Menu, X, MapPin, UserCircle, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 import TuliA from "./TuliA";
+import { useAuth } from "../context/AuthContext";
 import './Header.css';
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { to: "/", label: "Inicio" },
@@ -21,45 +20,11 @@ const navLinks = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [usuario, setUsuario] = useState(null);
-  const navigate = useNavigate();
-  const [csrfToken, setCsrfToken] = useState(null);
+  const { usuario, logout } = useAuth();
 
-  useEffect(() => {
-    const obtenerPerfil = async () => {
-      try {
-        const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', {
-          withCredentials: true
-        });
-        setUsuario(respuesta.data);
-      } catch (error) { }
-    };
-    obtenerPerfil();
-  }, []);
-
-  useEffect(() => {
-    const fetchCsrf = async () => {
-      try {
-        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
-        setCsrfToken(data.csrfToken);
-      } catch (e) { console.warn('No se pudo obtener CSRF', e); }
-    };
-    fetchCsrf();
-  }, []);
-
-  const cerrarSesion = async () => {
-    try {
-      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
-      await axios.post('https://tulima-backend.vercel.app/logout', {}, {
-        headers: { 'X-CSRF-Token': token },
-        withCredentials: true
-      });
-      localStorage.clear();
-      setUsuario(null);
-      navigate('/');
-    } catch (error) {
-      console.error('Error al cerrar sesión:', error);
-    }
+  const cerrarSesion = () => {
+    // Ahora simplemente llamamos a la función logout del contexto
+    logout();
   };
 
   return (
