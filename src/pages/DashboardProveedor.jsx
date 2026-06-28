@@ -127,13 +127,14 @@ function BadgeEstado({ activo }) {
 }
 
 export default function DashboardProveedor() {
-  const [seccionActiva, setSeccionActiva] = useState('hoteles');
+  // ── 1. TODOS LOS ESTADOS PRIMERO ──
+  const { usuario } = useAuth();
+  const [seccionActiva, setSeccionActiva] = useState(null);
   const [datos, setDatos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [csrfToken, setCsrfToken] = useState(null);
   const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [], destinos: [] });
-  const { usuario } = useAuth();
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [idActual, setIdActual] = useState(null);
@@ -141,19 +142,25 @@ export default function DashboardProveedor() {
   const [guardando, setGuardando] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const seccionActual = SECCIONES[seccionActiva];
+  // ── 2. DERIVADOS ──
+  const seccionesVisibles = usuario?.tipo_servicio
+    ? Object.fromEntries(
+        Object.entries(SECCIONES).filter(([key]) => key === usuario.tipo_servicio)
+      )
+    : SECCIONES;
 
-  // Al montar, fijar la sección según el tipo_servicio del proveedor
+  const seccionActual = seccionActiva ? SECCIONES[seccionActiva] : null;
+  const iniciales = usuario?.primerNombre?.[0]?.toUpperCase() || 'P';
+  const totalActivos = datos.filter(d => d.activo === true).length;
+  const totalPendientes = datos.filter(d => !d.activo).length;
+
+  // ── 3. TODOS LOS useEffect JUNTOS ──
+  // Activa la sección según el tipo_servicio del proveedor
   useEffect(() => {
     if (usuario?.tipo_servicio && SECCIONES[usuario.tipo_servicio]) {
       setSeccionActiva(usuario.tipo_servicio);
     }
   }, [usuario]);
-
-  const mostrarToast = (mensaje, tipo = 'success') => {
-    setToast({ mensaje, tipo });
-    setTimeout(() => setToast(null), 3500);
-  };
 
   useEffect(() => {
     const fetchCsrf = async () => {
@@ -179,11 +186,20 @@ export default function DashboardProveedor() {
     cargarCatalogos();
   }, []);
 
+  useEffect(() => {
+    if (seccionActual) cargarDatos();
+  }, [seccionActiva]);
+
+  // ── 4. FUNCIONES ──
+  const mostrarToast = (mensaje, tipo = 'success') => {
+    setToast({ mensaje, tipo });
+    setTimeout(() => setToast(null), 3500);
+  };
+
   const cargarDatos = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // USA urlMios para que solo cargue los del proveedor autenticado
       const res = await axios.get(seccionActual.urlMios, { withCredentials: true });
       setDatos(res.data);
     } catch {
@@ -192,8 +208,6 @@ export default function DashboardProveedor() {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => { cargarDatos(); }, [seccionActiva]);
 
   const abrirModalCrear = () => {
     setModoEdicion(false);
@@ -274,10 +288,14 @@ export default function DashboardProveedor() {
     }
   };
 
-  const iniciales = usuario?.primerNombre?.[0]?.toUpperCase() || 'P';
-  const totalActivos = datos.filter(d => d.activo === true).length;
-  const totalPendientes = datos.filter(d => !d.activo).length;
+  // ── 5. GUARD — va ANTES del return principal ──
+  if (!seccionActual) return (
+    <div className="flex h-screen items-center justify-center bg-slate-50">
+      <div className="text-slate-400 text-sm">Cargando...</div>
+    </div>
+  );
 
+  // ── 6. RENDER ──
   return (
     <div className="flex h-screen bg-slate-50 font-sans overflow-hidden">
 
@@ -327,9 +345,7 @@ export default function DashboardProveedor() {
         </div>
 
         <nav className="flex-1 px-4 space-y-1">
-          {Object.entries(SECCIONES)
-            .filter(([key]) => !usuario?.tipo_servicio || key === usuario.tipo_servicio)
-            .map(([key, config]) => {
+          {Object.entries(seccionesVisibles).map(([key, config]) => {
             const Icono = config.icono;
             const activo = seccionActiva === key;
             return (
