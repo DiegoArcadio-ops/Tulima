@@ -35,9 +35,9 @@ export default function HeroSection() {
 
         <div className="hero-actions">
           {/* Botón Municipios → scroll al mapa en la misma página */}
-          <button onClick={(e) => smoothScrollTo(e, 'mapa')} className="hero-btn-primary">
+          <a href="#mapa" onClick={(e) => smoothScrollTo(e, 'mapa')} className="hero-btn-primary">
             Explorar Municipios
-          </button>
+          </a>
           <a href="#destinos" onClick={(e) => smoothScrollTo(e, 'destinos')} className="hero-btn-secondary">
             Ver Destinos
           </a>
