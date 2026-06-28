@@ -1,118 +1,77 @@
 import React, { useEffect, useState } from 'react';
-import { Heart } from 'lucide-react'; // Importamos el ícono de corazón
+import { Heart } from 'lucide-react';
 import axios from 'axios';
 import './Tours.css';
+import '../components/filtros-paginacion.css';
 import { useAuth } from '../context/AuthContext';
+import FiltrosBusqueda from '../components/FiltrosBusqueda';
+import Paginacion from '../components/Paginacion';
 
 const URL = "https://tulima-backend.vercel.app/tours";
+const PAGE_SIZE = 9;
 
 function Tours() {
   const [tours, setTours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTour, setSelectedTour] = useState(null);
-
   const { usuario } = useAuth();
-
   const [csrfToken, setCsrfToken] = useState(null);
-
-  useEffect(() => {
-    const fetchCsrf = async () => {
-      try {
-        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
-        setCsrfToken(data.csrfToken);
-      } catch (e) {
-        console.warn('No se pudo obtener CSRF token', e);
-      }
-    };
-    fetchCsrf();
-  }, []);
-
-  // Nuevo estado para favoritos
   const [favoritos, setFavoritos] = useState(new Set());
 
-  // Efecto para cargar los favoritos del usuario al iniciar
-  useEffect(() => {
-    const cargarFavoritos = async () => {
-      if (!usuario) return; // Si no hay usuario, no hacemos nada
+  // Filtros
+  const [busqueda, setBusqueda] = useState('');
+  const [filtroMunicipio, setFiltroMunicipio] = useState('');
+  const [filtroTipo, setFiltroTipo] = useState('');
+  const [pagina, setPagina] = useState(1);
 
-      try {
-        const respuesta = await axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true });
-        const idsFavoritos = new Set(
-          respuesta.data
-            .filter(fav => fav.id_provedor_tour != null) // Nos quedamos solo con los tours
-            .map(fav => fav.id_provedor_tour)
-        );
-        setFavoritos(idsFavoritos);
-      } catch (error) {
-        console.error("Error al cargar los favoritos:", error);
-      }
-    };
-    cargarFavoritos();
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
+      .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!usuario) return;
+    axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true })
+      .then(res => setFavoritos(new Set(res.data.filter(f => f.id_provedor_tour != null).map(f => f.id_provedor_tour))))
+      .catch(() => {});
   }, [usuario]);
 
   useEffect(() => {
     fetch(URL)
-      .then((response) => {
-        if (!response.ok) throw new Error('Error al cargar la lista de experiencias y tours');
-        return response.json();
-      })
-      .then((data) => {
-        setTours(data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.error("Hubo un problema al cargar los tours:", err);
-        setError(err.message);
-        setIsLoading(false);
-      });
+      .then(r => { if (!r.ok) throw new Error('Error al cargar tours'); return r.json(); })
+      .then(data => { setTours(data); setIsLoading(false); })
+      .catch(err => { setError(err.message); setIsLoading(false); });
   }, []);
 
-  const handleOpenModal = (tour) => {
-    setSelectedTour(tour);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedTour(null);
-  };
-
-  // Nueva función para manejar favoritos
-  const toggleFavorito = async (tourId, e) => {
+  const toggleFavorito = async (id, e) => {
     e.stopPropagation();
-
-    if (!usuario) {
-      alert('Debes iniciar sesión para añadir a favoritos.');
-      return;
-    }
-
-    const esFavorito = favoritos.has(tourId);
-
-    // Actualización optimista: cambia la UI de inmediato
-    const nuevosFavoritos = new Set(favoritos);
-    if (esFavorito) {
-      nuevosFavoritos.delete(tourId);
-    } else {
-      nuevosFavoritos.add(tourId);
-    }
-    setFavoritos(nuevosFavoritos);
-
+    if (!usuario) { alert('Debes iniciar sesión para añadir a favoritos.'); return; }
+    const esFavorito = favoritos.has(id);
+    const nuevo = new Set(favoritos);
+    esFavorito ? nuevo.delete(id) : nuevo.add(id);
+    setFavoritos(nuevo);
     try {
       const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
-      const data = { tipo: 'tour', id: tourId };
-
-      if (esFavorito) {
-        await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-      } else {
-        await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
-      }
-    } catch (error) {
-      // Revertir al estado anterior si el servidor falla
-      setFavoritos(favoritos);
-      console.error('Error al actualizar favoritos:', error.response?.data?.error || error.message);
-      alert('No se pudo actualizar el favorito. Inténtalo de nuevo.');
-    }
+      const data = { tipo: 'tour', id };
+      if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+      else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+    } catch { setFavoritos(favoritos); alert('No se pudo actualizar el favorito.'); }
   };
+
+  const municipios = [...new Set(tours.map(t => t.municipio?.nombre).filter(Boolean))];
+  const tipos = [...new Set(tours.map(t => t.tipoTour).filter(Boolean))];
+
+  const filtrados = tours.filter(t =>
+    (t.nombre || '').toLowerCase().includes(busqueda.toLowerCase()) &&
+    (!filtroMunicipio || t.municipio?.nombre === filtroMunicipio) &&
+    (!filtroTipo || t.tipoTour === filtroTipo)
+  );
+
+  const totalPaginas = Math.ceil(filtrados.length / PAGE_SIZE);
+  const pagEnPantalla = filtrados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
+  const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setFiltroTipo(''); setPagina(1); };
 
   if (isLoading) return <div className="tours-seccion"><h2>Cargando tours...</h2></div>;
   if (error) return <div className="tours-seccion"><h2>Error: {error}</h2></div>;
@@ -121,24 +80,26 @@ function Tours() {
     <div className="tours-seccion">
       <h2 className="tours-titulo">Tours y Experiencias</h2>
 
+      <FiltrosBusqueda
+        busqueda={busqueda}
+        setBusqueda={v => { setBusqueda(v); setPagina(1); }}
+        filtros={[
+          { key: 'municipio', value: filtroMunicipio, setValue: v => { setFiltroMunicipio(v); setPagina(1); }, opciones: municipios.map(m => ({ value: m, label: m })), placeholder: 'Municipio' },
+          { key: 'tipo', value: filtroTipo, setValue: v => { setFiltroTipo(v); setPagina(1); }, opciones: tipos.map(t => ({ value: t, label: t })), placeholder: 'Tipo de tour' },
+        ]}
+        total={filtrados.length}
+        labelEntidad="tour"
+        onLimpiar={limpiar}
+      />
+
       <div className="tours-grid">
-        {tours.map((tour) => (
-          <div
-            key={tour.id_provedor}
-            className="tour-card"
-            onClick={() => handleOpenModal(tour)}
-            style={{ cursor: 'pointer' }}
-          >
+        {pagEnPantalla.map(tour => (
+          <div key={tour.id_provedor} className="tour-card" onClick={() => setSelectedTour(tour)} style={{ cursor: 'pointer' }}>
             <div className="tour-imagen-container">
               <span className="tour-etiqueta">{tour.tipoTour}</span>
-              <img
-                src={tour.imagen}
-                alt={tour.nombre}
-                className="tour-imagen"
-                onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }}
-              />
+              <img src={tour.imagen} alt={tour.nombre} className="tour-imagen"
+                onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             </div>
-
             <div className="tour-info">
               <div className="tour-ubicacion">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-pin">
@@ -147,21 +108,11 @@ function Tours() {
                 </svg>
                 {tour.municipio?.nombre}
               </div>
-
               <h3 className="tour-titulo">{tour.nombre}</h3>
-
               <div className="tour-footer">
-                <div className="tour-duracion">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-reloj">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                </div>
-                <button 
-                  className={`favorito-btn ${favoritos.has(tour.id_provedor) ? 'activo' : ''}`}
-                  onClick={(e) => toggleFavorito(tour.id_provedor, e)}
-                  aria-label="Añadir a favoritos"
-                >
+                <span className="tour-servicio">{tour.tipoServicio}</span>
+                <button className={`favorito-btn ${favoritos.has(tour.id_provedor) ? 'activo' : ''}`}
+                  onClick={e => toggleFavorito(tour.id_provedor, e)} aria-label="Favorito">
                   <Heart className="favorito-icono" />
                 </button>
               </div>
@@ -170,43 +121,26 @@ function Tours() {
         ))}
       </div>
 
-      {/* MODAL */}
+      {pagEnPantalla.length === 0 && (
+        <p style={{ textAlign: 'center', color: '#6b7280', padding: '2rem' }}>No hay tours con esos filtros.</p>
+      )}
+
+      <Paginacion pagina={pagina} totalPaginas={totalPaginas} onChange={setPagina} />
+
       {selectedTour && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-
-            <button className="modal-close" onClick={handleCloseModal}>✕</button>
-
-            <img
-              src={selectedTour.imagen}
-              alt={selectedTour.nombre}
-              className="modal-image"
-              onError={(e) => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }}
-            />
-
+        <div className="modal-overlay" onClick={() => setSelectedTour(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedTour(null)}>✕</button>
+            <img src={selectedTour.imagen} alt={selectedTour.nombre} className="modal-image"
+              onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             <div className="modal-body">
               <span className="tour-etiqueta">{selectedTour.tipoTour}</span>
               <h2 className="modal-title">{selectedTour.nombre}</h2>
-
               <div className="modal-details">
-                <div className="modal-detail-row">
-                  <strong>Municipio:</strong>
-                  <span>{selectedTour.municipio?.nombre ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <strong>Tipo de servicio:</strong>
-                  <span>{selectedTour.tipoServicio ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <strong>Teléfono:</strong>
-                  <span>{selectedTour.telefono?.toString() ?? 'N/A'}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <strong>Descripción:</strong>
-                  <span>{selectedTour.descripcion ?? 'Sin descripción'}</span>
-                </div>
+                <div className="modal-detail-row"><strong>Municipio:</strong><span>{selectedTour.municipio?.nombre ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><strong>Tipo de servicio:</strong><span>{selectedTour.tipoServicio ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><strong>Teléfono:</strong><span>{selectedTour.telefono?.toString() ?? 'N/A'}</span></div>
               </div>
-
             </div>
           </div>
         </div>

@@ -1,19 +1,19 @@
-/* Variables base para el Header */
+/* =========================================
+   Variables base
+   ========================================= */
 :root {
-  --primary-color: #0ea5e9; /* Cambia esto al azul que uses */
+  --primary-color: #0ea5e9;
   --primary-hover: #0284c7;
   --primary-foreground: #ffffff;
-  
-  /* Colores del tema */
-  --header-bg-transparent: rgba(255, 255, 255, 0.8); /* bg-background/80 */
-  --header-bg-solid: #ffffff; /* Para el menú móvil */
-  --header-text: #111827; /* text-foreground */
-  --header-text-muted: #6b7280; /* text-muted-foreground */
-  --header-border: #e5e7eb; /* border-border */
+  --header-bg-transparent: rgba(255, 255, 255, 0.85);
+  --header-bg-solid: #ffffff;
+  --header-text: #111827;
+  --header-text-muted: #6b7280;
+  --header-border: #e5e7eb;
 }
 
 /* =========================================
-   Contenedor Principal y Efecto Cristal
+   Contenedor Principal
    ========================================= */
 .header-root {
   position: fixed;
@@ -22,15 +22,16 @@
   right: 0;
   z-index: 50;
   background-color: var(--header-bg-transparent);
-  backdrop-filter: blur(12px); /* backdrop-blur-md */
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--header-border);
+  box-shadow: 0 1px 12px rgba(0,0,0,0.06);
 }
 
 .header-container {
-  max-width: 80rem; /* max-w-7xl */
+  max-width: 80rem;
   margin: 0 auto;
-  padding: 0 1rem; /* px-4 */
+  padding: 0 1rem;
 }
 
 @media (min-width: 640px) { .header-container { padding: 0 1.5rem; } }
@@ -40,72 +41,143 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 4rem; /* h-16 */
+  height: 4rem;
+  gap: 1rem;
 }
 
 @media (min-width: 768px) {
-  .header-inner {
-    height: 5rem; /* md:h-20 */
-  }
+  .header-inner { height: 4.5rem; }
 }
 
 /* =========================================
-   Logo
+   Zona izquierda: usuario
+   ========================================= */
+.header-user-left {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  order: -1;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .header-user-left {
+    display: flex;
+  }
+}
+
+.header-user-greeting {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.header-greeting-text {
+  font-size: 0.65rem;
+  color: var(--header-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.header-greeting-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--header-text);
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+}
+
+.header-icon-btn:hover {
+  background: rgba(14, 165, 233, 0.1);
+}
+
+.header-logout-btn {
+  color: #ef4444;
+}
+
+.header-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.header-btn-login {
+  font-size: 0.85rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+}
+
+/* =========================================
+   Logo: centro
    ========================================= */
 .header-logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* gap-2 */
+  gap: 0.4rem;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .header-logo-icon {
-  height: 1.5rem; /* h-6 */
-  width: 1.5rem; /* w-6 */
+  height: 1.5rem;
+  width: 1.5rem;
   color: var(--primary-color);
 }
 
 .header-logo-text {
-  font-size: 1.25rem; /* text-xl */
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--header-text);
+  letter-spacing: -0.02em;
 }
 
 @media (min-width: 768px) {
-  .header-logo-icon {
-    height: 2rem; /* md:h-8 */
-    width: 2rem; /* md:w-8 */
-  }
-  .header-logo-text {
-    font-size: 1.5rem; /* md:text-2xl */
-  }
+  .header-logo-icon { height: 1.75rem; width: 1.75rem; }
+  .header-logo-text { font-size: 1.4rem; }
 }
 
 /* =========================================
-   Navegación Escritorio (Desktop)
+   Navegación Escritorio
    ========================================= */
 .header-desktop-nav {
-  display: none; /* hidden por defecto en móvil */
+  display: none;
 }
 
 @media (min-width: 768px) {
   .header-desktop-nav {
-    display: flex; /* md:flex */
+    display: flex;
     align-items: center;
-    gap: 2rem; /* gap-8 */
+    gap: 1.5rem;
   }
 }
 
 .header-nav-link {
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: var(--header-text-muted);
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s;
   padding: 0;
+  white-space: nowrap;
 }
 
 .header-nav-link:hover {
@@ -113,96 +185,132 @@
 }
 
 /* =========================================
-   Botones y Llamados a la Acción
+   Botones
    ========================================= */
-.header-cta-wrapper {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .header-cta-wrapper {
-    display: block; /* md:block */
-  }
-}
-
 .header-btn-primary {
   background-color: var(--primary-color);
   color: var(--primary-foreground);
-  padding: 0.5rem 1rem; /* px-4 py-2 */
+  padding: 0.5rem 1.1rem;
   border: none;
-  border-radius: 0.5rem; /* rounded-lg */
-  font-weight: 500;
-  font-size: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s, transform 0.1s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
 .header-btn-primary:hover {
-  background-color: var(--primary-hover); /* hover:bg-primary/90 */
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 .header-btn-primary--full {
   width: 100%;
-  margin-top: 0.5rem; /* mt-2 */
-  padding: 0.5rem 0; /* py-2 */
+  justify-content: center;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
 }
 
 /* =========================================
-   Navegación Móvil (Toggle y Menú)
+   Botón hamburguesa
    ========================================= */
 .header-mobile-toggle {
   display: block;
   background: none;
   border: none;
-  padding: 0.5rem; /* p-2 */
+  padding: 0.4rem;
   cursor: pointer;
+  border-radius: 0.5rem;
+  transition: background 0.2s;
+}
+
+.header-mobile-toggle:hover {
+  background: rgba(0,0,0,0.05);
 }
 
 @media (min-width: 768px) {
-  .header-mobile-toggle {
-    display: none; /* md:hidden */
-  }
+  .header-mobile-toggle { display: none; }
 }
 
 .header-icon {
-  height: 1.5rem; /* h-6 */
-  width: 1.5rem; /* w-6 */
+  height: 1.5rem;
+  width: 1.5rem;
   color: var(--header-text);
 }
 
+/* =========================================
+   Menú Móvil
+   ========================================= */
 .header-mobile-nav {
   display: block;
-  padding: 1rem 0; /* py-4 */
+  padding: 1rem 0;
   border-top: 1px solid var(--header-border);
   background-color: var(--header-bg-solid);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (min-width: 768px) {
-  .header-mobile-nav {
-    display: none; /* md:hidden */
-  }
+  .header-mobile-nav { display: none; }
 }
 
 .header-mobile-nav-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* gap-4 */
+  gap: 0.25rem;
+}
+
+.header-mobile-user {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--header-border);
+  margin-bottom: 0.5rem;
+}
+
+.header-mobile-greeting {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--header-text);
 }
 
 .header-mobile-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   background: none;
   border: none;
   text-align: left;
   color: var(--header-text-muted);
   font-weight: 500;
   text-decoration: none;
-  padding: 0.5rem 0; /* py-2 */
-  font-size: 1rem;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color 0.2s, background 0.2s;
+  border-radius: 0.5rem;
 }
 
 .header-mobile-link:hover {
   color: var(--primary-color);
+  background: rgba(14,165,233,0.05);
+}
+
+.header-mobile-logout {
+  color: #ef4444;
+  margin-top: 0.25rem;
+  border-top: 1px solid var(--header-border);
+  padding-top: 0.75rem;
+}
+
+.header-mobile-logout:hover {
+  color: #dc2626;
+  background: rgba(239,68,68,0.05);
 }
