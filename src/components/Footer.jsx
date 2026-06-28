@@ -86,10 +86,10 @@ export default function Footer() {
                 </a>
               </li>
               <li className="footer-contact-item">
-                <a href="/ayuda" className="footer-link" style={{ fontWeight: '600', color: '#0ea5e9' }}>
-                  Ayuda
-                </a>
-              </li>
+  <a href="/ayuda" className="footer-link" style={{ fontWeight: '600', color: '#0ea5e9' }}>
+ Ayuda
+  </a>
+</li>
             </ul>
           </div>
 
