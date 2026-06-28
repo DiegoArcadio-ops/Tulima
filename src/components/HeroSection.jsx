@@ -2,9 +2,9 @@ import { ChevronDown } from "lucide-react";
 import './HeroSection.css';
 
 export default function HeroSection() {
-  const scrollToMapa = (e) => {
+  const smoothScrollTo = (e, targetId) => {
     e.preventDefault();
-    const el = document.getElementById('mapa');
+    const el = document.getElementById(targetId);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -35,17 +35,17 @@ export default function HeroSection() {
 
         <div className="hero-actions">
           {/* Botón Municipios → scroll al mapa en la misma página */}
-          <button onClick={scrollToMapa} className="hero-btn-primary">
+          <button onClick={(e) => smoothScrollTo(e, 'mapa')} className="hero-btn-primary">
             Explorar Municipios
           </button>
-          <a href="#destinos" className="hero-btn-secondary">
+          <a href="#destinos" onClick={(e) => smoothScrollTo(e, 'destinos')} className="hero-btn-secondary">
             Ver Destinos
           </a>
         </div>
       </div>
 
       <div className="hero-scroll-indicator">
-        <button onClick={scrollToMapa} aria-label="Scroll to map" className="hero-scroll-link">
+        <button onClick={(e) => smoothScrollTo(e, 'destinos')} aria-label="Scroll to next section" className="hero-scroll-link">
           <ChevronDown className="hero-scroll-icon" />
         </button>
       </div>
