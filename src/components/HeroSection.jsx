@@ -1,8 +1,13 @@
 import { ChevronDown } from "lucide-react";
-import './HeroSection.css'; 
-
+import './HeroSection.css';
 
 export default function HeroSection() {
+  const scrollToMapa = (e) => {
+    e.preventDefault();
+    const el = document.getElementById('mapa');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section id="inicio" className="hero-section">
       <div
@@ -18,20 +23,21 @@ export default function HeroSection() {
         <span className="hero-badge">
           Bienvenido al paraíso del Pacífico
         </span>
-        
+
         <h1 className="hero-title">
           Descubre la magia de <span className="hero-title-accent">Colima</span>
         </h1>
-        
+
         <p className="hero-description">
           Explora los 10 municipios del estado más pequeño de México, donde playas paradisíacas, volcanes majestuosos y
           tradiciones ancestrales te esperan.
         </p>
-        
+
         <div className="hero-actions">
-          <a href="#mapa" className="hero-btn-primary">
+          {/* Botón Municipios → scroll al mapa en la misma página */}
+          <button onClick={scrollToMapa} className="hero-btn-primary">
             Explorar Municipios
-          </a>
+          </button>
           <a href="#destinos" className="hero-btn-secondary">
             Ver Destinos
           </a>
@@ -39,9 +45,9 @@ export default function HeroSection() {
       </div>
 
       <div className="hero-scroll-indicator">
-        <a href="#mapa" aria-label="Scroll to map" className="hero-scroll-link">
+        <button onClick={scrollToMapa} aria-label="Scroll to map" className="hero-scroll-link">
           <ChevronDown className="hero-scroll-icon" />
-        </a>
+        </button>
       </div>
     </section>
   );

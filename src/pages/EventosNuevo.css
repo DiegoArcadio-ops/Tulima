@@ -166,3 +166,147 @@
   padding-bottom: 0.5rem;
   color: #333;
 }
+/* =========================================
+   Filtros
+   ========================================= */
+.eventos-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.filtro-grupo {
+  flex: 1;
+  min-width: 180px;
+}
+
+.filtro-input, .filtro-select {
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.6rem;
+  font-size: 0.875rem;
+  color: #374151;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filtro-input:focus, .filtro-select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
+}
+
+.filtro-limpiar {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.6rem;
+  padding: 0.55rem 0.9rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.filtro-limpiar:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+
+.eventos-contador {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 1.25rem;
+}
+
+/* =========================================
+   Loading & Error
+   ========================================= */
+.eventos-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: #6b7280;
+}
+
+.eventos-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #0ea5e9;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.eventos-error {
+  text-align: center;
+  padding: 2rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  color: #dc2626;
+}
+
+.eventos-btn-retry {
+  margin-top: 1rem;
+  padding: 0.5rem 1.25rem;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.2s;
+}
+
+.eventos-btn-retry:hover { background: #dc2626; }
+
+/* =========================================
+   Paginación
+   ========================================= */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.paginacion-btn {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #374151;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.paginacion-btn:hover:not(:disabled) {
+  background: #f0f9ff;
+  border-color: #0ea5e9;
+  color: #0ea5e9;
+}
+
+.paginacion-btn.activa {
+  background: #0ea5e9;
+  color: #fff;
+  border-color: #0ea5e9;
+  font-weight: 600;
+}
+
+.paginacion-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
