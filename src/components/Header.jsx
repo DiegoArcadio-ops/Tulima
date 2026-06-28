@@ -67,36 +67,13 @@ export default function Header() {
       <header className="header-root">
         <div className="header-container">
           <div className="header-inner">
-
-            {/* Usuario: izquierda del todo */}
-            <div className="header-user-left">
-              {usuario ? (
-                <>
-                  <div className="header-user-greeting">
-                    <span className="header-greeting-text">Hola,</span>
-                    <span className="header-greeting-name">{usuario.primerNombre} {usuario.apellidoPaterno}</span>
-                  </div>
-                  <Link to="/perfil" className="header-icon-btn" title="Mi perfil">
-                    <UserCircle size={22} />
-                  </Link>
-                  <button onClick={cerrarSesion} className="header-icon-btn header-logout-btn" title="Cerrar sesión">
-                    <LogOut size={20} />
-                  </button>
-                </>
-              ) : (
-                <Link to="/login" className="header-btn-primary header-btn-login">
-                  Iniciar Sesión
-                </Link>
-              )}
-            </div>
-
-            {/* Logo: centro */}
+            {/* Logo: izquierda */}
             <a href="/" className="header-logo">
               <MapPin className="header-logo-icon" />
               <span className="header-logo-text">Tulima</span>
             </a>
 
-            {/* Nav: derecha */}
+            {/* Nav: centro */}
             <nav className="header-desktop-nav">
               {navLinks.map((link) => (
                 link.label === "TuliA" ? (
@@ -121,6 +98,28 @@ export default function Header() {
                 )
               ))}
             </nav>
+
+            {/* Usuario: derecha del todo */}
+            <div className="header-user-right">
+              {usuario ? (
+                <>
+                  <div className="header-user-greeting">
+                    <span className="header-greeting-text">Hola,</span>
+                    <span className="header-greeting-name">{usuario.primerNombre} {usuario.apellidoPaterno}</span>
+                  </div>
+                  <Link to="/perfil" className="header-icon-btn" title="Mi perfil">
+                    <UserCircle size={22} />
+                  </Link>
+                  <button onClick={cerrarSesion} className="header-icon-btn header-logout-btn" title="Cerrar sesión">
+                    <LogOut size={20} />
+                  </button>
+                </>
+              ) : (
+                <Link to="/login" className="header-btn-primary header-btn-login">
+                  Iniciar Sesión
+                </Link>
+              )}
+            </div>
 
             <button
               className="header-mobile-toggle"
