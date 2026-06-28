@@ -56,7 +56,6 @@
   display: none;
   align-items: center;
   gap: 0.5rem;
-  order: -1;
   flex-shrink: 0;
 }
 
