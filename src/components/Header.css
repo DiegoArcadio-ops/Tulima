@@ -134,10 +134,7 @@
 }
 
 @media (min-width: 768px) {
-  .header-logo {
-    position: absolute;
-    left: 1.5rem;
-  }
+  /* Esta regla ya no es necesaria, el layout flexible se encarga de la posición del logo. */
 }
 
 .header-logo-icon {
