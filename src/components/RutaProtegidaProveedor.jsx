@@ -12,7 +12,6 @@ export default function RutaProtegidaProveedor({ children }) {
           withCredentials: true
         });
         const usuario = respuesta.data;
-        console.log('Datos proveedor recibidos:', usuario);
 
         if (usuario.rol === 'proveedor' || usuario.id_rol === 2) {
           setEstado('permitido');
