@@ -45,9 +45,23 @@ export const AuthProvider = ({ children }) => {
     verificarSesion();
   }, []);
 
-  const login = (datosUsuario) => {
+  const login = async (datosUsuario) => {
+    // 1. Establece un estado de usuario inicial para una respuesta de UI rápida.
     setUsuario(datosUsuario);
     localStorage.setItem('usuarioTulima', JSON.stringify(datosUsuario));
+
+    // 2. Inmediatamente después, busca el perfil completo para obtener todos los datos.
+    // Esto soluciona el problema de que el saludo no muestre el nombre hasta recargar.
+    try {
+      const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
+      if (respuesta.data) {
+        const usuarioCompleto = respuesta.data;
+        setUsuario(usuarioCompleto);
+        localStorage.setItem('usuarioTulima', JSON.stringify(usuarioCompleto));
+      }
+    } catch (error) {
+      console.error("No se pudo obtener el perfil completo post-login, se usará data inicial.", error);
+    }
   };
 
   const logout = async () => {

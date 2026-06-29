@@ -27,6 +27,18 @@ export default function Header() {
     logout();
   };
 
+  const handleAnchorClick = (e, to) => {
+    // Solo para enlaces de anclaje en la misma página
+    if (to.startsWith('#')) {
+      e.preventDefault();
+      const targetId = to.substring(1);
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <>
       <header className="header-root">
@@ -52,11 +64,7 @@ export default function Header() {
                     key={link.to}
                     href={link.to}
                     className="header-nav-link"
-                    onClick={link.label === "Municipios" ? (e) => {
-                      e.preventDefault();
-                      const el = document.getElementById('mapa');
-                      if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    } : undefined}
+                    onClick={(e) => handleAnchorClick(e, link.to)}
                   >
                     {link.label}
                   </a>
@@ -70,7 +78,7 @@ export default function Header() {
                 <>
                   <div className="header-user-greeting">
                     <span className="header-greeting-text">Hola,</span>
-                    <span className="header-greeting-name">{usuario.primerNombre} {usuario.apellidoPaterno}</span>
+                    <span className="header-greeting-name">{usuario.primerNombre}</span>
                   </div>
                   <Link to="/perfil" className="header-icon-btn" title="Mi perfil">
                     <UserCircle size={22} />
@@ -120,14 +128,7 @@ export default function Header() {
                       key={link.to}
                       href={link.to}
                       className="header-mobile-link"
-                      onClick={(e) => {
-                        setIsMenuOpen(false);
-                        if (link.label === "Municipios") {
-                          e.preventDefault();
-                          const el = document.getElementById('mapa');
-                          if (el) el.scrollIntoView({ behavior: 'smooth' });
-                        }
-                      }}
+                      onClick={(e) => { setIsMenuOpen(false); handleAnchorClick(e, link.to); }}
                     >
                       {link.label}
                     </a>
