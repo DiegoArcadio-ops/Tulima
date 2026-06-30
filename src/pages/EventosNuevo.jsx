@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Heart } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { Toast } from '../components/Toast';
 import './EventosNuevo.css';
 
 const API_URL = 'https://tulima-backend.vercel.app';
@@ -9,6 +12,10 @@ function Eventos() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedEvento, setSelectedEvento] = useState(null);
+  const { usuario } = useAuth();
+  const [csrfToken, setCsrfToken] = useState(null);
+  const [favoritos, setFavoritos] = useState(new Set());
+  const [toast, setToast] = useState(null);
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -18,6 +25,18 @@ function Eventos() {
   // Paginación
   const PAGE_SIZE = 9;
   const [pagina, setPagina] = useState(1);
+
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
+      .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!usuario) return;
+    axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true })
+      .then(res => setFavoritos(new Set(res.data.filter(f => f.id_evento != null).map(f => f.id_evento))))
+      .catch(() => {});
+  }, [usuario]);
 
   useEffect(() => {
     const cargarEventos = async () => {
@@ -42,6 +61,28 @@ function Eventos() {
     return new Date(fecha).toLocaleDateString('es-MX', {
       year: 'numeric', month: 'long', day: 'numeric'
     });
+  };
+
+  const toggleFavorito = async (id, e) => {
+    e.stopPropagation();
+    if (!usuario) {
+      setToast({ mensaje: 'Debes iniciar sesión para añadir a favoritos.', tipo: 'warning' });
+      return;
+    }
+    const esFavorito = favoritos.has(id);
+    const nuevo = new Set(favoritos);
+    esFavorito ? nuevo.delete(id) : nuevo.add(id);
+    setFavoritos(nuevo);
+    try {
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
+      const data = { tipo: 'evento', id };
+      if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+      else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+    } catch {
+      setFavoritos(favoritos);
+      setToast({ mensaje: 'No se pudo actualizar el favorito.', tipo: 'error' });
+    }
   };
 
   // Valores únicos para filtros
@@ -143,6 +184,12 @@ function Eventos() {
               onClick={() => setSelectedEvento(evento)}
               style={{ cursor: 'pointer' }}
             >
+              {evento.imagen && (
+                <div className="evento-imagen-container">
+                  <img src={evento.imagen} alt={evento.nombre_Evento} className="evento-imagen"
+                    onError={e => { e.target.parentElement.style.display = 'none'; }} />
+                </div>
+              )}
               <div className="evento-header">
                 <span className="evento-tipo">{evento.tipoEvento ?? 'Evento'}</span>
                 <span className="evento-categoria">{evento.categoria?.nombre}</span>
@@ -168,11 +215,17 @@ function Eventos() {
                   {evento.destino_turistico?.municipio?.nombre ?? 'Colima'}
                 </div>
 
-                {evento.disponibilidad && (
-                  <div className="evento-disponibilidad">
-                    🎟️ {evento.disponibilidad}
-                  </div>
-                )}
+                <div className="evento-footer">
+                  {evento.disponibilidad && (
+                    <div className="evento-disponibilidad">
+                      🎟️ {evento.disponibilidad}
+                    </div>
+                  )}
+                  <button className={`favorito-btn ${favoritos.has(evento.id_evento) ? 'activo' : ''}`}
+                    onClick={e => toggleFavorito(evento.id_evento, e)} aria-label="Añadir a favoritos">
+                    <Heart className="favorito-icono" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -213,39 +266,50 @@ function Eventos() {
         <div className="modal-overlay" onClick={() => setSelectedEvento(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setSelectedEvento(null)}>✕</button>
+            {selectedEvento.imagen && (
+              <img src={selectedEvento.imagen} alt={selectedEvento.nombre_Evento} className="modal-image"
+                onError={e => { e.target.style.display = 'none'; }} />
+            )}
             <div className="modal-body">
               <span className="evento-tipo">{selectedEvento.tipoEvento ?? 'Evento'}</span>
               <h2 className="modal-title">{selectedEvento.nombre_Evento}</h2>
               <div className="modal-details">
                 <div className="modal-detail-row">
-                  <strong>Categoría:</strong>
-                  <span>{selectedEvento.categoria?.nombre ?? 'N/A'}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                  <span><strong>Categoría:</strong> {selectedEvento.categoria?.nombre ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Municipio:</strong>
-                  <span>{selectedEvento.destino_turistico?.municipio?.nombre ?? 'N/A'}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span><strong>Municipio:</strong> {selectedEvento.destino_turistico?.municipio?.nombre ?? 'N/A'}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Dirección:</strong>
-                  <span>{selectedEvento.numero_Calle} {selectedEvento.nombre_Calle}, CP {selectedEvento.codigoPostal}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span><strong>Dirección:</strong> {selectedEvento.numero_Calle} {selectedEvento.nombre_Calle}, CP {selectedEvento.codigoPostal}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Fecha inicio:</strong>
-                  <span>{formatFecha(selectedEvento.fechaInicio)}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  <span><strong>Fecha inicio:</strong> {formatFecha(selectedEvento.fechaInicio)}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Fecha fin:</strong>
-                  <span>{formatFecha(selectedEvento.fechaTermino)}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  <span><strong>Fecha fin:</strong> {formatFecha(selectedEvento.fechaTermino)}</span>
                 </div>
                 <div className="modal-detail-row">
-                  <strong>Disponibilidad:</strong>
-                  <span>{selectedEvento.disponibilidad ?? 'N/A'}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>
+                  <span><strong>Disponibilidad:</strong> {selectedEvento.disponibilidad ?? 'N/A'}</span>
                 </div>
               </div>
+              <button className={`favorito-btn-grande ${favoritos.has(selectedEvento.id_evento) ? 'activo' : ''}`}
+                onClick={e => toggleFavorito(selectedEvento.id_evento, e)}>
+                <Heart className="favorito-icono" />
+                {favoritos.has(selectedEvento.id_evento) ? 'En tus favoritos' : 'Añadir a favoritos'}
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   );
 }

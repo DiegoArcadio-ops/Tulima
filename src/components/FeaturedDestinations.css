@@ -298,78 +298,79 @@
   font-size: 0.9rem;
   color: #444;
 }
-/* RESEÑA */
-.resena-seccion {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+
+.modal-detail-row svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #0088cc;
 }
 
-.resena-titulo {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.resena-estrellas {
-  display: flex;
-  gap: 6px;
-}
-
-.estrella {
-  font-size: 2rem;
-  color: #d1d5db;
-  cursor: pointer;
-  transition: color 0.15s;
-  user-select: none;
-}
-
-.estrella.activa {
-  color: #f59e0b;
-}
-
-.resena-textarea {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 0.9rem;
-  resize: none;
-  outline: none;
-  font-family: inherit;
-  box-sizing: border-box;
-}
-
-.resena-textarea:focus {
-  border-color: #3b82f6;
-}
-
-.resena-btn {
-  background: #0ea5e9;
-  color: white;
+/* FAVORITOS */
+.favorito-btn {
+  background: none;
   border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.favorito-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.15);
+}
+
+.favorito-icono {
+  width: 22px;
+  height: 22px;
+  stroke: #9ca3af;
+  fill: none;
+  transition: stroke 0.2s, fill 0.2s;
+}
+
+.favorito-btn.activo .favorito-icono {
+  stroke: #ef4444;
+  fill: #ef4444;
+}
+
+.favorito-btn-grande {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #444;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
-  align-self: flex-end;
+  transition: all 0.2s;
 }
 
-.resena-btn:hover {
-  background: #0284c7;
+.favorito-btn-grande:hover {
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
-.resena-btn:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
+.favorito-btn-grande .favorito-icono {
+  stroke: #9ca3af;
+  fill: none;
 }
 
-.resena-exito {
-  color: #16a34a;
-  font-weight: 600;
-  font-size: 0.95rem;
+.favorito-btn-grande.activo {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.favorito-btn-grande.activo .favorito-icono {
+  stroke: #ef4444;
+  fill: #ef4444;
 }
