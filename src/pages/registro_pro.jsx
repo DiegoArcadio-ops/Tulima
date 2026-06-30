@@ -17,7 +17,7 @@ function RegistroProveedor() {
   const [formData, setFormData] = useState({
     primerNombre: '',
     nombreUsuario: '',
-    correoCorporativo: '',
+    correo: '',
     rfc: '',
     contraseña: '',
     telefono: '',
@@ -58,7 +58,7 @@ function RegistroProveedor() {
       const respuesta = await axios.post('https://tulima-backend.vercel.app/proveedores', {
         primerNombre:      formData.primerNombre,
         nombreUsuario:     formData.nombreUsuario,
-        correoCorporativo: formData.correoCorporativo,
+        correo:            formData.correo,
         rfc:               formData.rfc,
         contraseña:        formData.contraseña,
         tipo_servicio:     tipoSeleccionado,
@@ -218,11 +218,11 @@ function RegistroProveedor() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Correo Corporativo *</label>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Correo de Contacto *</label>
                 <input
-                  name="correoCorporativo" type="email" required
+                  name="correo" type="email" required
                   placeholder="Ej. ventas@empresa.com"
-                  value={formData.correoCorporativo} onChange={handleChange}
+                  value={formData.correo} onChange={handleChange}
                   className="appearance-none rounded-lg block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-[#00a8ff] focus:border-[#00a8ff] sm:text-sm"
                 />
               </div>

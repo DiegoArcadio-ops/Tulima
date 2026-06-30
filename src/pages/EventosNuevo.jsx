@@ -192,7 +192,6 @@ function Eventos() {
               )}
               <div className="evento-header">
                 <span className="evento-tipo">{evento.tipoEvento ?? 'Evento'}</span>
-                <span className="evento-categoria">{evento.categoria?.nombre}</span>
               </div>
 
               <div className="evento-info">
@@ -274,10 +273,6 @@ function Eventos() {
               <span className="evento-tipo">{selectedEvento.tipoEvento ?? 'Evento'}</span>
               <h2 className="modal-title">{selectedEvento.nombre_Evento}</h2>
               <div className="modal-details">
-                <div className="modal-detail-row">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-                  <span><strong>Categoría:</strong> {selectedEvento.categoria?.nombre ?? 'N/A'}</span>
-                </div>
                 <div className="modal-detail-row">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   <span><strong>Municipio:</strong> {selectedEvento.destino_turistico?.municipio?.nombre ?? 'N/A'}</span>
