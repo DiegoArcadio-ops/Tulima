@@ -101,6 +101,9 @@
 
 .hotel-precio {
   font-weight: 500;
+  font-size: 0.82rem;
+  flex: 1;
+  min-width: 0;
 }
 
 .icono-pin,
@@ -108,6 +111,7 @@
 .icono-precio {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
 /* MODAL */
 .modal-overlay {
@@ -177,84 +181,16 @@
 
 .modal-detail-row {
   display: flex;
+  align-items: flex-start;
   gap: 8px;
   font-size: 0.9rem;
   color: #444;
 }
-/* RESEÑA */
-.resena-seccion {
-  border-top: 1px solid #e5e7eb;
-  padding-top: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
-.resena-titulo {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.resena-estrellas {
-  display: flex;
-  gap: 6px;
-}
-
-.estrella {
-  font-size: 2rem;
-  color: #d1d5db;
-  cursor: pointer;
-  transition: color 0.15s;
-  user-select: none;
-}
-
-.estrella.activa {
-  color: #f59e0b;
-}
-
-.resena-textarea {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 0.9rem;
-  resize: none;
-  outline: none;
-  font-family: inherit;
-  box-sizing: border-box;
-}
-
-.resena-textarea:focus {
-  border-color: #3b82f6;
-}
-
-.resena-btn {
-  background: #0ea5e9;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  align-self: flex-end;
-}
-
-.resena-btn:hover {
-  background: #0284c7;
-}
-
-.resena-btn:disabled {
-  background: #93c5fd;
-  cursor: not-allowed;
-}
-
-.resena-exito {
-  color: #16a34a;
-  font-weight: 600;
-  font-size: 0.95rem;
+.modal-detail-row svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #0088cc;
 }
 /* BOTÓN FAVORITO */
 .favorito-btn {

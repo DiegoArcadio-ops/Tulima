@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, MapPin, Phone, Mail, FileText, BedDouble } from 'lucide-react';
 import axios from 'axios';
 import './Hoteles.css';
 import '../components/filtros-paginacion.css';
@@ -125,11 +125,10 @@ function Hoteles() {
               <h3 className="hotel-titulo">{hotel.nombre_hotel}</h3>
               <div className="hotel-footer">
                 <div className="hotel-precio">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icono-precio">
-                    <line x1="12" y1="1" x2="12" y2="23"></line>
-                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                  </svg>
-                  {hotel.precio}
+                  <BedDouble size={16} className="icono-precio" />
+                  {hotel.disponibilidad != null
+                    ? `${hotel.disponibilidad} habitaciones disponibles`
+                    : 'Disponibilidad no especificada'}
                 </div>
                 <button className={`favorito-btn ${favoritos.has(hotel.id_hotel) ? 'activo' : ''}`}
                   onClick={e => toggleFavorito(hotel.id_hotel, e)} aria-label="Añadir a favoritos">
@@ -157,16 +156,19 @@ function Hoteles() {
               <span className="hotel-etiqueta">{selectedHotel.categoria}</span>
               <h2 className="modal-title">{selectedHotel.nombre_hotel}</h2>
               <div className="modal-details">
-                <div className="modal-detail-row"><strong>Municipio:</strong><span>{selectedHotel.municipio?.nombre ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><strong>Dirección:</strong><span>{selectedHotel.numero_Calle} {selectedHotel.nombre_Calle}, CP {selectedHotel.codigoPostal}</span></div>
-                <div className="modal-detail-row"><strong>Teléfono:</strong><span>{selectedHotel.telefono?.toString() ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><strong>Email:</strong><span>{selectedHotel.email ?? 'N/A'}</span></div>
-                {selectedHotel.descripcion && <div className="modal-detail-row"><strong>Descripción:</strong><span>{selectedHotel.descripcion}</span></div>}
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedHotel.municipio?.nombre ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedHotel.numero_Calle} {selectedHotel.nombre_Calle}, CP {selectedHotel.codigoPostal}</span></div>
+                <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedHotel.telefono?.toString() ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><Mail size={16} /><span><strong>Email:</strong> {selectedHotel.email ?? 'N/A'}</span></div>
+                {selectedHotel.descripcion && <div className="modal-detail-row"><FileText size={16} /><span><strong>Descripción:</strong> {selectedHotel.descripcion}</span></div>}
+                <div className="modal-detail-row"><BedDouble size={16} /><span><strong>Disponibilidad:</strong> {selectedHotel.disponibilidad != null ? `${selectedHotel.disponibilidad} habitaciones` : 'No especificada'}</span></div>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   );
 }

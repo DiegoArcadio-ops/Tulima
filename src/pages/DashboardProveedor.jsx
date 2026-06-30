@@ -25,7 +25,7 @@ const SECCIONES = {
       { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
       { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@hotel.com' },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', required: false, placeholder: 'Describe tu hotel brevemente...' },
-      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
     ],
@@ -44,7 +44,7 @@ const SECCIONES = {
       { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
       { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
       { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@restaurante.com' },
-      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Horario de apertura', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Horario de cierre', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
@@ -62,7 +62,7 @@ const SECCIONES = {
       { name: 'tipoTour', label: 'Tipo de tour', type: 'text', required: false, placeholder: 'Ej. Aventura, Cultural...' },
       { name: 'tipoServicio', label: 'Tipo de servicio', type: 'text', required: false, placeholder: 'Ej. Guiado, Privado...' },
       { name: 'telefono', label: 'Teléfono de contacto', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
-      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
     ],
   },
@@ -76,7 +76,7 @@ const SECCIONES = {
       { name: 'nombre', label: 'Nombre del destino', type: 'text', required: true, placeholder: 'Ej. Laguna La Maria' },
       { name: 'nombre_Calle', label: 'Calle o lugar', type: 'text', required: false, placeholder: 'Ej. Plaza Principal' },
       { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: false, placeholder: 'Ej. 1' },
-      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Hora de inicio', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Hora de fin', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
@@ -98,7 +98,7 @@ const SECCIONES = {
       { name: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
       { name: 'fechaTermino', label: 'Fecha de término', type: 'date', required: true },
       { name: 'disponibilidad', label: 'Disponibilidad', type: 'text', required: false, placeholder: 'Ej. Lugares limitados, Entrada libre...' },
-      { name: 'imagen', label: 'URL de la imagen', type: 'text', required: false, placeholder: 'https://...' },
+      { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
       { name: 'id_destino', label: 'Destino turístico', type: 'select', catalogo: 'destinos', valueKey: 'id_destino', labelKey: 'nombre', required: true },
@@ -229,6 +229,37 @@ export default function DashboardProveedor() {
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // Convierte y comprime una imagen a base64 (máx. ~1280px de ancho, calidad 0.75)
+  const handleImagenSeleccionada = (campoName, file) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      mostrarToast('El archivo debe ser una imagen.', 'error');
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      mostrarToast('La imagen es demasiado pesada (máx. 8MB).', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX_W = 1280;
+        const escala = Math.min(1, MAX_W / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width * escala;
+        canvas.height = img.height * escala;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+        setFormData(prev => ({ ...prev, [campoName]: dataUrl }));
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const guardar = async (e) => {
@@ -543,6 +574,39 @@ const confirmarEliminar = async () => {
                           </option>
                         ))}
                       </select>
+                    </div>
+                  );
+                }
+                if (campo.type === 'file') {
+                  const valorActual = formData[campo.name];
+                  return (
+                    <div key={campo.name}>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">
+                        {campo.label} {campo.required && <span className="text-red-400">*</span>}
+                      </label>
+                      {valorActual && (
+                        <div className="mb-2 relative w-fit">
+                          <img
+                            src={valorActual}
+                            alt="Vista previa"
+                            className="h-28 w-auto rounded-lg border border-slate-200 object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, [campo.name]: '' }))}
+                            className="absolute -top-2 -right-2 bg-white border border-slate-200 rounded-full p-1 text-slate-500 hover:text-red-500 shadow-sm"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={e => handleImagenSeleccionada(campo.name, e.target.files?.[0])}
+                        className="w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#00a8ff]/10 file:text-[#00a8ff] hover:file:bg-[#00a8ff]/20 transition-all"
+                      />
+                      <p className="text-[11px] text-slate-400 mt-1">JPG, PNG o WEBP. Se comprime automáticamente.</p>
                     </div>
                   );
                 }

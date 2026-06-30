@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, MapPin, Briefcase, Phone } from 'lucide-react';
 import axios from 'axios';
 import './Tours.css';
 import '../components/filtros-paginacion.css';
@@ -145,14 +145,16 @@ function Tours() {
               <span className="tour-etiqueta">{selectedTour.tipoTour}</span>
               <h2 className="modal-title">{selectedTour.nombre}</h2>
               <div className="modal-details">
-                <div className="modal-detail-row"><strong>Municipio:</strong><span>{selectedTour.municipio?.nombre ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><strong>Tipo de servicio:</strong><span>{selectedTour.tipoServicio ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><strong>Teléfono:</strong><span>{selectedTour.telefono?.toString() ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedTour.municipio?.nombre ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><Briefcase size={16} /><span><strong>Tipo de servicio:</strong> {selectedTour.tipoServicio ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedTour.telefono?.toString() ?? 'N/A'}</span></div>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   );
 }

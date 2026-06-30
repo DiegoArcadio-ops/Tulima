@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Star, Clock, X } from "lucide-react";
+import { MapPin, Star, Clock, X, Heart } from "lucide-react";
+import axios from 'axios';
 import './FeaturedDestinations.css';
 import '../components/filtros-paginacion.css';
 import FiltrosBusqueda from './FiltrosBusqueda';
 import Paginacion from './Paginacion';
+import { useAuth } from '../context/AuthContext';
+import { Toast } from './Toast';
 
 const URL = "https://tulima-backend.vercel.app/destinos";
 const PAGE_SIZE = 6;
@@ -13,12 +16,10 @@ export default function FeaturedDestinations() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
-
-  const [stars, setStars] = useState(0);
-  const [hoverStar, setHoverStar] = useState(0);
-  const [comentario, setComentario] = useState('');
-  const [enviando, setEnviando] = useState(false);
-  const [enviado, setEnviado] = useState(false);
+  const { usuario } = useAuth();
+  const [csrfToken, setCsrfToken] = useState(null);
+  const [favoritos, setFavoritos] = useState(new Set());
+  const [toast, setToast] = useState(null);
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -27,26 +28,47 @@ export default function FeaturedDestinations() {
   const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
+      .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (!usuario) return;
+    axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true })
+      .then(res => setFavoritos(new Set(res.data.filter(f => f.id_destino != null).map(f => f.id_destino))))
+      .catch(() => {});
+  }, [usuario]);
+
+  useEffect(() => {
     fetch(URL)
       .then(r => { if (!r.ok) throw new Error('Error al obtener los destinos'); return r.json(); })
       .then(data => { setDestinations(data); setIsLoading(false); })
       .catch(err => { setError(err.message); setIsLoading(false); });
   }, []);
 
-  const handleOpenModal = (d) => {
-    setSelectedDestination(d); setStars(0); setHoverStar(0); setComentario(''); setEnviado(false);
-  };
+  const handleOpenModal = (d) => setSelectedDestination(d);
+  const handleCloseModal = () => setSelectedDestination(null);
 
-  const handleCloseModal = () => {
-    setSelectedDestination(null); setStars(0); setHoverStar(0); setComentario(''); setEnviado(false);
-  };
-
-  const handleEnviarResena = async () => {
-    if (stars === 0) { alert('Por favor selecciona una calificación'); return; }
-    setEnviando(true);
-    await new Promise(r => setTimeout(r, 800));
-    setEnviado(true);
-    setEnviando(false);
+  const toggleFavorito = async (id, e) => {
+    e.stopPropagation();
+    if (!usuario) {
+      setToast({ mensaje: 'Debes iniciar sesión para añadir a favoritos.', tipo: 'warning' });
+      return;
+    }
+    const esFavorito = favoritos.has(id);
+    const nuevo = new Set(favoritos);
+    esFavorito ? nuevo.delete(id) : nuevo.add(id);
+    setFavoritos(nuevo);
+    try {
+      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
+      const data = { tipo: 'destino', id };
+      if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+      else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+    } catch {
+      setFavoritos(favoritos);
+      setToast({ mensaje: 'No se pudo actualizar el favorito.', tipo: 'error' });
+    }
   };
 
   const formatTime = (t) => { if (!t) return "Horario no disponible"; return t.substring(11, 16); };
@@ -109,14 +131,14 @@ export default function FeaturedDestinations() {
                 </div>
                 <h3 className="destination-card-title">{destination.nombre}</h3>
                 <div className="destination-meta">
-                  <div className="destination-rating">
-                    <Star className="destination-icon-small rating-star" />
-                    <span className="rating-value">{destination.rating}</span>
-                  </div>
                   <div className="destination-duration">
                     <Clock className="destination-icon-small" />
                     <span>{formatTime(destination.horarioAbierto)} - {formatTime(destination.horarioCerrado)}</span>
                   </div>
+                  <button className={`favorito-btn ${favoritos.has(destination.id_destino) ? 'activo' : ''}`}
+                    onClick={e => toggleFavorito(destination.id_destino, e)} aria-label="Añadir a favoritos">
+                    <Heart className="favorito-icono" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -142,33 +164,19 @@ export default function FeaturedDestinations() {
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedDestination.municipio?.nombre ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Clock size={16} /><span><strong>Horario:</strong> {formatTime(selectedDestination.horarioAbierto)} - {formatTime(selectedDestination.horarioCerrado)}</span></div>
-                <div className="modal-detail-row"><Star size={16} /><span><strong>Calificación:</strong> {selectedDestination.calificacion}</span></div>
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codifoPostal}</span></div>
               </div>
-              <div className="resena-seccion">
-                <h3 className="resena-titulo">Deja tu reseña</h3>
-                {enviado ? (
-                  <p className="resena-exito">¡Gracias por tu reseña!</p>
-                ) : (
-                  <>
-                    <div className="resena-estrellas">
-                      {[1, 2, 3, 4, 5].map(n => (
-                        <span key={n} className={`estrella ${n <= (hoverStar || stars) ? 'activa' : ''}`}
-                          onClick={() => setStars(n)} onMouseEnter={() => setHoverStar(n)} onMouseLeave={() => setHoverStar(0)}>★</span>
-                      ))}
-                    </div>
-                    <textarea className="resena-textarea" placeholder="Escribe tu comentario..."
-                      value={comentario} onChange={e => setComentario(e.target.value)} rows={3} />
-                    <button className="resena-btn" onClick={handleEnviarResena} disabled={enviando}>
-                      {enviando ? 'Enviando...' : 'Enviar reseña'}
-                    </button>
-                  </>
-                )}
-              </div>
+              <button className={`favorito-btn-grande ${favoritos.has(selectedDestination.id_destino) ? 'activo' : ''}`}
+                onClick={e => toggleFavorito(selectedDestination.id_destino, e)}>
+                <Heart className="favorito-icono" />
+                {favoritos.has(selectedDestination.id_destino) ? 'En tus favoritos' : 'Añadir a favoritos'}
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </section>
   );
 }

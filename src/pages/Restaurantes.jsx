@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, MapPin, Clock, Phone, Mail } from 'lucide-react';
 import axios from 'axios';
 import './Restaurantes.css';
 import '../components/filtros-paginacion.css';
@@ -153,16 +153,18 @@ const toggleFavorito = async (id, e) => {
               <span className="card-etiqueta">{selectedRestaurante.tipo}</span>
               <h2 className="modal-title">{selectedRestaurante.nombre}</h2>
               <div className="modal-details">
-                <div className="modal-detail-row"><span><strong>Municipio:</strong> {selectedRestaurante.municipio?.nombre ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><span><strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, CP {selectedRestaurante.codigoPostal}</span></div>
-                <div className="modal-detail-row"><span><strong>Horario:</strong> {formatTime(selectedRestaurante.horarioAbierto)} - {formatTime(selectedRestaurante.horarioCerrado)}</span></div>
-                <div className="modal-detail-row"><span><strong>Teléfono:</strong> {selectedRestaurante.telefono?.toString() ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedRestaurante.municipio?.nombre ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, CP {selectedRestaurante.codigoPostal}</span></div>
+                <div className="modal-detail-row"><Clock size={16} /><span><strong>Horario:</strong> {formatTime(selectedRestaurante.horarioAbierto)} - {formatTime(selectedRestaurante.horarioCerrado)}</span></div>
+                <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedRestaurante.telefono?.toString() ?? 'N/A'}</span></div>
+                <div className="modal-detail-row"><Mail size={16} /><span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span></div>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </div>
   );
 }

@@ -38,6 +38,27 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
+.evento-imagen-container {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+
+.evento-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px 16px 0 0;
+}
+
 .evento-header {
   background: linear-gradient(135deg, #0ea5e9, #0284c7);
   padding: 1rem 1.25rem;
@@ -103,7 +124,83 @@
   font-size: 0.85rem;
   color: #0284c7;
   font-weight: 500;
+}
+
+.evento-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 0.5rem;
+}
+
+/* FAVORITOS */
+.favorito-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.favorito-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  transform: scale(1.15);
+}
+
+.favorito-icono {
+  width: 22px;
+  height: 22px;
+  stroke: #9ca3af;
+  fill: none;
+  transition: stroke 0.2s, fill 0.2s;
+}
+
+.favorito-btn.activo .favorito-icono {
+  stroke: #ef4444;
+  fill: #ef4444;
+}
+
+.favorito-btn-grande {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #444;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.favorito-btn-grande:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.favorito-btn-grande .favorito-icono {
+  stroke: #9ca3af;
+  fill: none;
+}
+
+.favorito-btn-grande.activo {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.favorito-btn-grande.activo .favorito-icono {
+  stroke: #ef4444;
+  fill: #ef4444;
 }
 
 /* MODAL */
@@ -130,14 +227,21 @@
 
 .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255,255,255,0.9);
   border: none;
-  font-size: 1.4rem;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
   cursor: pointer;
-  color: #555;
-  z-index: 1;
+  color: #333;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 .modal-body {
@@ -159,12 +263,18 @@
 
 .modal-detail-row {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-size: 0.92rem;
   border-bottom: 1px solid #f0f0f0;
   padding-bottom: 0.5rem;
   color: #333;
+}
+
+.modal-detail-row svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #0088cc;
 }
 /* =========================================
    Filtros
