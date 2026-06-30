@@ -6,6 +6,7 @@ import {
   CheckCircle, Clock, XCircle, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { ModalConfirm } from '../components/ModalConfirm';
 
 const BASE = 'https://tulima-backend.vercel.app';
 
@@ -141,6 +142,7 @@ export default function DashboardProveedor() {
   const [formData, setFormData] = useState({});
   const [guardando, setGuardando] = useState(false);
   const [toast, setToast] = useState(null);
+  const [modalConfirm, setModalConfirm] = useState(null);
 
   // ── 2. DERIVADOS ──
   const seccionesVisibles = usuario?.tipo_servicio
@@ -272,21 +274,29 @@ export default function DashboardProveedor() {
     }
   };
 
-  const eliminar = async (item) => {
-    const nombre = item[seccionActual.nombreKey] || 'este registro';
-    if (!window.confirm(`¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return;
-    try {
-      const token = csrfToken ?? (await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true })).data.csrfToken;
-      await axios.delete(`${seccionActual.url}/${obtenerId(item)}`, {
-        withCredentials: true,
-        headers: { 'X-CSRF-Token': token },
-      });
-      mostrarToast('Registro eliminado');
-      cargarDatos();
-    } catch {
-      mostrarToast('No se pudo eliminar el registro', 'error');
-    }
-  };
+const eliminar = (item) => {
+  const nombre = item[seccionActual.nombreKey] || 'este registro';
+  setModalConfirm({
+    mensaje: `¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`,
+    item
+  });
+};
+
+const confirmarEliminar = async () => {
+  const item = modalConfirm.item;
+  setModalConfirm(null);
+  try {
+    const token = csrfToken ?? (await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true })).data.csrfToken;
+    await axios.delete(`${seccionActual.url}/${obtenerId(item)}`, {
+      withCredentials: true,
+      headers: { 'X-CSRF-Token': token },
+    });
+    mostrarToast('Registro eliminado');
+    cargarDatos();
+  } catch {
+    mostrarToast('No se pudo eliminar el registro', 'error');
+  }
+};
 
   // ── 5. GUARD — va ANTES del return principal ──
   if (!seccionActual) return (
@@ -491,6 +501,7 @@ export default function DashboardProveedor() {
               >
                 <X className="w-5 h-5" />
               </button>
+              
             </div>
 
             <form onSubmit={guardar} className="overflow-y-auto flex-1 px-6 py-4 space-y-4">
@@ -573,6 +584,14 @@ export default function DashboardProveedor() {
 
           </div>
         </div>
+      )}
+
+ {modalConfirm && (
+        <ModalConfirm
+          mensaje={modalConfirm.mensaje}
+          onConfirmar={confirmarEliminar}
+          onCancelar={() => setModalConfirm(null)}
+        />
       )}
 
     </div>

@@ -6,6 +6,7 @@ import '../components/filtros-paginacion.css';
 import { useAuth } from '../context/AuthContext';
 import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
+import { Toast } from '../components/Toast';
 
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 const PAGE_SIZE = 9;
@@ -18,6 +19,7 @@ function Restaurantes() {
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
+  const [toast, setToast] = useState(null);
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -46,21 +48,27 @@ function Restaurantes() {
 
   const formatTime = (t) => { if (!t) return "No disponible"; return t.substring(11, 16); };
 
-  const toggleFavorito = async (id, e) => {
-    e.stopPropagation();
-    if (!usuario) { alert('Debes iniciar sesión para añadir a favoritos.'); return; }
-    const esFavorito = favoritos.has(id);
-    const nuevo = new Set(favoritos);
-    esFavorito ? nuevo.delete(id) : nuevo.add(id);
-    setFavoritos(nuevo);
-    try {
-      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
-      const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
-      const data = { tipo: 'restaurante', id };
-      if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-      else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
-    } catch { setFavoritos(favoritos); alert('No se pudo actualizar el favorito.'); }
-  };
+const toggleFavorito = async (id, e) => {
+  e.stopPropagation();
+  if (!usuario) {
+    setToast({ mensaje: 'Debes iniciar sesión para añadir a favoritos.', tipo: 'warning' });
+    return;
+  }
+  const esFavorito = favoritos.has(id);
+  const nuevo = new Set(favoritos);
+  esFavorito ? nuevo.delete(id) : nuevo.add(id);
+  setFavoritos(nuevo);
+  try {
+    const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+    const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
+    const data = { tipo: 'restaurante', id };
+    if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
+    else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+  } catch {
+    setFavoritos(favoritos);
+    setToast({ mensaje: 'No se pudo actualizar el favorito.', tipo: 'error' });
+  }
+};
 
   const municipios = [...new Set(restaurantes.map(r => r.municipio?.nombre).filter(Boolean))];
   const tipos = [...new Set(restaurantes.map(r => r.tipo).filter(Boolean))];

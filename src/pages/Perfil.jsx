@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Mail, Phone, Calendar, Lock, Heart, Shield, Edit3, Hotel, UtensilsCrossed, Bike, MapPin, Eye, EyeOff, CheckCircle, AlertCircle, Search } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { User, Mail, Phone, Calendar, Lock, Heart, Shield, Edit3, Hotel, UtensilsCrossed, Bike, MapPin, Eye, EyeOff, CheckCircle, AlertCircle, Search } from 'lucide-react';import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import './Perfil.css';
@@ -19,6 +18,8 @@ const FILTROS_FAV = [
   { id: 'hotel',       label: 'Hoteles',      icon: Hotel },
   { id: 'restaurante', label: 'Restaurantes', icon: UtensilsCrossed },
   { id: 'tour',        label: 'Tours',        icon: Bike },
+  { id: 'destino',     label: 'Destinos',     icon: MapPin },
+  { id: 'evento',      label: 'Eventos',      icon: Calendar },
 ];
 
 export default function Perfil() {
