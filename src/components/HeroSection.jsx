@@ -13,7 +13,7 @@ export default function HeroSection() {
       <div
         className="hero-bg-wrapper"
         style={{
-          backgroundImage: `url('/hero-background.jpg')`,
+          backgroundImage: `url('/assets/hero-background.jpg')`,
         }}
       >
         <div className="hero-overlay" />
