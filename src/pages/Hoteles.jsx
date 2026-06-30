@@ -106,11 +106,12 @@ function Hoteles() {
         {hotelesPagina.map(hotel => (
           <div key={hotel.id_hotel} className="hotel-card" onClick={() => setSelectedHotel(hotel)} style={{ cursor: 'pointer' }}>
             <div className="hotel-imagen-container">
-              {hotel.estrellas > 0 && (
+              {/* {hotel.estrellas > 0 && (
                 <span className="hotel-etiqueta" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   {hotel.estrellas} <Star size={14} fill="currentColor" />
                 </span>
-              )}
+              )} */}
+              <span>{hotel.tipo}</span>
               <img src={hotel.imagen} alt={hotel.nombre_hotel} className="hotel-imagen"
                 onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             </div>
