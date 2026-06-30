@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Toast } from '../components/Toast';
+import MiniMap from '../components/MiniMap';
 import './EventosNuevo.css';
 
 const API_URL = 'https://tulima-backend.vercel.app';
@@ -277,10 +278,21 @@ function Eventos() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   <span><strong>Municipio:</strong> {selectedEvento.destino_turistico?.municipio?.nombre ?? 'N/A'}</span>
                 </div>
-                <div className="modal-detail-row">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span><strong>Dirección:</strong> {selectedEvento.numero_Calle} {selectedEvento.nombre_Calle}, CP {selectedEvento.codigoPostal}</span>
+
+                <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <strong>Dirección:</strong> {selectedEvento.numero_Calle} {selectedEvento.nombre_Calle}, CP {selectedEvento.codigoPostal}
+                  </span>
+                  {selectedEvento.latitud != null && selectedEvento.longitud != null ? (
+                    <MiniMap lat={selectedEvento.latitud} lng={selectedEvento.longitud} height={180} />
+                  ) : (
+                    <p style={{ fontSize: '12px', color: '#999', margin: 0 }}>
+                      Este evento aún no tiene ubicación exacta registrada en el mapa.
+                    </p>
+                  )}
                 </div>
+
                 <div className="modal-detail-row">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                   <span><strong>Fecha inicio:</strong> {formatFecha(selectedEvento.fechaInicio)}</span>

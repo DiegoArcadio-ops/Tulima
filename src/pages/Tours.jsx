@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
 import { Toast } from '../components/Toast';
+import MiniMap from '../components/MiniMap';
 
 const URL = "https://tulima-backend.vercel.app/tours";
 const PAGE_SIZE = 9;
@@ -146,6 +147,21 @@ function Tours() {
               <h2 className="modal-title">{selectedTour.nombre}</h2>
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedTour.municipio?.nombre ?? 'N/A'}</span></div>
+
+                <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                    <MapPin size={16} />
+                    <strong>Ubicación:</strong>
+                  </span>
+                  {selectedTour.latitud != null && selectedTour.longitud != null ? (
+                    <MiniMap lat={selectedTour.latitud} lng={selectedTour.longitud} height={180} />
+                  ) : (
+                    <p style={{ fontSize: '12px', color: '#999', margin: 0 }}>
+                      Este tour aún no tiene ubicación exacta registrada en el mapa.
+                    </p>
+                  )}
+                </div>
+
                 <div className="modal-detail-row"><Briefcase size={16} /><span><strong>Tipo de servicio:</strong> {selectedTour.tipoServicio ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedTour.telefono?.toString() ?? 'N/A'}</span></div>
               </div>

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ModalConfirm } from '../components/ModalConfirm';
+import MiniMap from '../components/MiniMap';
 
 const BASE = 'https://tulima-backend.vercel.app';
 
@@ -28,6 +29,7 @@ const SECCIONES = {
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'estrellas', label: 'Estrellas', type: 'number', required: false, placeholder: 'Ej. 5', min: 1, max: 5 },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
+      { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
   },
   restaurantes: {
@@ -48,6 +50,7 @@ const SECCIONES = {
       { name: 'horarioAbierto', label: 'Horario de apertura', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Horario de cierre', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
+      { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
   },
   tours: {
@@ -63,6 +66,7 @@ const SECCIONES = {
       { name: 'telefono', label: 'Teléfono de contacto', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
+      { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
   },
   destinos: {
@@ -79,6 +83,7 @@ const SECCIONES = {
       { name: 'horarioAbierto', label: 'Hora de inicio', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Hora de fin', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
+      { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
   },
   eventos: {
@@ -99,6 +104,7 @@ const SECCIONES = {
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'id_destino', label: 'Destino turístico', type: 'select', catalogo: 'destinos', valueKey: 'id_destino', labelKey: 'nombre', required: true },
+      { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
   },
 };
@@ -267,6 +273,10 @@ export default function DashboardProveedor() {
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
       const payload = { ...formData };
 
+      // El campo "ubicacion" es solo un marcador visual del formulario;
+      // los valores reales viajan en latitud/longitud, así que lo quitamos del payload.
+      delete payload.ubicacion;
+
       Object.keys(payload).forEach(k => {
         if (payload[k] === '' || payload[k] === null || payload[k] === undefined) delete payload[k];
       });
@@ -276,6 +286,8 @@ export default function DashboardProveedor() {
       if (payload.id_destino) payload.id_destino = Number(payload.id_destino);
       if (payload.estrellas) payload.estrellas = Number(payload.estrellas);
       if (payload.telefono) payload.telefono = String(payload.telefono);
+      if (payload.latitud !== undefined) payload.latitud = Number(payload.latitud);
+      if (payload.longitud !== undefined) payload.longitud = Number(payload.longitud);
 
       if (!modoEdicion) {
         payload.estadoConvenio = true;
@@ -604,6 +616,27 @@ const confirmarEliminar = async () => {
                         className="w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#00a8ff]/10 file:text-[#00a8ff] hover:file:bg-[#00a8ff]/20 transition-all"
                       />
                       <p className="text-[11px] text-slate-400 mt-1">JPG, PNG o WEBP. Se comprime automáticamente.</p>
+                    </div>
+                  );
+                }
+                if (campo.type === 'map') {
+                  return (
+                    <div key={campo.name}>
+                      <label className="block text-xs font-medium text-slate-700 mb-1">
+                        {campo.label} {campo.required && <span className="text-red-400">*</span>}
+                      </label>
+                      <MiniMap
+                        lat={formData.latitud != null && formData.latitud !== '' ? Number(formData.latitud) : null}
+                        lng={formData.longitud != null && formData.longitud !== '' ? Number(formData.longitud) : null}
+                        editable
+                        onChange={(lat, lng) => setFormData(prev => ({ ...prev, latitud: lat, longitud: lng }))}
+                        height={220}
+                      />
+                      {formData.latitud != null && formData.latitud !== '' && (
+                        <p className="text-[11px] text-slate-400 mt-1">
+                          Pin actual: {Number(formData.latitud).toFixed(5)}, {Number(formData.longitud).toFixed(5)}
+                        </p>
+                      )}
                     </div>
                   );
                 }
