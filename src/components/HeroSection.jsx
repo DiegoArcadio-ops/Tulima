@@ -13,7 +13,7 @@ export default function HeroSection() {
       <div
         className="hero-bg-wrapper"
         style={{
-          backgroundImage: `url('/beautiful-beach-sunset-manzanillo-colima-mexico-pa.jpg')`,
+          backgroundImage: `url('https://i.pinimg.com/originals/e2/e8/0a/e2e80aa676334691f5272df2ef622ac7.jpg')`,
         }}
       >
         <div className="hero-overlay" />
