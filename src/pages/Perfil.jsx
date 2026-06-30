@@ -121,12 +121,13 @@ export default function Perfil() {
         .filter(Boolean).join(' ')
     : '';
 
-  const conteoFav = {
-    hoteles:      favoritos.filter(f => f.id_hotel).length,
-    restaurantes: favoritos.filter(f => f.id_restaurante).length,
-    tours:        favoritos.filter(f => f.id_provedor_tour).length,
-    eventos:      favoritos.filter(f => f.id_evento).length,
-  };
+    const conteoFav = {
+      hoteles:      favoritos.filter(f => f.id_hotel).length,
+      restaurantes: favoritos.filter(f => f.id_restaurante).length,
+      tours:        favoritos.filter(f => f.id_provedor_tour).length,
+      destinos:     favoritos.filter(f => f.id_destino).length,
+      eventos:      favoritos.filter(f => f.id_evento).length,
+    };
 
   const favoritosFiltrados = favoritos.filter(fav => {
     const tipo = fav.id_hotel ? 'hotel'
@@ -186,6 +187,11 @@ export default function Perfil() {
             <div className="perfil-stat">
               <span className="perfil-stat-num">{conteoFav.tours}</span>
               <span className="perfil-stat-label">Tours</span>
+            </div>
+            <div className="perfil-stat-divider" />
+            <div className="perfil-stat">
+              <span className="perfil-stat-num">{conteoFav.destinos}</span>
+              <span className="perfil-stat-label">Destinos</span>
             </div>
             <div className="perfil-stat-divider" />
             <div className="perfil-stat">
