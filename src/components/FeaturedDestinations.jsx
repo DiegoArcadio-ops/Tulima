@@ -24,7 +24,7 @@ export default function FeaturedDestinations() {
   // Filtros
   const [busqueda, setBusqueda] = useState('');
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
-  const [filtroCategoria, setFiltroCategoria] = useState('');
+  const [filtroTipo, setFiltroTipo] = useState('');
   const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
@@ -75,17 +75,17 @@ export default function FeaturedDestinations() {
 
   // Filtros
   const municipios = [...new Set(destinations.map(d => d.municipio?.nombre).filter(Boolean))];
-  const categorias = [...new Set(destinations.map(d => d.categoria?.nombre).filter(Boolean))];
+  const tipos = [...new Set(destinations.map(d => d.tipo).filter(Boolean))];
 
   const filtrados = destinations.filter(d =>
     (d.nombre || '').toLowerCase().includes(busqueda.toLowerCase()) &&
     (!filtroMunicipio || d.municipio?.nombre === filtroMunicipio) &&
-    (!filtroCategoria || d.categoria?.nombre === filtroCategoria)
+    (!filtroTipo || d.tipo === filtroTipo)
   );
 
   const totalPaginas = Math.ceil(filtrados.length / PAGE_SIZE);
   const pagEnPantalla = filtrados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
-  const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setFiltroCategoria(''); setPagina(1); };
+  const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setFiltroTipo(''); setPagina(1); };
 
   if (isLoading) return <div className="destinations-section"><h2>Cargando destinos...</h2></div>;
   if (error) return <div className="destinations-section"><h2>Error: {error}</h2></div>;
@@ -106,7 +106,7 @@ export default function FeaturedDestinations() {
           setBusqueda={v => { setBusqueda(v); setPagina(1); }}
           filtros={[
             { key: 'municipio', value: filtroMunicipio, setValue: v => { setFiltroMunicipio(v); setPagina(1); }, opciones: municipios.map(m => ({ value: m, label: m })), placeholder: 'Municipio' },
-            { key: 'categoria', value: filtroCategoria, setValue: v => { setFiltroCategoria(v); setPagina(1); }, opciones: categorias.map(c => ({ value: c, label: c })), placeholder: 'Categoría' },
+            { key: 'tipo', value: filtroTipo, setValue: v => { setFiltroTipo(v); setPagina(1); }, opciones: tipos.map(c => ({ value: c, label: c })), placeholder: 'Tipo' },
           ]}
           total={filtrados.length}
           labelEntidad="destino"
@@ -121,7 +121,7 @@ export default function FeaturedDestinations() {
                 <img src={destination.imagen} alt={destination.nombre} className="destination-image"
                   onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
                 <div className="destination-badge-wrapper">
-                  <span className="destination-badge">{destination.categoria?.nombre ?? 'Sin categoría'}</span>
+                  <span className="destination-badge">{destination.tipo ?? 'Destino'}</span>
                 </div>
               </div>
               <div className="destination-content">
@@ -159,12 +159,12 @@ export default function FeaturedDestinations() {
             <img src={selectedDestination.imagen} alt={selectedDestination.nombre} className="modal-image"
               onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             <div className="modal-body">
-              <span className="destination-badge">{selectedDestination.categoria?.nombre ?? 'Sin categoría'}</span>
+              <span className="destination-badge">{selectedDestination.tipo ?? 'Destino'}</span>
               <h2 className="modal-title">{selectedDestination.nombre}</h2>
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedDestination.municipio?.nombre ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Clock size={16} /><span><strong>Horario:</strong> {formatTime(selectedDestination.horarioAbierto)} - {formatTime(selectedDestination.horarioCerrado)}</span></div>
-                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codifoPostal}</span></div>
+                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codigoPostal}</span></div>
               </div>
               <button className={`favorito-btn-grande ${favoritos.has(selectedDestination.id_destino) ? 'activo' : ''}`}
                 onClick={e => toggleFavorito(selectedDestination.id_destino, e)}>

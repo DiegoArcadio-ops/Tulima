@@ -26,8 +26,8 @@ const SECCIONES = {
       { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@hotel.com' },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', required: false, placeholder: 'Describe tu hotel brevemente...' },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
+      { name: 'estrellas', label: 'Estrellas', type: 'number', required: false, placeholder: 'Ej. 5', min: 1, max: 5 },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
     ],
   },
   restaurantes: {
@@ -48,7 +48,6 @@ const SECCIONES = {
       { name: 'horarioAbierto', label: 'Horario de apertura', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Horario de cierre', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
     ],
   },
   tours: {
@@ -80,7 +79,6 @@ const SECCIONES = {
       { name: 'horarioAbierto', label: 'Hora de inicio', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Hora de fin', type: 'time', required: false },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: false },
     ],
   },
   eventos: {
@@ -100,7 +98,6 @@ const SECCIONES = {
       { name: 'disponibilidad', label: 'Disponibilidad', type: 'text', required: false, placeholder: 'Ej. Lugares limitados, Entrada libre...' },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre', required: true },
       { name: 'id_destino', label: 'Destino turístico', type: 'select', catalogo: 'destinos', valueKey: 'id_destino', labelKey: 'nombre', required: true },
     ],
   },
@@ -276,8 +273,8 @@ export default function DashboardProveedor() {
       if (payload.numero_Calle) payload.numero_Calle = Number(payload.numero_Calle);
       if (payload.codigoPostal) payload.codigoPostal = Number(payload.codigoPostal);
       if (payload.id_municipio) payload.id_municipio = Number(payload.id_municipio);
-      if (payload.id_categoria) payload.id_categoria = Number(payload.id_categoria);
       if (payload.id_destino) payload.id_destino = Number(payload.id_destino);
+      if (payload.estrellas) payload.estrellas = Number(payload.estrellas);
       if (payload.telefono) payload.telefono = String(payload.telefono);
 
       if (!modoEdicion) {

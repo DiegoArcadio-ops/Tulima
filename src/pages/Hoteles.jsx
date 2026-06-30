@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MapPin, Phone, Mail, FileText, BedDouble } from 'lucide-react';
+import { Heart, MapPin, Phone, Mail, FileText, Star } from 'lucide-react';
 import axios from 'axios';
 import './Hoteles.css';
 import '../components/filtros-paginacion.css';
@@ -24,7 +24,6 @@ function Hoteles() {
   // Filtros
   const [busqueda, setBusqueda] = useState('');
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
-  const [filtroCategoria, setFiltroCategoria] = useState('');
   const [pagina, setPagina] = useState(1);
 
   useEffect(() => {
@@ -71,21 +70,19 @@ function Hoteles() {
 
   // Filtrado
   const municipios = [...new Set(hoteles.map(h => h.municipio?.nombre).filter(Boolean))];
-  const categorias = [...new Set(hoteles.map(h => h.categoria).filter(Boolean))];
 
   const hotelesFiltrados = hoteles.filter(h => {
     const nombre = (h.nombre_hotel || '').toLowerCase();
     return (
       nombre.includes(busqueda.toLowerCase()) &&
-      (!filtroMunicipio || h.municipio?.nombre === filtroMunicipio) &&
-      (!filtroCategoria || h.categoria === filtroCategoria)
+      (!filtroMunicipio || h.municipio?.nombre === filtroMunicipio)
     );
   });
 
   const totalPaginas = Math.ceil(hotelesFiltrados.length / PAGE_SIZE);
   const hotelesPagina = hotelesFiltrados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
 
-  const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setFiltroCategoria(''); setPagina(1); };
+  const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setPagina(1); };
 
   if (isLoading) return <div className="hoteles-mensaje">Cargando hoteles...</div>;
   if (error) return <div className="hoteles-mensaje">Error: {error}</div>;
@@ -99,7 +96,6 @@ function Hoteles() {
         setBusqueda={v => { setBusqueda(v); setPagina(1); }}
         filtros={[
           { key: 'municipio', value: filtroMunicipio, setValue: v => { setFiltroMunicipio(v); setPagina(1); }, opciones: municipios.map(m => ({ value: m, label: m })), placeholder: 'Municipio' },
-          { key: 'categoria', value: filtroCategoria, setValue: v => { setFiltroCategoria(v); setPagina(1); }, opciones: categorias.map(c => ({ value: c, label: c })), placeholder: 'Categoría' },
         ]}
         total={hotelesFiltrados.length}
         labelEntidad="hotel"
@@ -110,7 +106,11 @@ function Hoteles() {
         {hotelesPagina.map(hotel => (
           <div key={hotel.id_hotel} className="hotel-card" onClick={() => setSelectedHotel(hotel)} style={{ cursor: 'pointer' }}>
             <div className="hotel-imagen-container">
-              <span className="hotel-etiqueta">{hotel.categoria}</span>
+              {hotel.estrellas > 0 && (
+                <span className="hotel-etiqueta" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {hotel.estrellas} <Star size={14} fill="currentColor" />
+                </span>
+              )}
               <img src={hotel.imagen} alt={hotel.nombre_hotel} className="hotel-imagen"
                 onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             </div>
@@ -124,12 +124,7 @@ function Hoteles() {
               </div>
               <h3 className="hotel-titulo">{hotel.nombre_hotel}</h3>
               <div className="hotel-footer">
-                <div className="hotel-precio">
-                  <BedDouble size={16} className="icono-precio" />
-                  {hotel.disponibilidad != null
-                    ? `${hotel.disponibilidad} habitaciones disponibles`
-                    : 'Disponibilidad no especificada'}
-                </div>
+                <div className="hotel-precio" />
                 <button className={`favorito-btn ${favoritos.has(hotel.id_hotel) ? 'activo' : ''}`}
                   onClick={e => toggleFavorito(hotel.id_hotel, e)} aria-label="Añadir a favoritos">
                   <Heart className="favorito-icono" />
@@ -153,7 +148,11 @@ function Hoteles() {
             <img src={selectedHotel.imagen} alt={selectedHotel.nombre_hotel} className="modal-image"
               onError={e => { e.target.src = "https://placehold.co/600x400?text=Sin+Imagen" }} />
             <div className="modal-body">
-              <span className="hotel-etiqueta">{selectedHotel.categoria}</span>
+              {selectedHotel.estrellas > 0 && (
+                <span className="hotel-etiqueta" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {selectedHotel.estrellas} <Star size={14} fill="currentColor" />
+                </span>
+              )}
               <h2 className="modal-title">{selectedHotel.nombre_hotel}</h2>
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedHotel.municipio?.nombre ?? 'N/A'}</span></div>
@@ -161,7 +160,7 @@ function Hoteles() {
                 <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedHotel.telefono?.toString() ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Mail size={16} /><span><strong>Email:</strong> {selectedHotel.email ?? 'N/A'}</span></div>
                 {selectedHotel.descripcion && <div className="modal-detail-row"><FileText size={16} /><span><strong>Descripción:</strong> {selectedHotel.descripcion}</span></div>}
-                <div className="modal-detail-row"><BedDouble size={16} /><span><strong>Disponibilidad:</strong> {selectedHotel.disponibilidad != null ? `${selectedHotel.disponibilidad} habitaciones` : 'No especificada'}</span></div>
+                {selectedHotel.estrellas > 0 && <div className="modal-detail-row"><Star size={16} /><span><strong>Categoría:</strong> {selectedHotel.estrellas} estrellas</span></div>}
               </div>
             </div>
           </div>

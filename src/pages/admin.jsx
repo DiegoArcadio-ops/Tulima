@@ -12,12 +12,11 @@ const SECCIONES = {
       { name: 'nombre', label: 'Nombre del Destino', type: 'text' },
       { name: 'nombre_Calle', label: 'Calle', type: 'text' },
       { name: 'numero_Calle', label: 'Número Exterior', type: 'number' },
-      { name: 'codifoPostal', label: 'Código Postal', type: 'number' },
+      { name: 'codigoPostal', label: 'Código Postal', type: 'number' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
       { name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time' },
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre' },
     ],
   },
   hoteles: {
@@ -34,7 +33,6 @@ const SECCIONES = {
       { name: 'descripcion', label: 'Descripción', type: 'textarea' },
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre' },
     ],
   },
   restaurantes: {
@@ -53,7 +51,6 @@ const SECCIONES = {
       { name: 'horarioAbierto', label: 'Horario de Apertura', type: 'time' },
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
-      { name: 'id_categoria', label: 'Categoría', type: 'select', catalogo: 'categorias', valueKey: 'id_categoria', labelKey: 'nombre' },
     ],
   },
   municipios: {
@@ -277,7 +274,7 @@ export default function TulimaAdminPanel() {
                           </td>
                           <td className="px-6 py-4">
                             <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
-                              {item.correo || item.categoria?.nombre || item.tipo || 'N/A'}
+                              {item.tipo || item.tipoTour || item.tipoEvento || item.categoria?.nombre || item.correo || 'N/A'}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-slate-600">

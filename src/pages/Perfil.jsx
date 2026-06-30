@@ -125,22 +125,24 @@ export default function Perfil() {
     hoteles:      favoritos.filter(f => f.id_hotel).length,
     restaurantes: favoritos.filter(f => f.id_restaurante).length,
     tours:        favoritos.filter(f => f.id_provedor_tour).length,
+    eventos:      favoritos.filter(f => f.id_evento).length,
   };
 
   const favoritosFiltrados = favoritos.filter(fav => {
     const tipo = fav.id_hotel ? 'hotel'
                : fav.id_restaurante ? 'restaurante'
                : fav.id_provedor_tour ? 'tour'
+               : fav.id_evento ? 'evento'
                : 'destino';
     if (filtroTipo !== 'todos' && tipo !== filtroTipo) return false;
     if (filtroBusq.trim()) {
       const mun = (
         fav.hotel?.municipio?.nombre || fav.restaurante?.municipio?.nombre ||
-        fav.provedor_tour?.municipio?.nombre || fav.destino_turistico?.municipio?.nombre || ''
+        fav.provedor_tour?.municipio?.nombre || fav.destino_turistico?.municipio?.nombre || fav.evento?.destino_turistico?.municipio?.nombre || ''
       ).toLowerCase();
       const nombre = (
         fav.hotel?.nombre_hotel || fav.restaurante?.nombre ||
-        fav.provedor_tour?.nombre || fav.destino_turistico?.nombre || ''
+        fav.provedor_tour?.nombre || fav.destino_turistico?.nombre || fav.evento?.nombre_Evento || ''
       ).toLowerCase();
       const q = filtroBusq.toLowerCase();
       if (!mun.includes(q) && !nombre.includes(q)) return false;
@@ -184,6 +186,11 @@ export default function Perfil() {
             <div className="perfil-stat">
               <span className="perfil-stat-num">{conteoFav.tours}</span>
               <span className="perfil-stat-label">Tours</span>
+            </div>
+            <div className="perfil-stat-divider" />
+            <div className="perfil-stat">
+              <span className="perfil-stat-num">{conteoFav.eventos}</span>
+              <span className="perfil-stat-label">Eventos</span>
             </div>
           </div>
         </div>
@@ -422,24 +429,28 @@ function TarjetaFavorito({ fav }) {
   const esHotel  = !!fav.hotel;
   const esRest   = !!fav.restaurante;
   const esTour   = !!fav.provedor_tour;
+  const esEvento = !!fav.evento;
 
   const nombre = fav.hotel?.nombre_hotel
     || fav.restaurante?.nombre
     || fav.provedor_tour?.nombre
+    || fav.evento?.nombre_Evento
     || fav.destino_turistico?.nombre || '—';
 
   const municipio = fav.hotel?.municipio?.nombre
     || fav.restaurante?.municipio?.nombre
     || fav.provedor_tour?.municipio?.nombre
+    || fav.evento?.destino_turistico?.municipio?.nombre
     || fav.destino_turistico?.municipio?.nombre || '';
 
   const imagen = fav.hotel?.imagen
     || fav.restaurante?.imagen
     || fav.provedor_tour?.imagen
+    || fav.evento?.imagen
     || fav.destino_turistico?.imagen || null;
 
-  const tipo = esHotel ? 'Hotel' : esRest ? 'Restaurante' : esTour ? 'Tour' : 'Destino';
-  const TipoIcon = esHotel ? Hotel : esRest ? UtensilsCrossed : Bike;
+  const tipo = esHotel ? 'Hotel' : esRest ? 'Restaurante' : esTour ? 'Tour' : esEvento ? 'Evento' : 'Destino';
+  const TipoIcon = esHotel ? Hotel : esRest ? UtensilsCrossed : esTour ? Bike : esEvento ? Calendar : MapPin;
 
   return (
     <div className="perfil-fav-card">
@@ -449,7 +460,7 @@ function TarjetaFavorito({ fav }) {
           : <div className="perfil-fav-card-img-placeholder"><Heart size={28} /></div>
         }
         <span className="perfil-fav-card-tipo">
-          <TipoIcon size={12} /> {tipo}
+          {TipoIcon && <TipoIcon size={12} />} {tipo}
         </span>
       </div>
       <div className="perfil-fav-card-body">
