@@ -203,12 +203,12 @@ export default function InteractiveMap() {
         </div>
       )}
 
-      <div className="map-legend">
+      {/* <div className="map-legend">
         <div className="map-legend-item">
           <div className="map-legend-color map-legend-color--primary"></div>
           <span>Municipios de Colima</span>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }

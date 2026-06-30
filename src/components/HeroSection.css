@@ -2,7 +2,7 @@
 :root {
   --primary-color: #0ea5e9; /* Reemplaza con tu color principal (azul) */
   --primary-hover: #0284c7;
-  --accent-color: #f59e0b; /* text-accent (ej. amarillo/naranja) */
+  --accent-color: #0ea5e9; /* text-accent (ej. amarillo/naranja) */
   --hero-text-main: #ffffff; /* text-card (usualmente blanco en fondos oscuros/imágenes) */
   --hero-overlay: rgba(17, 24, 39, 0.4); /* bg-foreground/40 (filtro oscuro) */
 }
