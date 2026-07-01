@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { X, Info, Heart } from "lucide-react";
-import colimaGeoData from "../data/colimaMunicipios.json";
+import { X, Info, Heart, MapPin, Clock, Phone, Star, Calendar } from "lucide-react";import colimaGeoData from "../data/colimaMunicipios.json";
 import './InteractiveMap.css';
 
 const BACKEND_URL = "https://tulima-backend.vercel.app";
@@ -30,6 +29,16 @@ const ETIQUETAS_TIPO = {
   tour: 'Tour',
   destino: 'Destino turístico',
   evento: 'Evento',
+};
+
+const formatHora = (t) => {
+  if (!t) return null;
+  return t.substring(11, 16);
+};
+
+const formatFecha = (f) => {
+  if (!f) return null;
+  return new Date(f).toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
 };
 
 export default function InteractiveMap() {
@@ -160,20 +169,64 @@ export default function InteractiveMap() {
                 position={[p.lat, p.lng]}
                 icon={ICONOS_POR_TIPO[p.tipo] || ICONOS_POR_TIPO.destino}
               >
-                <Popup>
-                  <div style={{ minWidth: 140 }}>
+               <Popup minWidth={220} maxWidth={260}>
+                  <div style={{ minWidth: 200 }}>
                     {p.imagen && (
                       <img
                         src={p.imagen}
                         alt={p.nombre}
-                        style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 6, marginBottom: 6 }}
+                        style={{ width: '100%', height: 110, objectFit: 'cover', borderRadius: 6, marginBottom: 8 }}
                         onError={(e) => { e.target.style.display = 'none'; }}
                       />
                     )}
-                    <strong style={{ display: 'block', fontSize: 13 }}>{p.nombre}</strong>
-                    <span style={{ fontSize: 12, color: '#888' }}>
-                      {ETIQUETAS_TIPO[p.tipo] || 'Servicio'} · {p.municipio}
+
+                    <strong style={{ display: 'block', fontSize: 14, marginBottom: 2 }}>{p.nombre}</strong>
+
+                    <span style={{ fontSize: 12, color: '#888', display: 'block', marginBottom: 6 }}>
+                      {ETIQUETAS_TIPO[p.tipo] || 'Servicio'}{p.subtipo ? ` · ${p.subtipo}` : ''}
                     </span>
+
+                    {p.tipo === 'hotel' && p.estrellas ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }}>
+                        {Array.from({ length: p.estrellas }).map((_, i) => (
+                          <Star key={i} size={12} color="#f59e0b" fill="#f59e0b" />
+                        ))}
+                      </div>
+                    ) : null}
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 12, color: '#444' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                        <MapPin size={13} color="#666" />
+                        <span>{p.municipio}{p.direccion ? ` · ${p.direccion}` : ''}</span>
+                      </div>
+
+                      {(p.horarioAbierto || p.horarioCerrado) && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <Clock size={13} color="#666" />
+                          <span>{formatHora(p.horarioAbierto) || '¿?'} - {formatHora(p.horarioCerrado) || '¿?'}</span>
+                        </div>
+                      )}
+
+                      {p.telefono && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <Phone size={13} color="#666" />
+                          <span>{p.telefono}</span>
+                        </div>
+                      )}
+
+                      {(p.fechaInicio || p.fechaTermino) && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                          <Calendar size={13} color="#666" />
+                          <span>{formatFecha(p.fechaInicio)} - {formatFecha(p.fechaTermino)}</span>
+                        </div>
+                      )}
+
+                      {p.descripcion && (
+                        <p style={{ margin: '4px 0 0', color: '#555' }}>
+                          {p.descripcion.length > 90 ? `${p.descripcion.slice(0, 90)}...` : p.descripcion}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </Popup>
               </Marker>
