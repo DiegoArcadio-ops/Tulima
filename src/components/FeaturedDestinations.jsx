@@ -25,12 +25,19 @@ export default function FeaturedDestinations() {
   // Filtros
   const [busqueda, setBusqueda] = useState('');
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
-  const [filtroTipo, setFiltroTipo] = useState('');
+ const [filtroTipo, setFiltroTipo] = useState('');
   const [pagina, setPagina] = useState(1);
+  const [todosMunicipios, setTodosMunicipios] = useState([]);
 
   useEffect(() => {
     axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
       .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/municipios')
+      .then(({ data }) => setTodosMunicipios(data))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -75,7 +82,9 @@ export default function FeaturedDestinations() {
   const formatTime = (t) => { if (!t) return "Horario no disponible"; return t.substring(11, 16); };
 
   // Filtros
-  const municipios = [...new Set(destinations.map(d => d.municipio?.nombre).filter(Boolean))];
+  const municipios = todosMunicipios.length
+    ? todosMunicipios.map(m => m.nombre).sort((a, b) => a.localeCompare(b))
+    : [...new Set(destinations.map(d => d.municipio?.nombre).filter(Boolean))];
   const tipos = [...new Set(destinations.map(d => d.tipo).filter(Boolean))];
 
   const filtrados = destinations.filter(d =>
