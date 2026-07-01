@@ -29,9 +29,11 @@ export default function MiniMap({
   onChange,
   height = 200,
   zoom = 15,
+  interactive = true, // permite hacer zoom y mover el mapa aunque no sea editable
 }) {
   const tieneCoordenadas = lat != null && lng != null;
   const centro = tieneCoordenadas ? [lat, lng] : [19.2433, -103.7247]; // centro de Colima por defecto
+  const puedeNavegar = editable || interactive;
 
   return (
     <div>
@@ -40,10 +42,10 @@ export default function MiniMap({
           center={centro}
           zoom={tieneCoordenadas ? zoom : 11}
           style={{ height: '100%', width: '100%' }}
-          dragging={editable}
-          scrollWheelZoom={editable}
-          doubleClickZoom={editable}
-          zoomControl={editable}
+          dragging={puedeNavegar}
+          scrollWheelZoom={puedeNavegar}
+          doubleClickZoom={puedeNavegar}
+          zoomControl={puedeNavegar}
         >
           <TileLayer
             attribution='&copy; OpenStreetMap'
