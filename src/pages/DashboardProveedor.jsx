@@ -317,7 +317,7 @@ export default function DashboardProveedor() {
 const eliminar = (item) => {
   const nombre = item[seccionActual.nombreKey] || 'este registro';
   setModalConfirm({
-    mensaje: `¿Eliminar "${nombre}"? Esta acción no se puede deshacer.`,
+    mensaje: `¿Eliminar "${nombre}" de forma permanente? Esta acción no se puede deshacer y liberará el cupo para registrar un nuevo ${seccionActual.titulo.slice(0, -1).toLowerCase()}.`,
     item
   });
 };
@@ -434,19 +434,24 @@ const confirmarEliminar = async () => {
                 Gestiona tus {seccionActual.titulo.toLowerCase()} — los nuevos quedarán pendientes de aprobación.
               </p>
             </div>
-            <button
-              onClick={abrirModalCrear}
-              className="flex items-center gap-2 bg-[#00a8ff] hover:bg-[#0097e6] text-white px-5 py-2.5 rounded-full font-medium transition-all text-sm flex-shrink-0"
-            >
-              <Plus className="w-4 h-4" />
-              Agregar {seccionActual.titulo.slice(0, -1)}
-            </button>
+{datos.length === 0 && (
+              <button
+                onClick={abrirModalCrear}
+                className="flex items-center gap-2 bg-[#00a8ff] hover:bg-[#0097e6] text-white px-5 py-2.5 rounded-full font-medium transition-all text-sm flex-shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                Agregar {seccionActual.titulo.slice(0, -1)}
+              </button>
+            )}
           </header>
 
           <div className="mb-6 flex items-start gap-3 bg-[#00a8ff]/5 border border-[#00a8ff]/20 rounded-xl p-4">
             <Clock className="w-4 h-4 text-[#00a8ff] flex-shrink-0 mt-0.5" />
             <p className="text-sm text-slate-600">
               Los registros nuevos aparecen como <span className="font-medium text-amber-600">Pendiente</span> hasta que el administrador los active. Una vez activos son visibles para los turistas.
+              {datos.length > 0 && (
+                <> Solo puedes tener <span className="font-medium">un {seccionActual.titulo.slice(0, -1).toLowerCase()}</span> por cuenta — si quieres registrar uno distinto, primero elimina el actual.</>
+              )}
             </p>
           </div>
 
