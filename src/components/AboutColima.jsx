@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Palmtree, Mountain, Coffee, Fish, HelpCircle } from "lucide-react";
+import { TreePalm, Mountain, Coffee, Fish, HelpCircle } from "lucide-react";
 import './AboutColima.css';
 
 const iconMap = {
-  Palmtree: Palmtree,
+  Palmtree: TreePalm,   // la key queda igual para no romper los datos del backend
   Mountain: Mountain,
   Coffee: Coffee,
   Fish: Fish
@@ -14,26 +14,35 @@ export default function AboutColima() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+ // useEffect(() => {
     /* Aqui va el endpoint Alan*/
-    fetch('/api/colima/features') // no se te olvide cambiar la URL
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Error de red al intentar obtener los datos');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFeatures(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Hubo un problema con el fetch:", error);
-        setError(error.message);
-        setIsLoading(false);
-      });
-  }, []);
-
+ //   fetch('/api/colima/features') // no se te olvide cambiar la URL
+ //     .then((response) => {
+ //       if (!response.ok) {
+ //         throw new Error('Error de red al intentar obtener los datos');
+ //       }
+ //       return response.json();
+ //     })
+ //     .then((data) => {
+ //       setFeatures(data);
+ //       setIsLoading(false);
+ //     })
+ //     .catch((error) => {
+ //       console.error("Hubo un problema con el fetch:", error);
+ //       setError(error.message);
+ //       setIsLoading(false);
+ //     });
+ // }, []);
+useEffect(() => {
+  setFeatures([
+    { icon: 'Palmtree', title: 'Playas', description: 'Kilómetros de costa en el Pacífico mexicano.' },
+    { icon: 'Mountain', title: 'Volcán de Fuego', description: 'Uno de los volcanes más activos de América Latina.' },
+    { icon: 'Coffee', title: 'Café de altura', description: 'Granos cultivados en las laderas de la sierra colimense.' },
+    { icon: 'Fish', title: 'Gastronomía marina', description: 'Mariscos frescos del Pacífico en Manzanillo.' },
+  ]);
+  setIsLoading(false);
+}, []);
+  
   return (
     <section
       id="nosotros"
