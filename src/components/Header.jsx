@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { Menu, X, MapPin, UserCircle, LogOut } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import TuliA from "./TuliA";
 import { useAuth } from "../context/AuthContext";
 import './Header.css';
 
 const navLinks = [
   { to: "/", label: "Inicio" },
-  { to: "#mapa", label: "Municipios" },
-  { to: "#destinos", label: "Destinos" },
+  { to: "/", label: "Municipios",   anchor: "mapa" },
+  { to: "/", label: "Destinos",     anchor: "destinos" },
   { to: "/sobre-colima", label: "Sobre Colima" },
-  { to: "#contacto", label: "Contacto" },
+  { to: "/", label: "Contacto",     anchor: "contacto" },
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },
   { to: "/tours", label: "Tours" },
@@ -27,18 +27,24 @@ export default function Header() {
     logout();
   };
 
-  const handleAnchorClick = (e, to) => {
-    // Solo para enlaces de anclaje en la misma página
-    if (to.startsWith('#')) {
-      e.preventDefault();
-      const targetId = to.substring(1);
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleAnchorClick = (e, link) => {
+    e.preventDefault();
+    if (link.anchor) {
+      if (location.pathname === '/') {
+        // ya estamos en home → scroll directo
+        const el = document.getElementById(link.anchor);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // navegamos a home y guardamos el ancla en state
+        navigate('/', { state: { scrollTo: link.anchor } });
       }
+    } else {
+      navigate(link.to);
     }
   };
-
   return (
     <>
       <header className="header-root">
@@ -52,22 +58,24 @@ export default function Header() {
 
             {/* Nav: centro */}
             <nav className="header-desktop-nav">
-              {navLinks.map((link) => (
-                link.label === "TuliA" ? (
-                  <button key={link.to} onClick={() => setIsChatOpen(true)} className="header-nav-link">
-                    {link.label}
-                  </button>
-                ) : link.to.startsWith("/") ? (
-                  <Link key={link.to} to={link.to} className="header-nav-link">{link.label}</Link>
-                ) : (
+            {navLinks.map((link) => (
+              link.label === "TuliA" ? (
+                <button key={link.label} onClick={() => setIsChatOpen(true)} className="header-nav-link">
+                  {link.label}
+                </button>
+              ) : link.anchor ? (
                   <a
-                    key={link.to}
-                    href={link.to}
+                    key={link.label}
+                    href={`/#${link.anchor}`}
                     className="header-nav-link"
-                    onClick={(e) => handleAnchorClick(e, link.to)}
+                    onClick={(e) => handleAnchorClick(e, link)}
                   >
                     {link.label}
                   </a>
+                ) : (
+                  <Link key={link.label} to={link.to} className="header-nav-link">
+                    {link.label}
+                  </Link>
                 )
               ))}
             </nav>
