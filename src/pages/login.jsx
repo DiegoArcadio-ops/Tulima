@@ -55,7 +55,7 @@ function Login() {
       // Intento 2: login de proveedor (por correo)
       try {
         const res = await axios.post(`${API}/login-proveedor`,
-          { email: identificador, contraseña },
+          { correo: identificador, contraseña },
           config
         );
         return redirigir(res.data.usuario);
