@@ -1,10 +1,36 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import { X, Info, Heart } from "lucide-react";
 import colimaGeoData from "../data/colimaMunicipios.json";
 import './InteractiveMap.css';
 
 const BACKEND_URL = "https://tulima-backend.vercel.app";
+
+// Íconos por tipo de servicio (emoji dentro de un pin de color)
+const crearIcono = (emoji, color) => new L.DivIcon({
+  html: `<div class="pin-servicio" style="background:${color}">${emoji}</div>`,
+  className: 'icono-mapa-wrapper',
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  popupAnchor: [0, -28],
+});
+
+const ICONOS_POR_TIPO = {
+  hotel: crearIcono('🏨', '#00a8ff'),
+  restaurante: crearIcono('🍽️', '#f97316'),
+  tour: crearIcono('🧭', '#22c55e'),
+  destino: crearIcono('📍', '#a855f7'),
+  evento: crearIcono('🎉', '#e11d48'),
+};
+
+const ETIQUETAS_TIPO = {
+  hotel: 'Hotel',
+  restaurante: 'Restaurante',
+  tour: 'Tour',
+  destino: 'Destino turístico',
+  evento: 'Evento',
+};
 
 export default function InteractiveMap() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,6 +38,7 @@ export default function InteractiveMap() {
   const [municipiosData, setMunicipiosData] = useState([]);
   const [topAmados, setTopAmados] = useState([]);
   const [loadingTop, setLoadingTop] = useState(false);
+  const [puntosServicios, setPuntosServicios] = useState([]);
 
   // Referencia para guardar los datos sin perderlos en el evento del mapa
   const municipiosRef = useRef([]);
@@ -24,6 +51,13 @@ export default function InteractiveMap() {
         municipiosRef.current = data; // Guardamos los datos en la referencia
       })
       .catch((err) => console.warn("Backend no listo, usando datos locales", err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`${BACKEND_URL}/mapa/servicios`)
+      .then((res) => res.json())
+      .then((data) => setPuntosServicios(Array.isArray(data) ? data : []))
+      .catch((err) => console.warn("No se pudieron cargar los puntos del mapa", err));
   }, []);
 
   const colimaCenter = [19.15, -103.8];
@@ -119,6 +153,31 @@ export default function InteractiveMap() {
               style={estiloMunicipio}
               onEachFeature={onEachFeature}
             />
+
+            {puntosServicios.map(p => (
+              <Marker
+                key={p.id}
+                position={[p.lat, p.lng]}
+                icon={ICONOS_POR_TIPO[p.tipo] || ICONOS_POR_TIPO.destino}
+              >
+                <Popup>
+                  <div style={{ minWidth: 140 }}>
+                    {p.imagen && (
+                      <img
+                        src={p.imagen}
+                        alt={p.nombre}
+                        style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 6, marginBottom: 6 }}
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                    )}
+                    <strong style={{ display: 'block', fontSize: 13 }}>{p.nombre}</strong>
+                    <span style={{ fontSize: 12, color: '#888' }}>
+                      {ETIQUETAS_TIPO[p.tipo] || 'Servicio'} · {p.municipio}
+                    </span>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
           </MapContainer>
         </div>
       </div>

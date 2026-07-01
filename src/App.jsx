@@ -17,6 +17,7 @@ import Ayuda from './pages/Ayuda';
 import EventosNuevo from './pages/EventosNuevo';
 import Perfil from './pages/Perfil';
 import SobreColima from './pages/SobreColima';
+import SeleccionRegistro from './pages/SeleccionRegistro';
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
             <Route path="restaurantes" element={<Restaurantes />} />
             <Route path="tours" element={<Tours />} />
             <Route path="login" element={<Login />} />
-            <Route path="registro" element={<Registro />} />
+            <Route path="registro" element={<SeleccionRegistro />} />
+            <Route path="registro/usuario" element={<Registro />} />
             <Route path="registro-proveedor" element={<RegistroProveedor />} />
             <Route path="ayuda" element={<Ayuda />} />
             <Route path="eventos" element={<EventosNuevo />} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X } from 'lucide-react';
+import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut } from 'lucide-react';
 import { Toast } from '../components/Toast';
 
 const SECCIONES = {
@@ -221,6 +221,12 @@ export default function TulimaAdminPanel() {
               );
             })}
           </nav>
+          <div className="p-4 border-t border-slate-100">
+            <a href="/" className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-500 text-sm rounded-lg hover:bg-red-50 transition-colors">
+              <LogOut className="w-4 h-4" />
+              Salir al sitio principal
+            </a>
+          </div>
         </aside>
 
         {/* ÁREA PRINCIPAL */}
