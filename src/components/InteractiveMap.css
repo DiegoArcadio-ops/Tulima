@@ -438,3 +438,29 @@
   z-index: 1001;
   position: relative;
 }
+
+.icono-mapa-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.pin-servicio {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.35);
+  border: 2px solid white;
+  font-size: 14px;
+}
+
+.pin-servicio::before {
+  content: '';
+}
+
+.pin-servicio > * {
+  transform: rotate(45deg);
+}

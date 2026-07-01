@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
 import { Toast } from '../components/Toast';
+import MiniMap from '../components/MiniMap';
 
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 const PAGE_SIZE = 9;
@@ -154,7 +155,21 @@ const toggleFavorito = async (id, e) => {
               <h2 className="modal-title">{selectedRestaurante.nombre}</h2>
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedRestaurante.municipio?.nombre ?? 'N/A'}</span></div>
-                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, CP {selectedRestaurante.codigoPostal}</span></div>
+
+                <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                    <MapPin size={16} />
+                    <strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, CP {selectedRestaurante.codigoPostal}
+                  </span>
+                  {selectedRestaurante.latitud != null && selectedRestaurante.longitud != null ? (
+                    <MiniMap lat={selectedRestaurante.latitud} lng={selectedRestaurante.longitud} height={180} />
+                  ) : (
+                    <p style={{ fontSize: '12px', color: '#999', margin: 0 }}>
+                      Este restaurante aún no tiene ubicación exacta registrada en el mapa.
+                    </p>
+                  )}
+                </div>
+
                 <div className="modal-detail-row"><Clock size={16} /><span><strong>Horario:</strong> {formatTime(selectedRestaurante.horarioAbierto)} - {formatTime(selectedRestaurante.horarioCerrado)}</span></div>
                 <div className="modal-detail-row"><Phone size={16} /><span><strong>Teléfono:</strong> {selectedRestaurante.telefono?.toString() ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Mail size={16} /><span><strong>Email:</strong> {selectedRestaurante.email ?? 'N/A'}</span></div>

@@ -7,6 +7,7 @@ import FiltrosBusqueda from './FiltrosBusqueda';
 import Paginacion from './Paginacion';
 import { useAuth } from '../context/AuthContext';
 import { Toast } from './Toast';
+import MiniMap from './MiniMap';
 
 const URL = "https://tulima-backend.vercel.app/destinos";
 const PAGE_SIZE = 6;
@@ -164,7 +165,20 @@ export default function FeaturedDestinations() {
               <div className="modal-details">
                 <div className="modal-detail-row"><MapPin size={16} /><span><strong>Municipio:</strong> {selectedDestination.municipio?.nombre ?? 'N/A'}</span></div>
                 <div className="modal-detail-row"><Clock size={16} /><span><strong>Horario:</strong> {formatTime(selectedDestination.horarioAbierto)} - {formatTime(selectedDestination.horarioCerrado)}</span></div>
-                <div className="modal-detail-row"><MapPin size={16} /><span><strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codigoPostal}</span></div>
+
+                <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                    <MapPin size={16} />
+                    <strong>Dirección:</strong> {selectedDestination.numero_Calle} {selectedDestination.nombre_Calle}, CP {selectedDestination.codigoPostal}
+                  </span>
+                  {selectedDestination.latitud != null && selectedDestination.longitud != null ? (
+                    <MiniMap lat={selectedDestination.latitud} lng={selectedDestination.longitud} height={180} />
+                  ) : (
+                    <p style={{ fontSize: '12px', color: '#999', margin: 0 }}>
+                      Este destino aún no tiene ubicación exacta registrada en el mapa.
+                    </p>
+                  )}
+                </div>
               </div>
               <button className={`favorito-btn-grande ${favoritos.has(selectedDestination.id_destino) ? 'activo' : ''}`}
                 onClick={e => toggleFavorito(selectedDestination.id_destino, e)}>
