@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star } from 'lucide-react';
-import './sobreColima.css';
+import './sobrecolima.css';
 
 const tradiciones = [
   {
