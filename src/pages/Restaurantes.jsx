@@ -27,10 +27,17 @@ function Restaurantes() {
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [pagina, setPagina] = useState(1);
+  const [todosMunicipios, setTodosMunicipios] = useState([]);
 
   useEffect(() => {
     axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
       .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/municipios')
+      .then(({ data }) => setTodosMunicipios(data))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -71,7 +78,9 @@ const toggleFavorito = async (id, e) => {
   }
 };
 
-  const municipios = [...new Set(restaurantes.map(r => r.municipio?.nombre).filter(Boolean))];
+const municipios = todosMunicipios.length
+    ? todosMunicipios.map(m => m.nombre).sort((a, b) => a.localeCompare(b))
+    : [...new Set(restaurantes.map(r => r.municipio?.nombre).filter(Boolean))];
   const tipos = [...new Set(restaurantes.map(r => r.tipo).filter(Boolean))];
 
   const filtrados = restaurantes.filter(r =>

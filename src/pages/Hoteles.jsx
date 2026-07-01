@@ -23,13 +23,20 @@ function Hoteles() {
   const [toast, setToast] = useState(null);
 
   // Filtros
-  const [busqueda, setBusqueda] = useState('');
+const [busqueda, setBusqueda] = useState('');
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
   const [pagina, setPagina] = useState(1);
+  const [todosMunicipios, setTodosMunicipios] = useState([]);
 
   useEffect(() => {
     axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
       .then(({ data }) => setCsrfToken(data.csrfToken))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/municipios')
+      .then(({ data }) => setTodosMunicipios(data))
       .catch(() => {});
   }, []);
 
@@ -69,8 +76,9 @@ function Hoteles() {
   }
 };
 
-  // Filtrado
-  const municipios = [...new Set(hoteles.map(h => h.municipio?.nombre).filter(Boolean))];
+ const municipios = todosMunicipios.length
+    ? todosMunicipios.map(m => m.nombre).sort((a, b) => a.localeCompare(b))
+    : [...new Set(hoteles.map(h => h.municipio?.nombre).filter(Boolean))];
 
   const hotelesFiltrados = hoteles.filter(h => {
     const nombre = (h.nombre_hotel || '').toLowerCase();
