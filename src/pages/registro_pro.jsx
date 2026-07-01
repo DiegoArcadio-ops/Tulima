@@ -58,7 +58,7 @@ function RegistroProveedor() {
       const respuesta = await axios.post('https://tulima-backend.vercel.app/proveedores', {
         primerNombre:      formData.primerNombre,
         nombreUsuario:     formData.nombreUsuario,
-        correo:            formData.correo,
+        correoCorporativo: formData.correo,
         rfc:               formData.rfc,
         contraseña:        formData.contraseña,
         tipo_servicio:     tipoSeleccionado,
