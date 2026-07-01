@@ -23,14 +23,21 @@ function Eventos() {
   const [filtroTipo, setFiltroTipo] = useState('');
   const [filtroMunicipio, setFiltroMunicipio] = useState('');
 
-  // Paginación
+// Paginación
   const PAGE_SIZE = 9;
   const [pagina, setPagina] = useState(1);
+  const [todosMunicipios, setTodosMunicipios] = useState([]);
 
   useEffect(() => {
     axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
       .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    axios.get('https://tulima-backend.vercel.app/municipios')
+      .then(({ data }) => setTodosMunicipios(data))
+      .catch(() => {});
+  }, []);  
 
   useEffect(() => {
     if (!usuario) return;
@@ -88,8 +95,9 @@ function Eventos() {
 
   // Valores únicos para filtros
   const tipos = [...new Set(eventos.map(e => e.tipoEvento).filter(Boolean))];
-  const municipios = [...new Set(eventos.map(e => e.destino_turistico?.municipio?.nombre).filter(Boolean))];
-
+const municipios = todosMunicipios.length
+    ? todosMunicipios.map(m => m.nombre).sort((a, b) => a.localeCompare(b))
+    : [...new Set(eventos.map(e => e.destino_turistico?.municipio?.nombre).filter(Boolean))];
   // Filtrado
   const eventosFiltrados = eventos.filter(ev => {
     const nombre = (ev.nombre_Evento || '').toLowerCase();
