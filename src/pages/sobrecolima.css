@@ -1,0 +1,449 @@
+/* ═══════════════════════════════════════════════
+   SobreColima.css
+   Paleta: azul primario #0ea5e9, acento volcán
+   #f59e0b, fondo oscuro #0f172a
+   ═══════════════════════════════════════════════ */
+
+/* ── Reset / tokens locales ────────────────────── */
+.sc-page {
+  --sc-blue:      #0ea5e9;
+  --sc-blue-dark: #0284c7;
+  --sc-amber:     #f59e0b;
+  --sc-dark:      #0f172a;
+  --sc-dark2:     #1e293b;
+  --sc-white:     #ffffff;
+  --sc-gray:      #94a3b8;
+  --sc-light-bg:  #f8fafc;
+
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: var(--sc-white);
+  color: var(--sc-dark);
+  overflow-x: hidden;
+}
+
+.sc-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Eyebrow / títulos compartidos ─────────────── */
+.sc-section-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sc-blue);
+  margin-bottom: 0.6rem;
+}
+.sc-section-eyebrow--light { color: var(--sc-amber); }
+
+.sc-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--sc-dark);
+  margin: 0 0 1.5rem;
+  line-height: 1.15;
+}
+.sc-section-title--light { color: var(--sc-white); }
+
+/* ══════════════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════════════ */
+.sc-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(160deg, rgba(15,23,42,0.92) 0%, rgba(2,132,199,0.55) 100%),
+    url('https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=1600&q=80') center/cover no-repeat;
+  padding: 6rem 1.5rem 4rem;
+  text-align: center;
+}
+
+.sc-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(14,165,233,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.sc-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 52rem;
+}
+
+.sc-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sc-blue);
+  background: rgba(14,165,233,0.12);
+  border: 1px solid rgba(14,165,233,0.35);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+}
+
+.sc-hero__title {
+  font-size: clamp(2.4rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--sc-white);
+  line-height: 1.08;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.02em;
+}
+.sc-hero__title--accent { color: var(--sc-amber); }
+
+.sc-hero__sub {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: rgba(255,255,255,0.78);
+  max-width: 36rem;
+  margin: 0 auto 2.5rem;
+  line-height: 1.65;
+}
+
+.sc-hero__stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.sc-hero__stat { text-align: center; }
+.sc-hero__stat-num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--sc-white);
+  line-height: 1;
+}
+.sc-hero__stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sc-gray);
+  margin-top: 0.2rem;
+}
+.sc-hero__stat-div {
+  width: 1px;
+  height: 2.5rem;
+  background: rgba(255,255,255,0.2);
+}
+
+/* Scroll cue */
+.sc-hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: sc-bounce 2s ease-in-out infinite;
+}
+.sc-hero__scroll span {
+  display: block;
+  width: 1.4rem;
+  height: 2.5rem;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 9999px;
+  position: relative;
+}
+.sc-hero__scroll span::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: var(--sc-blue);
+  border-radius: 9999px;
+  animation: sc-scroll-dot 2s ease-in-out infinite;
+}
+@keyframes sc-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+@keyframes sc-scroll-dot {
+  0%   { opacity: 1; top: 5px; }
+  100% { opacity: 0; top: 18px; }
+}
+
+/* ══════════════════════════════════════════════════
+   QUÉ ES COLIMA
+   ══════════════════════════════════════════════════ */
+.sc-que {
+  padding: 5rem 0;
+  background: var(--sc-light-bg);
+}
+.sc-que__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .sc-que__inner { grid-template-columns: 1fr 1fr; }
+}
+
+.sc-que__body {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+.sc-que__body:last-child { margin-bottom: 0; }
+.sc-que__body strong { color: var(--sc-dark); font-weight: 700; }
+
+/* Pilares */
+.sc-que__pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.sc-pilar {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--sc-white);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.1rem;
+  transition: box-shadow 0.25s, border-color 0.25s;
+}
+.sc-pilar:hover {
+  box-shadow: 0 4px 18px rgba(14,165,233,0.12);
+  border-color: var(--sc-blue);
+}
+.sc-pilar__icon {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: rgba(14,165,233,0.1);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sc-blue);
+}
+.sc-pilar__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+  margin: 0 0 0.2rem;
+}
+.sc-pilar__text {
+  font-size: 0.85rem;
+  color: var(--sc-gray);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════════════
+   TRADICIONES
+   ══════════════════════════════════════════════════ */
+.sc-tradiciones {
+  padding: 5rem 0;
+  background: var(--sc-dark);
+}
+.sc-tradiciones__intro {
+  color: rgba(255,255,255,0.6);
+  font-size: 1.05rem;
+  max-width: 38rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.sc-tradiciones__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 800px) {
+  .sc-tradiciones__layout { grid-template-columns: 1fr 1.4fr; gap: 2.5rem; }
+}
+
+/* Tabs */
+.sc-tradiciones__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.sc-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: left;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0.7rem;
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  color: rgba(255,255,255,0.65);
+}
+.sc-tab:hover { background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.3); }
+.sc-tab--active {
+  background: rgba(14,165,233,0.15);
+  border-color: var(--sc-blue);
+  color: var(--sc-white);
+}
+.sc-tab__icon { color: var(--sc-blue); flex-shrink: 0; }
+.sc-tab--active .sc-tab__icon { color: var(--sc-amber); }
+.sc-tab__label { font-weight: 600; font-size: 0.9rem; flex: 1; }
+.sc-tab__mes {
+  font-size: 0.72rem;
+  color: var(--sc-gray);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Panel */
+.sc-tradiciones__panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(14,165,233,0.25);
+  border-radius: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.sc-tradiciones__panel-icon {
+  color: var(--sc-amber);
+  width: 3rem;
+  height: 3rem;
+  background: rgba(245,158,11,0.1);
+  border-radius: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+}
+.sc-tradiciones__panel-mes {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sc-amber);
+}
+.sc-tradiciones__panel-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--sc-white);
+  margin: 0;
+}
+.sc-tradiciones__panel-desc {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   GASTRONOMÍA
+   ══════════════════════════════════════════════════ */
+.sc-gastro {
+  padding: 5rem 0;
+  background: var(--sc-white);
+}
+.sc-gastro__intro {
+  color: #475569;
+  font-size: 1.05rem;
+  max-width: 38rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.sc-gastro__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.2rem;
+}
+
+.sc-platillo {
+  background: var(--sc-light-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.sc-platillo:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(14,165,233,0.1);
+  border-color: var(--sc-blue);
+}
+.sc-platillo__emoji {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+.sc-platillo__nombre {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sc-dark);
+  margin: 0 0 0.4rem;
+}
+.sc-platillo__desc {
+  font-size: 0.875rem;
+  color: var(--sc-gray);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   CIERRE / CTA
+   ══════════════════════════════════════════════════ */
+.sc-cierre {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, var(--sc-dark) 0%, var(--sc-dark2) 100%);
+}
+.sc-cierre__inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.sc-cierre__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--sc-amber);
+  margin-bottom: 0.25rem;
+}
+.sc-cierre__title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 900;
+  color: var(--sc-white);
+  margin: 0;
+}
+.sc-cierre__text {
+  color: rgba(255,255,255,0.6);
+  font-size: 1.05rem;
+  max-width: 32rem;
+  line-height: 1.7;
+  margin: 0;
+}
+.sc-cierre__btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: var(--sc-blue);
+  color: var(--sc-white);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.85rem 2.2rem;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.sc-cierre__btn:hover {
+  background: var(--sc-blue-dark);
+  transform: translateY(-2px);
+}

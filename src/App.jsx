@@ -16,6 +16,7 @@ import RutaProtegidaProveedor from "./components/RutaProtegidaProveedor";
 import Ayuda from './pages/Ayuda';
 import EventosNuevo from './pages/EventosNuevo';
 import Perfil from './pages/Perfil';
+import SobreColima from './pages/SobreColima';
 import SeleccionRegistro from './pages/SeleccionRegistro';
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
               </RutaProtegidaProveedor>
             }
           />
+          <Route path="/sobre-colima" element={<SobreColima />} />
 
         </Routes>
       </AuthProvider>

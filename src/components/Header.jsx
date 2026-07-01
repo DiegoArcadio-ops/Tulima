@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/", label: "Inicio" },
   { to: "#mapa", label: "Municipios" },
   { to: "#destinos", label: "Destinos" },
-  { to: "#nosotros", label: "Sobre Colima" },
+  { to: "/sobre-colima", label: "Sobre Colima" },
   { to: "#contacto", label: "Contacto" },
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },

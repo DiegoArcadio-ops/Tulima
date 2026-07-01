@@ -33,6 +33,7 @@ export default function AboutColima() {
         setIsLoading(false);
       });
   }, []);
+
   return (
     <section
       id="nosotros"
@@ -55,18 +56,31 @@ export default function AboutColima() {
             </p>
 
             <div className="about-features-grid">
-              {features.map((feature) => (
-                <div key={feature.title} className="about-feature">
-                  <div className="about-feature-icon-wrapper">
-                    <feature.icon className="about-feature-icon" />
+              {features.map((feature) => {
+                // Mapeamos el string del ícono al componente correspondiente de lucide
+                const IconComponent = iconMap[feature.icon] || HelpCircle;
+
+                return (
+                  <div key={feature.title} className="about-feature">
+                    <div className="about-feature-icon-wrapper">
+                      <IconComponent className="about-feature-icon" />
+                    </div>
+                    <div className="about-feature-text">
+                      <h3 className="about-feature-title">{feature.title}</h3>
+                      <p className="about-feature-desc">{feature.description}</p>
+                    </div>
                   </div>
-                  <div className="about-feature-text">
-                    <h3 className="about-feature-title">{feature.title}</h3>
-                    <p className="about-feature-desc">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
+
+            {/* Contenedor del nuevo botón de Más información */}
+            <div className="about-action">
+              <a href="/sobre-colima" className="btn-more-info">
+                Más información
+              </a>
+            </div>
+
           </div>
 
           <div className="about-gallery">
