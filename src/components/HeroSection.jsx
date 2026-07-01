@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import heroBg from '../assets/hero-background.jpg';
 import './HeroSection.css';
 
 export default function HeroSection() {
@@ -13,7 +14,7 @@ export default function HeroSection() {
       <div
         className="hero-bg-wrapper"
         style={{
-          backgroundImage: `url('/assets/hero-background.jpg')`,
+          backgroundImage: `url(${heroBg})`,
         }}
       >
         <div className="hero-overlay" />
