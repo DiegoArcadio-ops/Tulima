@@ -289,6 +289,7 @@ export default function DashboardProveedor() {
       });
       if (payload.numero_Calle) payload.numero_Calle = Number(payload.numero_Calle);
       if (payload.codigoPostal) payload.codigoPostal = Number(payload.codigoPostal);
+      if (payload.codifoPostal) payload.codifoPostal = Number(payload.codifoPostal);
       if (payload.id_municipio) payload.id_municipio = Number(payload.id_municipio);
       if (payload.id_destino) payload.id_destino = Number(payload.id_destino);
       if (payload.estrellas) payload.estrellas = Number(payload.estrellas);
