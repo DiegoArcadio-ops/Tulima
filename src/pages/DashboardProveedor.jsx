@@ -269,7 +269,8 @@ export default function DashboardProveedor() {
     e.preventDefault();
     setGuardando(true);
     try {
-      const token = csrfToken ?? (await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true })).data.csrfToken;
+      const { data } = await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true });
+      const token = data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
       const payload = { ...formData };
 
@@ -326,7 +327,8 @@ const confirmarEliminar = async () => {
   const item = modalConfirm.item;
   setModalConfirm(null);
   try {
-    const token = csrfToken ?? (await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true })).data.csrfToken;
+    const { data } = await axios.get(`${BASE}/api/csrf-token`, { withCredentials: true });
+    const token = data.csrfToken;
     await axios.delete(`${seccionActual.url}/${obtenerId(item)}`, {
       withCredentials: true,
       headers: { 'X-CSRF-Token': token },
