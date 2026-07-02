@@ -14,6 +14,7 @@ const BASE = 'https://tulima-backend.vercel.app';
 const SECCIONES = {
   hoteles: {
     titulo: 'Hoteles',
+    singular: 'Hotel',
     url: `${BASE}/hoteles`,
     urlMios: `${BASE}/hoteles/mios`,
     icono: Building2,
@@ -34,6 +35,7 @@ const SECCIONES = {
   },
   restaurantes: {
     titulo: 'Restaurantes',
+    singular: 'Restaurante',
     url: `${BASE}/restaurantes`,
     urlMios: `${BASE}/restaurantes/mios`,
     icono: Utensils,
@@ -55,6 +57,7 @@ const SECCIONES = {
   },
   tours: {
     titulo: 'Tours',
+    singular: 'Tour',
     url: `${BASE}/tours`,
     urlMios: `${BASE}/tours/mios`,
     icono: Compass,
@@ -71,6 +74,7 @@ const SECCIONES = {
   },
   destinos: {
     titulo: 'Destinos',
+    singular: 'Destino',
     url: `${BASE}/destinos`,
     urlMios: `${BASE}/destinos/mios`,
     icono: MapIcon,
@@ -88,6 +92,7 @@ const SECCIONES = {
   },
   eventos: {
     titulo: 'Eventos',
+    singular: 'Evento',
     url: `${BASE}/eventos`,
     urlMios: `${BASE}/eventos/mios`,
     icono: Calendar,
@@ -317,8 +322,7 @@ export default function DashboardProveedor() {
 const eliminar = (item) => {
   const nombre = item[seccionActual.nombreKey] || 'este registro';
   setModalConfirm({
-    mensaje: `¿Eliminar "${nombre}" de forma permanente? Esta acción no se puede deshacer y liberará el cupo para registrar un nuevo ${seccionActual.titulo.slice(0, -1).toLowerCase()}.`,
-    item
+mensaje: `¿Eliminar "${nombre}" de forma permanente? Esta acción no se puede deshacer y liberará el cupo para registrar un nuevo ${seccionActual.singular.toLowerCase()}.`,    item
   });
 };
 
@@ -440,7 +444,7 @@ const confirmarEliminar = async () => {
                 className="flex items-center gap-2 bg-[#00a8ff] hover:bg-[#0097e6] text-white px-5 py-2.5 rounded-full font-medium transition-all text-sm flex-shrink-0"
               >
                 <Plus className="w-4 h-4" />
-                Agregar {seccionActual.titulo.slice(0, -1)}
+                Agregar {seccionActual.singular}
               </button>
             )}
           </header>
@@ -450,8 +454,7 @@ const confirmarEliminar = async () => {
             <p className="text-sm text-slate-600">
               Los registros nuevos aparecen como <span className="font-medium text-amber-600">Pendiente</span> hasta que el administrador los active. Una vez activos son visibles para los turistas.
               {datos.length > 0 && (
-                <> Solo puedes tener <span className="font-medium">un {seccionActual.titulo.slice(0, -1).toLowerCase()}</span> por cuenta — si quieres registrar uno distinto, primero elimina el actual.</>
-              )}
+<> Solo puedes tener <span className="font-medium">un {seccionActual.singular.toLowerCase()}</span> por cuenta — si quieres registrar uno distinto, primero elimina el actual.</>              )}
             </p>
           </div>
 
@@ -471,7 +474,7 @@ const confirmarEliminar = async () => {
               <p className="text-slate-500 font-medium">Aún no tienes {seccionActual.titulo.toLowerCase()} registrados</p>
               <p className="text-slate-400 text-sm mt-1">Agrega el primero con el botón de arriba</p>
               <button onClick={abrirModalCrear} className="mt-4 text-[#00a8ff] text-sm hover:underline font-medium">
-                + Agregar {seccionActual.titulo.slice(0, -1)}
+                + Agregar {seccionActual.singular}
               </button>
             </div>
           ) : (
@@ -534,8 +537,7 @@ const confirmarEliminar = async () => {
             <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100 flex-shrink-0">
               <div>
                 <h3 className="text-lg font-semibold text-slate-800">
-                  {modoEdicion ? 'Editar' : 'Nuevo'} {seccionActual.titulo.slice(0, -1)}
-                </h3>
+{modoEdicion ? 'Editar' : 'Nuevo'} {seccionActual.singular}                </h3>
                 {!modoEdicion && (
                   <p className="text-xs text-slate-400 mt-0.5">Quedará pendiente hasta que el admin lo apruebe</p>
                 )}
