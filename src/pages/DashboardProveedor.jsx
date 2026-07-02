@@ -83,6 +83,7 @@ const SECCIONES = {
       { name: 'nombre', label: 'Nombre del destino', type: 'text', required: true, placeholder: 'Ej. Laguna La Maria' },
       { name: 'nombre_Calle', label: 'Calle o lugar', type: 'text', required: false, placeholder: 'Ej. Plaza Principal' },
       { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: false, placeholder: 'Ej. 1' },
+      { name: 'codifoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Hora de inicio', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Hora de fin', type: 'time', required: false },
