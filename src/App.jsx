@@ -36,6 +36,7 @@ function App() {
             <Route path="ayuda" element={<Ayuda />} />
             <Route path="eventos" element={<EventosNuevo />} />
             <Route path="perfil" element={<Perfil />} />
+            <Route path="/sobre-colima" element={<SobreColima />} />
           </Route>
 
           <Route
@@ -54,8 +55,6 @@ function App() {
               </RutaProtegidaProveedor>
             }
           />
-          <Route path="/sobre-colima" element={<SobreColima />} />
-
         </Routes>
       </AuthProvider>
     </BrowserRouter>

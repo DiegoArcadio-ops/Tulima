@@ -447,3 +447,122 @@
   background: var(--sc-blue-dark);
   transform: translateY(-2px);
 }
+
+/* ── HISTORIA TIMELINE ── */
+.sc-historia {
+  background: #fff;
+  padding: 80px 0;
+}
+.sc-historia__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 48px;
+  border-left: 2px solid #e2e8f0;
+  padding-left: 32px;
+}
+.sc-historia__item {
+  position: relative;
+  padding-bottom: 40px;
+}
+.sc-historia__dot {
+  position: absolute;
+  left: -40px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-primary, #00a8ff);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--color-primary, #00a8ff);
+}
+.sc-historia__año {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary, #00a8ff);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+.sc-historia__desc {
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.7;
+  max-width: 640px;
+}
+
+/* ── MUNICIPIOS ── */
+.sc-municipios {
+  background: #1a202c;
+  padding: 80px 0;
+}
+.sc-municipios__intro {
+  color: #a0aec0;
+  font-size: 1rem;
+  margin-bottom: 40px;
+  max-width: 560px;
+}
+.sc-municipios__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.sc-municipio {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  transition: background 0.2s;
+}
+.sc-municipio:hover {
+  background: rgba(255,255,255,0.1);
+}
+.sc-municipio__emoji {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 10px;
+}
+.sc-municipio__nombre {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.sc-municipio__desc {
+  font-size: 0.82rem;
+  color: #a0aec0;
+  line-height: 1.5;
+}
+
+/* ── DATOS EN CIFRAS ── */
+.sc-datos {
+  background: #1a202c;
+  padding: 80px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sc-datos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+.sc-dato {
+  text-align: center;
+  padding: 24px 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.sc-dato__num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary, #00a8ff);
+  margin-bottom: 8px;
+}
+.sc-dato__label {
+  font-size: 0.82rem;
+  color: #a0aec0;
+  line-height: 1.4;
+}
