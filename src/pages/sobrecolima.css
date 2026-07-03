@@ -59,7 +59,7 @@
   justify-content: center;
   background:
     linear-gradient(160deg, rgba(15,23,42,0.92) 0%, rgba(2,132,199,0.55) 100%),
-    url('https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=1600&q=80') center/cover no-repeat;
+    url('../assets/Glorieta-De-Los-Perritos-Bailarines.jpg') center/cover no-repeat;
   padding: 6rem 1.5rem 4rem;
   text-align: center;
 }
