@@ -38,8 +38,18 @@ export default function Header() {
     e.preventDefault();
     if (link.anchor) {
       if (location.pathname === '/') {
-        const el = document.getElementById(link.anchor);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        // Ya estamos en home, scroll directo con reintento
+        let intentos = 0;
+        const intentarScroll = () => {
+          const el = document.getElementById(link.anchor);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          } else if (intentos < 10) {
+            intentos++;
+            setTimeout(intentarScroll, 150);
+          }
+        };
+        intentarScroll();
       } else {
         navigate('/', { state: { scrollTo: link.anchor } });
       }
