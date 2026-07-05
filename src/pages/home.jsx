@@ -10,26 +10,25 @@ export default function Home() {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.state?.scrollTo) {
-      const target = location.state.scrollTo;
-
-      // Intenta hacer scroll con reintentos hasta encontrar el elemento
-      let intentos = 0;
-      const maxIntentos = 20;
-
-      const intentarScroll = () => {
-        const el = document.getElementById(target);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-        } else if (intentos < maxIntentos) {
-          intentos++;
-          setTimeout(intentarScroll, 150);
-        }
-      };
-
-      setTimeout(intentarScroll, 150);
-    }
-  }, [location]);
+    // Lee desde sessionStorage en lugar de location.state
+    const target = sessionStorage.getItem('scrollTo');
+    if (!target) return;
+  
+    sessionStorage.removeItem('scrollTo'); // limpia para que no vuelva a ejecutarse
+  
+    let intentos = 0;
+    const intentarScroll = () => {
+      const el = document.getElementById(target);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else if (intentos < 20) {
+        intentos++;
+        setTimeout(intentarScroll, 150);
+      }
+    };
+  
+    setTimeout(intentarScroll, 300); // espera a que el DOM monte
+  }, []); // solo al montar, no depende de location
 
   return (
     <div className="home-page-container">
