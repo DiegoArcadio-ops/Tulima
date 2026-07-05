@@ -21,30 +21,33 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const { usuario, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const cerrarSesion = () => {
-    // Ahora simplemente llamamos a la función logout del contexto
     logout();
   };
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const esActivo = (link) => {
+    if (link.anchor) return false;
+    if (link.to === '/') return location.pathname === '/';
+    return location.pathname.startsWith(link.to);
+  };
 
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
     if (link.anchor) {
       if (location.pathname === '/') {
-        // ya estamos en home → scroll directo
         const el = document.getElementById(link.anchor);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       } else {
-        // navegamos a home y guardamos el ancla en state
         navigate('/', { state: { scrollTo: link.anchor } });
       }
     } else {
       navigate(link.to);
     }
   };
+
   return (
     <>
       <header className="header-root">
@@ -58,12 +61,16 @@ export default function Header() {
 
             {/* Nav: centro */}
             <nav className="header-desktop-nav">
-            {navLinks.map((link) => (
-              link.label === "TuliA" ? (
-                <button key={link.label} onClick={() => setIsChatOpen(true)} className="header-nav-link">
-                  {link.label}
-                </button>
-              ) : link.anchor ? (
+              {navLinks.map((link) => (
+                link.label === "TuliA" ? (
+                  <button
+                    key={link.label}
+                    onClick={() => setIsChatOpen(true)}
+                    className="header-nav-link"
+                  >
+                    {link.label}
+                  </button>
+                ) : link.anchor ? (
                   <a
                     key={link.label}
                     href={`/#${link.anchor}`}
@@ -73,14 +80,18 @@ export default function Header() {
                     {link.label}
                   </a>
                 ) : (
-                  <Link key={link.label} to={link.to} className="header-nav-link">
+                  <Link
+                    key={link.label}
+                    to={link.to}
+                    className={`header-nav-link ${esActivo(link) ? 'header-nav-link--active' : ''}`}
+                  >
                     {link.label}
                   </Link>
                 )
               ))}
             </nav>
 
-            {/* Usuario: derecha del todo */}
+            {/* Usuario: derecha */}
             <div className="header-user-right">
               {usuario ? (
                 <>
@@ -124,22 +135,31 @@ export default function Header() {
                 )}
                 {navLinks.map((link) => (
                   link.label === "TuliA" ? (
-                    <button key={link.to} onClick={() => { setIsChatOpen(true); setIsMenuOpen(false); }} className="header-mobile-link">
+                    <button
+                      key={link.label}
+                      onClick={() => { setIsChatOpen(true); setIsMenuOpen(false); }}
+                      className="header-mobile-link"
+                    >
                       {link.label}
                     </button>
-                  ) : link.to.startsWith("/") ? (
-                    <Link key={link.to} to={link.to} className="header-mobile-link" onClick={() => setIsMenuOpen(false)}>
-                      {link.label}
-                    </Link>
-                  ) : (
+                  ) : link.anchor ? (
                     <a
-                      key={link.to}
-                      href={link.to}
+                      key={link.label}
+                      href={`/#${link.anchor}`}
                       className="header-mobile-link"
-                      onClick={(e) => { setIsMenuOpen(false); handleAnchorClick(e, link.to); }}
+                      onClick={(e) => { setIsMenuOpen(false); handleAnchorClick(e, link); }}
                     >
                       {link.label}
                     </a>
+                  ) : (
+                    <Link
+                      key={link.label}
+                      to={link.to}
+                      className={`header-mobile-link ${esActivo(link) ? 'header-mobile-link--active' : ''}`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
                   )
                 ))}
                 {usuario ? (
