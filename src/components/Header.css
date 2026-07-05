@@ -170,8 +170,7 @@
   .header-desktop-nav {
     display: flex;
     align-items: center;
-    gap: 1.8rem;
-    /* Centrar la navegación */
+    gap: 0.1rem; /* reducido para que quepan los 9 links */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -181,13 +180,14 @@
 .header-nav-link {
   background: none;
   border: none;
-  font-size: 0.875rem;
+  font-size: 0.78rem; /* ligeramente reducido */
   color: var(--header-text-muted);
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.2s;
-  padding: 0;
+  transition: color 0.2s, background-color 0.2s;
+  padding: 0.3rem 0.45rem;
+  border-radius: 6px;
   white-space: nowrap;
 }
 
