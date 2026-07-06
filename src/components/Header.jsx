@@ -26,18 +26,23 @@ export default function Header() {
   const navRef = useRef(null);
   const [indicador, setIndicador] = useState({ left: 0, width: 0, opacity: 0 });
 
-
   const cerrarSesion = () => {
     logout();
   };
 
   const esActivo = (link) => {
-    if (link.anchor) return false;
-    if (link.to === '/') return location.pathname === '/';
+    if (link.anchor) {
+      // Es activo si estamos en inicio y el hash de la URL coincide
+      return location.pathname === '/' && location.hash === `#${link.anchor}`;
+    }
+    if (link.to === '/') {
+      // "Inicio" solo está activo si no hay ningún hash en la URL
+      return location.pathname === '/' && (!location.hash || location.hash === '');
+    }
     return location.pathname.startsWith(link.to);
   };
 
-  // Actualiza la posición del indicador cuando cambia la ruta
+  // Actualiza la posición del indicador cuando cambia la ruta o el hash (ancla)
   useEffect(() => {
     if (!navRef.current) return;
     const linkActivo = navRef.current.querySelector('.header-nav-link--active');
@@ -52,12 +57,15 @@ export default function Header() {
     } else {
       setIndicador(prev => ({ ...prev, opacity: 0 }));
     }
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
     if (link.anchor) {
       if (location.pathname === '/') {
+        // Actualizamos la URL para que el indicador lo detecte
+        navigate(`/#${link.anchor}`);
+        
         let intentos = 0;
         const intentarScroll = () => {
           const el = document.getElementById(link.anchor);
@@ -91,7 +99,7 @@ export default function Header() {
             </a>
 
             {/* Nav: centro */}
-            <nav className="header-desktop-nav">
+            <nav className="header-desktop-nav" ref={navRef}>
                 {/* Indicador deslizante */}
               <span
                 className="header-nav-indicator"
@@ -114,7 +122,7 @@ export default function Header() {
                   <a
                     key={link.label}
                     href={`/#${link.anchor}`}
-                    className="header-nav-link"
+                    className={`header-nav-link ${esActivo(link) ? 'header-nav-link--active' : ''}`}
                     onClick={(e) => handleAnchorClick(e, link)}
                   >
                     {link.label}
@@ -186,7 +194,7 @@ export default function Header() {
                     <a
                       key={link.label}
                       href={`/#${link.anchor}`}
-                      className="header-mobile-link"
+                      className={`header-mobile-link ${esActivo(link) ? 'header-mobile-link--active' : ''}`}
                       onClick={(e) => { setIsMenuOpen(false); handleAnchorClick(e, link); }}
                     >
                       {link.label}
