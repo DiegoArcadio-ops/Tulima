@@ -26,46 +26,109 @@ export default function Header() {
   const navRef = useRef(null);
   const [indicador, setIndicador] = useState({ left: 0, width: 0, opacity: 0 });
 
+  // Sección visible actualmente en pantalla ('mapa' | 'destinos' | 'contacto' | null)
+  const [seccionActiva, setSeccionActiva] = useState(null);
+
   const cerrarSesion = () => {
     logout();
   };
 
+  // Un link está activo si:
+  // - tiene anchor y esa sección es la visible en pantalla (solo en '/')
+  // - es "Inicio" y estamos en '/' y ninguna sección está activa (o sea, arriba del todo)
+  // - o la ruta coincide normalmente
   const esActivo = (link) => {
     if (link.anchor) {
-      // Es activo si estamos en inicio y el hash de la URL coincide
-      return location.pathname === '/' && location.hash === `#${link.anchor}`;
+      return location.pathname === '/' && seccionActiva === link.anchor;
     }
     if (link.to === '/') {
-      // "Inicio" solo está activo si no hay ningún hash en la URL
-      return location.pathname === '/' && (!location.hash || location.hash === '');
+      return location.pathname === '/' && !seccionActiva;
     }
     return location.pathname.startsWith(link.to);
   };
 
-  // Actualiza la posición del indicador cuando cambia la ruta o el hash (ancla)
-  useEffect(() => {
+  // Mueve el indicador hacia cualquier elemento del DOM (hover o activo)
+  const moverIndicador = (el) => {
+    if (!el || !navRef.current) return;
+    const navRect = navRef.current.getBoundingClientRect();
+    const linkRect = el.getBoundingClientRect();
+    setIndicador({
+      left: linkRect.left - navRect.left,
+      width: linkRect.width,
+      opacity: 1,
+    });
+  };
+
+  // Regresa el indicador al link realmente activo (o lo oculta si no hay ninguno)
+  const resetIndicador = () => {
     if (!navRef.current) return;
     const linkActivo = navRef.current.querySelector('.header-nav-link--active');
     if (linkActivo) {
-      const navRect = navRef.current.getBoundingClientRect();
-      const linkRect = linkActivo.getBoundingClientRect();
-      setIndicador({
-        left: linkRect.left - navRect.left,
-        width: linkRect.width,
-        opacity: 1,
-      });
+      moverIndicador(linkActivo);
     } else {
       setIndicador(prev => ({ ...prev, opacity: 0 }));
     }
-  }, [location.pathname, location.hash]);
+  };
+
+  // Reposiciona el indicador cuando cambia la ruta o la sección activa
+  useEffect(() => {
+    resetIndicador();
+  }, [location.pathname, seccionActiva]);
+
+  // Observa las secciones (#mapa, #destinos, #contacto) para saber cuál está visible
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setSeccionActiva(null);
+      return;
+    }
+
+    let observer;
+    let intentos = 0;
+
+    const iniciarObserver = () => {
+      const ids = ['mapa', 'destinos', 'contacto'];
+      const elementos = ids.map(id => document.getElementById(id)).filter(Boolean);
+
+      if (elementos.length === 0) {
+        if (intentos < 15) {
+          intentos++;
+          setTimeout(iniciarObserver, 150);
+        }
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          const visibles = entries.filter((e) => e.isIntersecting);
+          if (visibles.length > 0) {
+            const masVisible = visibles.reduce((a, b) =>
+              b.intersectionRatio > a.intersectionRatio ? b : a
+            );
+            setSeccionActiva(masVisible.target.id);
+          } else {
+            const primera = elementos[0];
+            if (primera && window.scrollY < primera.offsetTop - 150) {
+              setSeccionActiva(null);
+            }
+          }
+        },
+        { rootMargin: '-100px 0px -60% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+      );
+
+      elementos.forEach((el) => observer.observe(el));
+    };
+
+    iniciarObserver();
+
+    return () => {
+      if (observer) observer.disconnect();
+    };
+  }, [location.pathname]);
 
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
     if (link.anchor) {
       if (location.pathname === '/') {
-        // Actualizamos la URL para que el indicador lo detecte
-        navigate(`/#${link.anchor}`);
-        
         let intentos = 0;
         const intentarScroll = () => {
           const el = document.getElementById(link.anchor);
@@ -78,7 +141,6 @@ export default function Header() {
         };
         intentarScroll();
       } else {
-        // Guarda el ancla en sessionStorage antes de navegar
         sessionStorage.setItem('scrollTo', link.anchor);
         navigate('/');
       }
@@ -99,7 +161,11 @@ export default function Header() {
             </a>
 
             {/* Nav: centro */}
-            <nav className="header-desktop-nav" ref={navRef}>
+            <nav
+              className="header-desktop-nav"
+              ref={navRef}
+              onMouseLeave={resetIndicador}
+            >
                 {/* Indicador deslizante */}
               <span
                 className="header-nav-indicator"
@@ -114,6 +180,7 @@ export default function Header() {
                   <button
                     key={link.label}
                     onClick={() => setIsChatOpen(true)}
+                    onMouseEnter={(e) => moverIndicador(e.currentTarget)}
                     className="header-nav-link"
                   >
                     {link.label}
@@ -124,6 +191,7 @@ export default function Header() {
                     href={`/#${link.anchor}`}
                     className={`header-nav-link ${esActivo(link) ? 'header-nav-link--active' : ''}`}
                     onClick={(e) => handleAnchorClick(e, link)}
+                    onMouseEnter={(e) => moverIndicador(e.currentTarget)}
                   >
                     {link.label}
                   </a>
@@ -132,6 +200,7 @@ export default function Header() {
                     key={link.label}
                     to={link.to}
                     className={`header-nav-link ${esActivo(link) ? 'header-nav-link--active' : ''}`}
+                    onMouseEnter={(e) => moverIndicador(e.currentTarget)}
                   >
                     {link.label}
                   </Link>
