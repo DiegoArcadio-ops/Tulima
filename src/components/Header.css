@@ -170,10 +170,11 @@
   .header-desktop-nav {
     display: flex;
     align-items: center;
-    gap: 0.1rem; /* reducido para que quepan los 9 links */
+    gap: 0.1rem;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    isolation: isolate; /* crea nuevo stacking context */
   }
 }
 
@@ -346,7 +347,23 @@
 
 .header-nav-link--active {
   color: var(--primary-color);
-  background-color: rgba(0, 168, 255, 0.1);
+  background-color: transparent
+}
+
+/* Indicador deslizante */
+.header-nav-indicator {
+  position: absolute;
+  bottom: -2px; /* justo debajo de los links */
+  height: 100%;
+  border-radius: 6px;
+  background-color: rgba(0, 168, 255, 0.12);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+  pointer-events: none; /* no bloquea clics */
+  top: 50%;
+  transform: translateY(-50%);
+  bottom: unset;
 }
 
 .header-nav-link--active:hover {
