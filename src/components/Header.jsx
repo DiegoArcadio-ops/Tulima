@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, MapPin, UserCircle, LogOut } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import TuliA from "./TuliA";
@@ -23,6 +23,9 @@ export default function Header() {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const navRef = useRef(null);
+  const [indicador, setIndicador] = useState({ left: 0, width: 0, opacity: 0 });
+
 
   const cerrarSesion = () => {
     logout();
@@ -33,6 +36,23 @@ export default function Header() {
     if (link.to === '/') return location.pathname === '/';
     return location.pathname.startsWith(link.to);
   };
+
+  // Actualiza la posición del indicador cuando cambia la ruta
+  useEffect(() => {
+    if (!navRef.current) return;
+    const linkActivo = navRef.current.querySelector('.header-nav-link--active');
+    if (linkActivo) {
+      const navRect = navRef.current.getBoundingClientRect();
+      const linkRect = linkActivo.getBoundingClientRect();
+      setIndicador({
+        left: linkRect.left - navRect.left,
+        width: linkRect.width,
+        opacity: 1,
+      });
+    } else {
+      setIndicador(prev => ({ ...prev, opacity: 0 }));
+    }
+  }, [location.pathname]);
 
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
@@ -72,6 +92,15 @@ export default function Header() {
 
             {/* Nav: centro */}
             <nav className="header-desktop-nav">
+                {/* Indicador deslizante */}
+              <span
+                className="header-nav-indicator"
+                style={{
+                  left: indicador.left,
+                  width: indicador.width,
+                  opacity: indicador.opacity,
+                }}
+              />
               {navLinks.map((link) => (
                 link.label === "TuliA" ? (
                   <button
