@@ -8,6 +8,8 @@ import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
+import { useSearchParams } from 'react-router-dom';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const URL = "https://tulima-backend.vercel.app/restaurantes";
 const PAGE_SIZE = 9;
@@ -17,10 +19,12 @@ function Restaurantes() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedRestaurante, setSelectedRestaurante] = useState(null);
+  useBodyScrollLock(!!selectedRestaurante);
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
   const [toast, setToast] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -46,6 +50,17 @@ function Restaurantes() {
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_restaurante != null).map(f => f.id_restaurante))))
       .catch(() => {});
   }, [usuario]);
+
+ useEffect(() => {
+  const id = searchParams.get('id');
+  if (id && restaurantes.length > 0) {
+    const encontrado = restaurantes.find(r => r.id_restaurante === Number(id));
+    if (encontrado) {
+      setSelectedRestaurante(encontrado);
+      setSearchParams({}, { replace: true });
+    }
+  }
+}, [searchParams, restaurantes, setSearchParams]);
 
   useEffect(() => {
     fetch(URL)

@@ -8,6 +8,8 @@ import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
+import { useSearchParams } from 'react-router-dom';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const URL = "https://tulima-backend.vercel.app/tours";
 const PAGE_SIZE = 9;
@@ -17,10 +19,12 @@ function Tours() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTour, setSelectedTour] = useState(null);
+  useBodyScrollLock(!!selectedTour);
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
   const [toast, setToast] = useState(null);
+ const [searchParams, setSearchParams] = useSearchParams();
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -46,6 +50,17 @@ const [filtroTipo, setFiltroTipo] = useState('');
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_provedor_tour != null).map(f => f.id_provedor_tour))))
       .catch(() => {});
   }, [usuario]);
+
+useEffect(() => {
+  const id = searchParams.get('id');
+  if (id && tours.length > 0) {
+    const encontrado = tours.find(t => t.id_provedor === Number(id));
+    if (encontrado) {
+      setSelectedTour(encontrado);
+      setSearchParams({}, { replace: true });
+    }
+  }
+}, [searchParams, tours, setSearchParams]);
 
   useEffect(() => {
     fetch(URL)

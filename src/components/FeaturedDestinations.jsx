@@ -8,6 +8,7 @@ import Paginacion from './Paginacion';
 import { useAuth } from '../context/AuthContext';
 import { Toast } from './Toast';
 import MiniMap from './MiniMap';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const URL = "https://tulima-backend.vercel.app/destinos";
 const PAGE_SIZE = 6;
@@ -17,6 +18,7 @@ export default function FeaturedDestinations() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
+  useBodyScrollLock(!!selectedDestination);
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());

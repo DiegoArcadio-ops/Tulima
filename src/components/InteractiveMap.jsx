@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import { useNavigate } from "react-router-dom";
 import { X, Info, Heart, MapPin, Clock, Phone, Star, Calendar } from "lucide-react";import colimaGeoData from "../data/colimaMunicipios.json";
 import './InteractiveMap.css';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const BACKEND_URL = "https://tulima-backend.vercel.app";
 
@@ -43,6 +45,7 @@ const formatFecha = (f) => {
 
 export default function InteractiveMap() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  useBodyScrollLock(isModalOpen);
   const [selectedMunicipio, setSelectedMunicipio] = useState(null);
   const [municipiosData, setMunicipiosData] = useState([]);
   const [topAmados, setTopAmados] = useState([]);
@@ -51,6 +54,13 @@ export default function InteractiveMap() {
 
   // Referencia para guardar los datos sin perderlos en el evento del mapa
   const municipiosRef = useRef([]);
+  const navigate = useNavigate();
+
+const handleVerMas = (item) => {
+  if (!item.ruta || !item.id) return;
+  handleCloseModal();
+  navigate(`/${item.ruta}?id=${item.id}`);
+};
 
   useEffect(() => {
     fetch(`${BACKEND_URL}/municipios`)
@@ -294,7 +304,17 @@ export default function InteractiveMap() {
                         />
                         <div className="top-amados-info">
                           <span className="top-amados-tipo">{item.tipo}</span>
-                          <span className="top-amados-nombre">{item.nombre}</span>
+                          <div className="top-amados-nombre-row">
+                            <span className="top-amados-nombre">{item.nombre}</span>
+                            {item.ruta && item.id && (
+                              <button
+                                className="top-amados-vermas"
+                                onClick={() => handleVerMas(item)}
+                              >
+                                Ver más
+                              </button>
+                            )}
+                          </div>
                         </div>
                         <div className="top-amados-corazones">
                           <Heart size={14} color="#e11d48" fill="#e11d48" />

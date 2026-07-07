@@ -186,42 +186,52 @@ export default function SobreColima() {
         </div>
       </section>
 
-      {/* ── HISTORIA ─────────────────────────────────────────────── */}
+     {/* ── HISTORIA ─────────────────────────────────────────────── */}
       <section className="sc-historia">
-        <div className="sc-container">
-          <p className="sc-section-eyebrow">Raíces</p>
-          <h2 className="sc-section-title">Cinco siglos de historia</h2>
-          <div className="sc-historia__timeline">
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">2000 a.C.</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">Primeras culturas prehispánicas se asientan en el territorio. Se desarrollan tradiciones cerámicas únicas como las figuras de perros xoloitzcuintle que hoy son símbolo del estado.</p>
+        <div className="sc-container sc-historia__inner">
+          <div className="sc-historia__content">
+            <p className="sc-section-eyebrow">Raíces</p>
+            <h2 className="sc-section-title">Cinco siglos de historia</h2>
+            <div className="sc-historia__timeline">
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">2000 a.C.</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">Primeras culturas prehispánicas se asientan en el territorio. Se desarrollan tradiciones cerámicas únicas como las figuras de perros xoloitzcuintle que hoy son símbolo del estado.</p>
+              </div>
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">1523</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">Gonzalo de Sandoval funda la Villa de Colima, estableciendo el primer ayuntamiento del occidente de la Nueva España. En 1527 la villa se traslada a su ubicación actual.</p>
+              </div>
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">1533</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">Hernando de Grijalva descubre el Archipiélago de Revillagigedo desde las costas colimenses. El puerto de Manzanillo se consolida como centro comercial y de defensa durante la colonia.</p>
+              </div>
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">1857</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">La Constitución eleva a Colima a la categoría de Estado Libre y Soberano. Comienza la época de modernización porfiriana: telégrafo (1869), teléfono (1883), luz eléctrica (1906) y ferrocarril Manzanillo-Colima (1889).</p>
+              </div>
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">1940s</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">Se abren al cultivo nuevas tierras en el valle de Tecomán, iniciando el ciclo del limón y las agroindustrias que hoy hacen de Colima el principal exportador mundial de limón persa.</p>
+              </div>
+              <div className="sc-historia__item">
+                <span className="sc-historia__año">2014</span>
+                <div className="sc-historia__dot" />
+                <p className="sc-historia__desc">La ciudad de Colima es nombrada Capital Americana de la Cultura. En 2024 el estado recibe más de 1.5 millones de visitantes y registra una derrama turística superior a los 5,375 millones de pesos.</p>
+              </div>
             </div>
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">1523</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">Gonzalo de Sandoval funda la Villa de Colima, estableciendo el primer ayuntamiento del occidente de la Nueva España. En 1527 la villa se traslada a su ubicación actual.</p>
-            </div>
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">1533</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">Hernando de Grijalva descubre el Archipiélago de Revillagigedo desde las costas colimenses. El puerto de Manzanillo se consolida como centro comercial y de defensa durante la colonia.</p>
-            </div>
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">1857</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">La Constitución eleva a Colima a la categoría de Estado Libre y Soberano. Comienza la época de modernización porfiriana: telégrafo (1869), teléfono (1883), luz eléctrica (1906) y ferrocarril Manzanillo-Colima (1889).</p>
-            </div>
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">1940s</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">Se abren al cultivo nuevas tierras en el valle de Tecomán, iniciando el ciclo del limón y las agroindustrias que hoy hacen de Colima el principal exportador mundial de limón persa.</p>
-            </div>
-            <div className="sc-historia__item">
-              <span className="sc-historia__año">2014</span>
-              <div className="sc-historia__dot" />
-              <p className="sc-historia__desc">La ciudad de Colima es nombrada Capital Americana de la Cultura. En 2024 el estado recibe más de 1.5 millones de visitantes y registra una derrama turística superior a los 5,375 millones de pesos.</p>
-            </div>
+          </div>
+
+          <div className="sc-historia__image">
+            <img
+              src="La-palma-colima-2.jpg"
+              alt="Monumento a las palmeras con el Volcán de Fuego al fondo"
+              className="sc-historia__img"
+            />
           </div>
         </div>
       </section>
