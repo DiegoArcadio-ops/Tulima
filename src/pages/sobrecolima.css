@@ -769,3 +769,162 @@
   font-size: 0.75rem;
   color: #718096;
 }
+
+/* ── CALENDARIO FESTIVIDADES ── */
+.cal-root {
+  margin-top: 40px;
+}
+
+.cal-meses {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 640px) {
+  .cal-meses {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.cal-mes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  color: #a0aec0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  position: relative;
+}
+
+.cal-mes:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.cal-mes--active {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: #0ea5e9;
+  color: #fff;
+  font-weight: 700;
+}
+
+.cal-mes--con-eventos .cal-mes__nombre {
+  color: #fff;
+}
+
+.cal-mes__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0ea5e9;
+}
+
+.cal-mes--active .cal-mes__dot {
+  background: #fff;
+}
+
+/* Panel */
+.cal-panel {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 32px;
+  min-height: 220px;
+}
+
+.cal-panel__titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.cal-panel__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 0;
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+.cal-panel__vacio-emoji {
+  font-size: 2rem;
+}
+
+/* Eventos */
+.cal-eventos {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cal-evento {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.2s;
+}
+
+.cal-evento:hover {
+  background: rgba(255,255,255,0.07);
+}
+
+.cal-evento__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(14,165,233,0.15);
+  color: #0ea5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cal-evento__body {
+  flex: 1;
+}
+
+.cal-evento__header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.cal-evento__titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.cal-evento__lugar {
+  font-size: 0.78rem;
+  color: #718096;
+}
+
+.cal-evento__desc {
+  font-size: 0.875rem;
+  color: #a0aec0;
+  line-height: 1.6;
+}

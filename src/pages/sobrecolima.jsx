@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
+import CalendarioFestividades from '../components/CalendarioFestividades';
 import axios from 'axios';
 
 const BASE = 'https://tulima-backend.vercel.app';
@@ -314,34 +315,17 @@ export default function SobreColima() {
         </div>
       </section>
 
-            {/* ── TRADICIONES LÍNEA DE TIEMPO ── */}
+      {/* ── TRADICIONES CALENDARIO ── */}
       <section className="sc-tradiciones">
         <div className="sc-container">
           <p className="sc-section-eyebrow sc-section-eyebrow--light">Cultura viva</p>
           <h2 className="sc-section-title sc-section-title--light">Festividades del año</h2>
           <p className="sc-tradiciones__intro">
-            Colima celebra los 12 meses. Cada festividad conecta raíces indígenas,
-            coloniales y mestizas que conviven sin contradicción.
+            Selecciona un mes para descubrir qué se celebra en Colima.
           </p>
-
-          <div className="sc-timeline">
-            {tradiciones.map((t, i) => (
-              <div key={t.titulo} className={`sc-timeline__item ${i % 2 === 0 ? 'sc-timeline__item--left' : 'sc-timeline__item--right'}`}>
-                <div className="sc-timeline__dot">
-                  <span className="sc-timeline__dot-icon">{t.icon}</span>
-                </div>
-                <div className="sc-timeline__card">
-                  <span className="sc-timeline__mes">{t.mes}</span>
-                  <h3 className="sc-timeline__titulo">{t.titulo}</h3>
-                  <span className="sc-timeline__lugar">📍 {t.lugar}</span>
-                  <p className="sc-timeline__desc">{t.descripcion}</p>
-                </div>
-              </div>
-            ))}
-            <div className="sc-timeline__line" />
-          </div>
+          <CalendarioFestividades tradiciones={tradiciones} />
         </div>
-      </section>
+      </section> 
 
       {/* ── GASTRONOMÍA ──────────────────────────────────────────── */}
       <section className="sc-gastro" ref={gastronomiaRef}>
