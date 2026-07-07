@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 import { Toast } from './Toast';
 import MiniMap from './MiniMap';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
+import { useSearchParams } from 'react-router-dom';
 
 const URL = "https://tulima-backend.vercel.app/destinos";
 const PAGE_SIZE = 6;
@@ -23,6 +24,7 @@ export default function FeaturedDestinations() {
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
   const [toast, setToast] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -48,6 +50,20 @@ export default function FeaturedDestinations() {
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_destino != null).map(f => f.id_destino))))
       .catch(() => {});
   }, [usuario]);
+
+  useEffect(() => {
+  const id = searchParams.get('id');
+  if (id && destinations.length > 0) {
+    const encontrado = destinations.find(d => d.id_destino === Number(id));
+    if (encontrado) {
+      setSelectedDestination(encontrado);
+      setSearchParams({}, { replace: true });
+      setTimeout(() => {
+        document.getElementById('destinos')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }
+}, [searchParams, destinations, setSearchParams]);
 
   useEffect(() => {
     fetch(URL)
