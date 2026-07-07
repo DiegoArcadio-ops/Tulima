@@ -194,8 +194,7 @@ export default function SobreColima() {
       });
     }, []);
 
-
-
+     
   return (
     <main className="sc-page">
 
