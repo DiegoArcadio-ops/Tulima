@@ -51,6 +51,19 @@ const SECCIONES = {
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Horario de apertura', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Horario de cierre', type: 'time', required: false },
+      { 
+        name: 'especialidad', 
+        label: 'Especialidad gastronómica', 
+        type: 'select', 
+        required: false,
+        opciones: [
+          { value: 'Comida típica',  label: 'Comida típica' },
+          { value: 'Mariscos',       label: 'Mariscos' },
+          { value: 'Bebidas',        label: 'Bebidas' },
+          { value: 'Postres',        label: 'Postres' },
+          { value: 'Café',           label: 'Café' },
+        ]
+      },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
@@ -574,7 +587,14 @@ const confirmarEliminar = async () => {
                   </div>
                 );
                 if (campo.type === 'select') {
-                  const opciones = catalogos[campo.catalogo] || [];
+                  // Si tiene opciones estáticas las usa, si no busca en catálogos
+                  const opciones = campo.opciones
+                    ? campo.opciones
+                    : (catalogos[campo.catalogo] || []).map(op => ({
+                        value: op[campo.valueKey],
+                        label: op[campo.labelKey],
+                      }));
+                
                   return (
                     <div key={campo.name}>
                       <label className="block text-xs font-medium text-slate-700 mb-1">
@@ -583,14 +603,18 @@ const confirmarEliminar = async () => {
                       <select
                         name={campo.name}
                         value={formData[campo.name] || ''}
-                        onChange={e => setFormData(prev => ({ ...prev, [campo.name]: e.target.value ? parseInt(e.target.value) : '' }))}
+                        onChange={e => setFormData(prev => ({
+                          ...prev,
+                          // Si tiene opciones estáticas guarda el string, si no parsea a int
+                          [campo.name]: campo.opciones ? e.target.value : (e.target.value ? parseInt(e.target.value) : '')
+                        }))}
                         required={campo.required}
                         className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00a8ff]/40 focus:border-[#00a8ff] bg-white transition-all"
                       >
                         <option value="">Selecciona una opción...</option>
                         {opciones.map(op => (
-                          <option key={op[campo.valueKey]} value={op[campo.valueKey]}>
-                            {op[campo.labelKey]}
+                          <option key={op.value} value={op.value}>
+                            {op.label}
                           </option>
                         ))}
                       </select>

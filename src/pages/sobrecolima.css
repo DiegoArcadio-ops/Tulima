@@ -602,3 +602,109 @@
   color: #a0aec0;
   line-height: 1.4;
 }
+
+/* ── LÍNEA DE TIEMPO ── */
+.sc-tradiciones {
+  background: #1a202c;
+  padding: 80px 0;
+}
+.sc-tradiciones__intro {
+  color: #a0aec0;
+  font-size: 1rem;
+  margin-bottom: 60px;
+  max-width: 560px;
+}
+.sc-timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.sc-timeline__line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, rgba(0,168,255,0.4), transparent);
+  transform: translateX(-50%);
+}
+.sc-timeline__item {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: calc(50% + 40px);
+  margin-bottom: 48px;
+  position: relative;
+}
+.sc-timeline__item--right {
+  justify-content: flex-start;
+  padding-right: 0;
+  padding-left: calc(50% + 40px);
+}
+.sc-timeline__dot {
+  position: absolute;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 0 0 4px rgba(14,165,233,0.2);
+  color: #fff;
+}
+.sc-timeline__card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px 24px;
+  max-width: 360px;
+  width: 100%;
+  transition: background 0.2s;
+}
+.sc-timeline__card:hover {
+  background: rgba(255,255,255,0.09);
+}
+.sc-timeline__mes {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0ea5e9;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 6px;
+}
+.sc-timeline__titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.sc-timeline__lugar {
+  font-size: 0.8rem;
+  color: #a0aec0;
+  display: block;
+  margin-bottom: 10px;
+}
+.sc-timeline__desc {
+  font-size: 0.875rem;
+  color: #cbd5e0;
+  line-height: 1.6;
+}
+
+/* Mobile: una sola columna */
+@media (max-width: 640px) {
+  .sc-timeline__line { left: 20px; }
+  .sc-timeline__item,
+  .sc-timeline__item--right {
+    justify-content: flex-start;
+    padding-left: 60px;
+    padding-right: 0;
+  }
+  .sc-timeline__dot {
+    left: 20px;
+  }
+}
