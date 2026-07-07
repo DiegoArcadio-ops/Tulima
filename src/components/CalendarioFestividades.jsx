@@ -5,30 +5,17 @@ const MESES = [
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ];
 
-// Mapea cada tradición a sus meses
-const mesDeEvento = (mes) => {
-  const m = mes.toLowerCase();
-  return MESES.filter((_, i) => {
-    const nombre = MESES[i].toLowerCase();
-    return m.includes(nombre);
-  }).map((_, i) => i);
-};
-
 export default function CalendarioFestividades({ tradiciones }) {
   const [mesActivo, setMesActivo] = useState(new Date().getMonth());
 
-  const eventosMes = tradiciones.filter(t => {
-    const indices = mesDeEvento(t.mes);
-    return indices.includes(mesActivo);
-  });
+  // Usa el campo meses[] directamente, sin parsear strings
+  const eventosMes = tradiciones.filter(t => t.meses.includes(mesActivo));
 
   return (
     <div className="cal-root">
-
-      {/* Selector de meses */}
       <div className="cal-meses">
         {MESES.map((m, i) => {
-          const tieneEventos = tradiciones.some(t => mesDeEvento(t.mes).includes(i));
+          const tieneEventos = tradiciones.some(t => t.meses.includes(i));
           return (
             <button
               key={m}
@@ -42,10 +29,8 @@ export default function CalendarioFestividades({ tradiciones }) {
         })}
       </div>
 
-      {/* Panel del mes seleccionado */}
       <div className="cal-panel">
         <h3 className="cal-panel__titulo">{MESES[mesActivo]}</h3>
-
         {eventosMes.length === 0 ? (
           <div className="cal-panel__vacio">
             <span className="cal-panel__vacio-emoji">🗓️</span>
@@ -68,7 +53,6 @@ export default function CalendarioFestividades({ tradiciones }) {
           </div>
         )}
       </div>
-
     </div>
   );
 }
