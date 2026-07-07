@@ -1,6 +1,24 @@
 import React, { useState, useRef } from 'react';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
+import axios from 'axios';
+
+const BASE = 'https://tulima-backend.vercel.app';
+
+const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
+
+useEffect(() => {
+  const tags = [...new Set(gastronomia.map(p => p.tag))];
+  tags.forEach(async (tag) => {
+    try {
+      const { data } = await axios.get(`${BASE}/restaurantes?especialidad=${encodeURIComponent(tag)}`);
+      setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: data }));
+    } catch {
+      setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: [] }));
+    }
+  });
+}, []);
+
 
 const tradiciones = [
   {
@@ -338,19 +356,40 @@ export default function SobreColima() {
             tradición culinaria que mezcla herencia prehispánica, colonial y contemporánea.
           </p>
           <div className="sc-gastro__grid">
-            {gastronomia.map((p) => (
-              <div key={p.nombre} className="sc-platillo">
-                <span className="sc-platillo__emoji">{p.emoji}</span>
-                <h3 className="sc-platillo__nombre">{p.nombre}</h3>
-                <p className="sc-platillo__desc">{p.desc}</p>
-                <a
-                  href={`/restaurantes?especialidad=${encodeURIComponent(p.tag)}`}
-                  className="sc-platillo__btn"
-                >
-                  Ver restaurantes de {p.tag} →
-                </a>
-              </div>
-            ))}
+          {gastronomia.map((p) => (
+            <div key={p.nombre} className="sc-platillo">
+              <span className="sc-platillo__emoji">{p.emoji}</span>
+              <h3 className="sc-platillo__nombre">{p.nombre}</h3>
+              <p className="sc-platillo__desc">{p.desc}</p>
+
+              {/* Restaurantes con esa especialidad */}
+              {restaurantesPorEspecialidad[p.tag] === undefined ? (
+                <p className="sc-platillo__rest-cargando">Cargando...</p>
+              ) : restaurantesPorEspecialidad[p.tag].length === 0 ? (
+                <p className="sc-platillo__rest-vacio">Sin restaurantes registrados aún</p>
+              ) : (
+                <div className="sc-platillo__rest-lista">
+                  {restaurantesPorEspecialidad[p.tag].map(r => (
+                    <div key={r.id_restaurante} className="sc-platillo__rest-item">
+                      {r.imagen && (
+                        <img
+                          src={r.imagen}
+                          alt={r.nombre}
+                          className="sc-platillo__rest-img"
+                        />
+                      )}
+                      <div className="sc-platillo__rest-info">
+                        <span className="sc-platillo__rest-nombre">{r.nombre}</span>
+                        <span className="sc-platillo__rest-municipio">
+                          📍 {r.municipio?.nombre || 'Colima'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
           </div>
         </div>
       </section>

@@ -721,3 +721,51 @@
 .sc-platillo__btn:hover {
   opacity: 0.75;
 }
+
+.sc-platillo__rest-cargando,
+.sc-platillo__rest-vacio {
+  font-size: 0.78rem;
+  color: #a0aec0;
+  margin-top: 12px;
+  font-style: italic;
+}
+
+.sc-platillo__rest-lista {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  padding-top: 12px;
+}
+
+.sc-platillo__rest-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sc-platillo__rest-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.sc-platillo__rest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sc-platillo__rest-nombre {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.sc-platillo__rest-municipio {
+  font-size: 0.75rem;
+  color: #718096;
+}
