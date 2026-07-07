@@ -10,26 +10,30 @@ export default function Home() {
   const location = useLocation();
 
   useEffect(() => {
-    // Lee desde sessionStorage en lugar de location.state
     const target = sessionStorage.getItem('scrollTo');
     if (!target) return;
   
-    sessionStorage.removeItem('scrollTo'); // limpia para que no vuelva a ejecutarse
+    sessionStorage.removeItem('scrollTo');
   
     let intentos = 0;
     const intentarScroll = () => {
       const el = document.getElementById(target);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
+        // Correcciones: el layout puede seguir cambiando (imágenes,
+        // datos del backend en FeaturedDestinations, mapa de Leaflet)
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 400);
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 900);
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 1500);
       } else if (intentos < 20) {
         intentos++;
         setTimeout(intentarScroll, 150);
       }
     };
   
-    setTimeout(intentarScroll, 300); // espera a que el DOM monte
-  }, []); // solo al montar, no depende de location
-
+    setTimeout(intentarScroll, 300);
+  }, []);
+  
   return (
     <div className="home-page-container">
       <HeroSection />
