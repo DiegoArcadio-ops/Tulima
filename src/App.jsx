@@ -23,7 +23,7 @@ import ScrollToTop from "./components/ScrollToTop";
 function App() {
   return (
     <BrowserRouter>
-   <ScrollToTop>
+    <ScrollToTop/>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -59,7 +59,6 @@ function App() {
           />
         </Routes>
       </AuthProvider>
-      </ScrollToTop>
     </BrowserRouter>
   );
 }
