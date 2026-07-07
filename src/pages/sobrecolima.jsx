@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
 import axios from 'axios';
