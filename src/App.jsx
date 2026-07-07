@@ -18,10 +18,12 @@ import EventosNuevo from './pages/EventosNuevo';
 import Perfil from './pages/Perfil';
 import SobreColima from './pages/sobrecolima';
 import SeleccionRegistro from './pages/SeleccionRegistro';
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+   <ScrollToTop>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<MainLayout />}>
@@ -57,6 +59,7 @@ function App() {
           />
         </Routes>
       </AuthProvider>
+      </ScrollToTop>
     </BrowserRouter>
   );
 }
