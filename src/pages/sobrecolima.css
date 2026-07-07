@@ -708,3 +708,16 @@
     left: 20px;
   }
 }
+
+.sc-platillo__btn {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-primary, #0ea5e9);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.sc-platillo__btn:hover {
+  opacity: 0.75;
+}
