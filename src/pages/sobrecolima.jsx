@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
 import CalendarioFestividades from '../components/CalendarioFestividades';
@@ -179,6 +180,7 @@ const municipios = [
 ];
 
 export default function SobreColima() {
+  const navigate = useNavigate();
   const gastronomiaRef = useRef(null);
   const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
 
@@ -380,7 +382,14 @@ export default function SobreColima() {
               ) : (
                 <div className="sc-platillo__rest-lista">
                   {restaurantesPorEspecialidad[p.tag].map(r => (
-                    <div key={r.id_restaurante} className="sc-platillo__rest-item">
+                    <div
+                      key={r.id_restaurante}
+                      className="sc-platillo__rest-item"
+                      onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/restaurantes?id=${r.id_restaurante}`); }}
+                    >
                       {r.imagen && (
                         <img
                           src={r.imagen}
