@@ -121,6 +121,39 @@ const tradiciones = [
   },
 ];
 
+const pilares = [
+  {
+    icon: <Waves size={22} />,
+    titulo: "Manzanillo, capital mundial del pez vela",
+    texto: "Puerto más importante del Pacífico mexicano y referente del deporte náutico. Su icónica escultura del pez vela en el malecón simboliza el campeonato mundial de pesca que lo hizo famoso. En expansión: para 2030 pasará de 452 a 2,300 hectáreas de zona portuaria.",
+  },
+  {
+    icon: <Flame size={22} />,
+    titulo: "Volcán de Fuego",
+    texto: "A 3,860 metros sobre el nivel del mar, es uno de los volcanes más activos de América Latina con más de 40 erupciones registradas desde 1576. Comparte área natural protegida con el Nevado de Colima y define la identidad visual del estado.",
+  },
+  {
+    icon: <TreePine size={22} />,
+    titulo: "Sierra de Manantlán",
+    texto: "Reserva de la Biosfera declarada por la UNESCO. Hogar del maíz silvestre (teocintle), especie ancestral de todos los maíces del mundo, y de cientos de especies endémicas del trópico seco mexicano.",
+  },
+  {
+    icon: <Star size={22} />,
+    titulo: "Artesanía de palma de Suchitlán",
+    texto: "Técnica ancestral transmitida por generaciones en el pueblo de Suchitlán, Comala. Los artesanos elaboran sombreros, muebles, cestas y adornos de palma real que se exportan a todo el país.",
+  },
+  {
+    icon: <Landmark size={22} />,
+    titulo: "Centro histórico Barrio Mágico",
+    texto: "La capital colimense tiene su centro histórico declarado Barrio Mágico. El Teatro Hidalgo (1879), el Mercado Porfiriano de estructura francesa, el Jardín Libertad con su quiosco traído de Bélgica en 1891 y las casonas coloniales conforman un conjunto arquitectónico único.",
+  },
+  {
+    icon: <Ship size={22} />,
+    titulo: "Cuyutlán y la Laguna Verde",
+    texto: "El fenómeno de la ola verde de Cuyutlán, las salineras artesanales y el tortugario con recorridos ecológicos conforman una de las experiencias naturales más singulares del Pacífico mexicano.",
+  },
+];
+
 const gastronomia = [
   { nombre: "Tatemado de puerco", emoji: "🍖",tag:"Comida típica", desc: "Cerdo cocido lentamente en chile ancho y especias. Platillo de fiesta por excelencia, heredado de la cocina indígena colimense y presente en cada celebración familiar." },
   { nombre: "Pozole colimense", emoji: "🥣", tag:"Comida típica", desc: "Versión local del clásico mexicano con maíz cacahuazintle y caldo de res o cerdo. Se sirve con orégano, tostadas y limón en puestos que abren desde el amanecer." },
