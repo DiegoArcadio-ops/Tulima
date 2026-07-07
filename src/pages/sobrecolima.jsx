@@ -276,12 +276,11 @@ export default function SobreColima() {
       </section>
 
      {/* ── HISTORIA ─────────────────────────────────────────────── */}
-      <section className="sc-historia">
-        <div className="sc-container sc-historia__inner">
-          <div className="sc-historia__content">
-            <p className="sc-section-eyebrow">Raíces</p>
-            <h2 className="sc-section-title">Cinco siglos de historia</h2>
-            <div className="sc-historia__timeline">
+<section className="sc-historia">
+        <div className="sc-container">
+          <p className="sc-section-eyebrow">Raíces</p>
+          <h2 className="sc-section-title">Cinco siglos de historia</h2>
+          <div className="sc-historia__timeline">
               <div className="sc-historia__item">
                 <span className="sc-historia__año">2000 a.C.</span>
                 <div className="sc-historia__dot" />
