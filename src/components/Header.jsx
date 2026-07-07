@@ -134,6 +134,9 @@ export default function Header() {
           const el = document.getElementById(link.anchor);
           if (el) {
             el.scrollIntoView({ behavior: 'smooth' });
+            // Corrige la posición si el layout cambió mientras se animaba el scroll
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 400);
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 900);
           } else if (intentos < 15) {
             intentos++;
             setTimeout(intentarScroll, 150);
