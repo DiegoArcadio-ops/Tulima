@@ -1,49 +1,91 @@
 import React, { useState, useRef } from 'react';
-import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen } from 'lucide-react';
+import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
 
 const tradiciones = [
   {
-    icon: <Music size={28} />,
-    titulo: "La Danza de los Morenos",
-    mes: "Febrero",
-    descripcion:
-      "Una de las danzas más representativas del estado. Hombres con trajes coloridos y máscaras desfilan entre música de banda, celebrando la mezcla de culturas que forman la identidad colimense. Su origen se remonta a la época colonial y sigue siendo uno de los espectáculos más esperados del carnaval.",
-  },
-  {
-    icon: <Flame size={28} />,
-    titulo: "Feria de Todos los Santos",
-    mes: "Noviembre",
-    descripcion:
-      "La feria más importante de Colima, celebrada desde 1826. Se realiza en honor al Día de Muertos con altares monumentales, juegos mecánicos, artesanías, gastronomía típica y espectáculos culturales. Originalmente se llevaba a cabo en el Jardín Libertad (antigua Plaza de Armas) y hoy reúne a cientos de miles de visitantes.",
-  },
-  {
-    icon: <Calendar size={28} />,
+    icon: <Calendar size={20} />,
     titulo: "Procesión del Señor del Perdón",
-    mes: "Enero",
-    descripcion:
-      "Peregrinación religiosa multitudinaria que recorre las calles de la capital cada 20 de enero, fecha que también conmemora la fundación de la ciudad en 1527. Reúne a miles de devotos en una de las expresiones de fe más antiguas y sentidas del occidente de México.",
+    mes: "20 Enero",
+    lugar: "Ciudad de Colima",
+    descripcion: "Peregrinación religiosa multitudinaria que conmemora la fundación de la ciudad en 1527. Miles de devotos recorren las calles en una de las expresiones de fe más antiguas del occidente de México.",
   },
   {
-    icon: <Coffee size={28} />,
-    titulo: "Feria del Ponche, Pan y Café",
-    mes: "Todo el año · Comala",
-    descripcion:
-      "En los portales de Comala, Pueblo Mágico, la tradición de las botanas gratuitas acompañadas de ponche de frutas con mezcal es una experiencia única. El ponche artesanal, el pan recién horneado y el café de altura de las laderas del volcán se combinan en una fiesta de sabores que ha convertido a Comala en destino obligado.",
+    icon: <Music size={20} />,
+    titulo: "Carnaval y Danza de los Morenos",
+    mes: "Febrero",
+    lugar: "Ciudad de Colima",
+    descripcion: "Hombres con trajes coloridos y máscaras desfilan entre música de banda. Su origen colonial convierte al carnaval colimense en uno de los más auténticos del país.",
   },
   {
-    icon: <Utensils size={28} />,
+    icon: <Utensils size={20} />,
     titulo: "Festival Gastronómico",
     mes: "Marzo",
-    descripcion:
-      "Celebración anual donde chefs locales y visitantes presentan lo mejor de la cocina colimense: tatemado de puerco, pozole, sopa de mariscos y el inconfundible ponche de tamarindo. Refleja el reconocimiento de la gastronomía colimense como patrimonio cultural del occidente de México.",
+    lugar: "Ciudad de Colima",
+    descripcion: "Chefs locales y visitantes presentan tatemado de puerco, pozole, sopa de mariscos y el ponche de tamarindo. Reflejo del reconocimiento de la cocina colimense como patrimonio cultural.",
   },
   {
-    icon: <BookOpen size={28} />,
-    titulo: "Comala y Juan Rulfo",
-    mes: "Patrimonio literario",
-    descripcion:
-      "Comala inspiró a Juan Rulfo para escribir 'Pedro Páramo', una de las novelas más importantes de la literatura latinoamericana. Hoy, una escultura de hierro del escritor sentado en una banca de la plaza central recibe a los visitantes. La conexión entre el pueblo real y el ficticio sigue atrayendo a lectores de todo el mundo.",
+    icon: <Flame size={20} />,
+    titulo: "Festival del Volcán",
+    mes: "Abril",
+    lugar: "Comala / Cuauhtémoc",
+    descripcion: "Celebración en las faldas del Volcán de Fuego con recorridos de senderismo, exhibiciones fotográficas y actividades de educación ambiental sobre el volcán más activo de América Latina.",
+  },
+  {
+    icon: <Ship size={20} />,
+    titulo: "Torneo Internacional de Pez Vela",
+    mes: "Mayo · Noviembre",
+    lugar: "Manzanillo",
+    descripcion: "Competencia de pesca deportiva que ha convertido a Manzanillo en la capital mundial del pez vela. Participan equipos de más de 20 países en uno de los torneos más longevos del Pacífico.",
+  },
+  {
+    icon: <Coffee size={20} />,
+    titulo: "Feria del Café de Comala",
+    mes: "Junio",
+    lugar: "Comala",
+    descripcion: "Productores de café de altura de las laderas del volcán exponen sus granos en el Pueblo Mágico. Catas, talleres de barismo y la tradición botanera de los portales blancos se fusionan en este festival.",
+  },
+  {
+    icon: <Waves size={20} />,
+    titulo: "Festival del Mar",
+    mes: "Julio",
+    lugar: "Manzanillo",
+    descripcion: "Regatas, competencias de surf y kayak, y exposiciones marinas celebran la relación de Colima con el Pacífico. El malecón de Manzanillo se convierte en escenario de música y gastronomía costera.",
+  },
+  {
+    icon: <Star size={20} />,
+    titulo: "Feria Artesanal de Suchitlán",
+    mes: "Agosto",
+    lugar: "Comala",
+    descripcion: "Artesanos de palma real de Suchitlán presentan sombreros, muebles y cestas tejidas a mano. Técnica ancestral transmitida por generaciones que se exporta a todo el país.",
+  },
+  {
+    icon: <BookOpen size={20} />,
+    titulo: "Festival Cultural Pedro Páramo",
+    mes: "Septiembre",
+    lugar: "Comala",
+    descripcion: "Homenaje literario a Juan Rulfo con lecturas en voz alta, teatro callejero y visitas guiadas por los escenarios reales que inspiraron la novela. Convoca a lectores de toda América Latina.",
+  },
+  {
+    icon: <Landmark size={20} />,
+    titulo: "Festival Internacional de Órgano",
+    mes: "Octubre",
+    lugar: "Ciudad de Colima",
+    descripcion: "Conciertos en las iglesias coloniales de la capital con organistas de talla internacional. El órgano tubular de la Catedral Metropolitana, uno de los más antiguos de México, es protagonista.",
+  },
+  {
+    icon: <Flame size={20} />,
+    titulo: "Feria de Todos los Santos",
+    mes: "Noviembre",
+    lugar: "Ciudad de Colima",
+    descripcion: "La feria más importante del estado, celebrada desde 1826. Altares monumentales, juegos, artesanías y espectáculos culturales reúnen a cientos de miles de visitantes en honor al Día de Muertos.",
+  },
+  {
+    icon: <Music size={20} />,
+    titulo: "Posadas y Ponche Navideño",
+    mes: "Diciembre",
+    lugar: "Todo el estado",
+    descripcion: "Las posadas colimenses incorporan el ponche artesanal con mezcal y frutas de temporada. En Comala, los portales se iluminan con farolillos y la tradición de las botanas gratuitas alcanza su punto más festivo.",
   },
 ];
 
@@ -98,7 +140,7 @@ const municipios = [
   { nombre: "Tecomán", desc: "Capital mundial del limón. Produce el 30% del limón mexicano y exporta a 40 países.", emoji: "🍋" },
   { nombre: "Villa de Álvarez", desc: "Zona metropolitana de la capital con gran desarrollo comercial y residencial.", emoji: "🏘️" },
   { nombre: "Armería", desc: "Playas de Cuyutlán, salineras artesanales, tortugario y la famosa ola verde.", emoji: "🌊" },
-  { nombre: "Cuauhtémoc", desc: "Municipio agrícola entre el volcán y la capital, con paisajes y colonias de migrantes.", emoji: "🌾" },
+  { nombre: "Cuauhtémoc", desc: "Municipio agrícola entre el volcán y la capital, con paisajes y colonias de migrantes.", emoji: "🌽" },
   { nombre: "Coquimatlán", desc: "Zona bananera y cañera. Grutas y paisajes del trópico seco colimense.", emoji: "🍌" },
   { nombre: "Ixtlahuacán", desc: "Las Grutas de San Gabriel y el turismo de aventura en sus serranías.", emoji: "🗻" },
   { nombre: "Minatitlán", desc: "El municipio más pequeño, enclavado en la Sierra Madre con bosques de pino-encino.", emoji: "🌲" },
@@ -246,43 +288,31 @@ export default function SobreColima() {
         </div>
       </section>
 
-      {/* ── TRADICIONES ──────────────────────────────────────────── */}
+            {/* ── TRADICIONES LÍNEA DE TIEMPO ── */}
       <section className="sc-tradiciones">
         <div className="sc-container">
           <p className="sc-section-eyebrow sc-section-eyebrow--light">Cultura viva</p>
-          <h2 className="sc-section-title sc-section-title--light">Tradiciones y festividades</h2>
+          <h2 className="sc-section-title sc-section-title--light">Festividades del año</h2>
           <p className="sc-tradiciones__intro">
-            Colima celebra durante todo el año. Cada festividad conecta con raíces
-            indígenas, coloniales y mestizas que conviven sin contradicción.
+            Colima celebra los 12 meses. Cada festividad conecta raíces indígenas,
+            coloniales y mestizas que conviven sin contradicción.
           </p>
-          <div className="sc-tradiciones__layout">
-            <div className="sc-tradiciones__tabs">
-              {tradiciones.map((t, i) => (
-                <button
-                  key={t.titulo}
-                  className={`sc-tab ${tradicionActiva === i ? 'sc-tab--active' : ''}`}
-                  onClick={() => setTradicionActiva(i)}
-                >
-                  <span className="sc-tab__icon">{t.icon}</span>
-                  <span className="sc-tab__label">{t.titulo}</span>
-                  <span className="sc-tab__mes">{t.mes}</span>
-                </button>
-              ))}
-            </div>
-            <div className="sc-tradiciones__panel">
-              <div className="sc-tradiciones__panel-icon">
-                {tradiciones[tradicionActiva].icon}
+
+          <div className="sc-timeline">
+            {tradiciones.map((t, i) => (
+              <div key={t.titulo} className={`sc-timeline__item ${i % 2 === 0 ? 'sc-timeline__item--left' : 'sc-timeline__item--right'}`}>
+                <div className="sc-timeline__dot">
+                  <span className="sc-timeline__dot-icon">{t.icon}</span>
+                </div>
+                <div className="sc-timeline__card">
+                  <span className="sc-timeline__mes">{t.mes}</span>
+                  <h3 className="sc-timeline__titulo">{t.titulo}</h3>
+                  <span className="sc-timeline__lugar">📍 {t.lugar}</span>
+                  <p className="sc-timeline__desc">{t.descripcion}</p>
+                </div>
               </div>
-              <span className="sc-tradiciones__panel-mes">
-                {tradiciones[tradicionActiva].mes}
-              </span>
-              <h3 className="sc-tradiciones__panel-title">
-                {tradiciones[tradicionActiva].titulo}
-              </h3>
-              <p className="sc-tradiciones__panel-desc">
-                {tradiciones[tradicionActiva].descripcion}
-              </p>
-            </div>
+            ))}
+            <div className="sc-timeline__line" />
           </div>
         </div>
       </section>
@@ -346,7 +376,7 @@ export default function SobreColima() {
       {/* ── CIERRE ───────────────────────────────────────────────── */}
       <section className="sc-cierre">
         <div className="sc-container sc-cierre__inner">
-          <Flame className="sc-cierre__icon" />
+          <Mountain className="sc-cierre__icon" />
           <h2 className="sc-cierre__title">Colima te espera</h2>
           <p className="sc-cierre__text">
             Desde las laderas del volcán hasta la arena del Pacífico, cada rincón de
