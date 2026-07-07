@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, MapPin, UserCircle, LogOut } from "lucide-react";
+import { Menu, X, MapPin, UserCircle, LogOut, LayoutDashboard } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import TuliA from "./TuliA";
 import { useAuth } from "../context/AuthContext";
@@ -29,9 +29,16 @@ export default function Header() {
   // Sección visible actualmente en pantalla ('mapa' | 'destinos' | 'contacto' | null)
   const [seccionActiva, setSeccionActiva] = useState(null);
 
-  const cerrarSesion = () => {
-    logout();
-  };
+const panelUsuario = (() => {
+    if (!usuario) return null;
+    if (usuario.rol === 'admin' || usuario.id_rol === 1) {
+      return { to: '/admin', label: 'Panel Admin' };
+    }
+    if (usuario.rol === 'proveedor' || usuario.id_rol === 2) {
+      return { to: '/dashboard-proveedor', label: 'Mi Panel' };
+    }
+    return null;
+  })();
 
   // Un link está activo si:
   // - tiene anchor y esa sección es la visible en pantalla (solo en '/')
@@ -213,12 +220,18 @@ export default function Header() {
 
             {/* Usuario: derecha */}
             <div className="header-user-right">
-              {usuario ? (
+             {usuario ? (
                 <>
                   <div className="header-user-greeting">
                     <span className="header-greeting-text">Hola,</span>
                     <span className="header-greeting-name">{usuario.primerNombre}</span>
                   </div>
+                  {panelUsuario && (
+                    <Link to={panelUsuario.to} className="header-btn-panel" title={panelUsuario.label}>
+                      <LayoutDashboard size={16} />
+                      {panelUsuario.label}
+                    </Link>
+                  )}
                   <Link to="/perfil" className="header-icon-btn" title="Mi perfil">
                     <UserCircle size={22} />
                   </Link>
@@ -245,13 +258,22 @@ export default function Header() {
           {isMenuOpen && (
             <nav className="header-mobile-nav">
               <div className="header-mobile-nav-content">
-                {usuario && (
+               {usuario && (
                   <div className="header-mobile-user">
                     <div className="header-mobile-greeting">
                       <UserCircle size={20} />
                       <span>Hola, <strong>{usuario.primerNombre}</strong></span>
                     </div>
                   </div>
+                )}
+                {panelUsuario && (
+                  <Link
+                    to={panelUsuario.to}
+                    className="header-mobile-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <LayoutDashboard size={16} /> {panelUsuario.label}
+                  </Link>
                 )}
                 {navLinks.map((link) => (
                   link.label === "TuliA" ? (
