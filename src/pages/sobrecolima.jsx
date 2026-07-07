@@ -146,7 +146,6 @@ const municipios = [
 ];
 
 export default function SobreColima() {
-  const [tradicionActiva, setTradicionActiva] = useState(0);
   const gastronomiaRef = useRef(null);
   const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
 
@@ -162,23 +161,7 @@ export default function SobreColima() {
       });
     }, []);
 
-      
-    const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
-
-    useEffect(() => {
-      const tags = [...new Set(gastronomia.map(p => p.tag))];
-      tags.forEach(async (tag) => {
-        try {
-          const { data } = await axios.get(`${BASE}/restaurantes?especialidad=${encodeURIComponent(tag)}`);
-          setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: data }));
-        } catch {
-          setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: [] }));
-        }
-      });
-    }, []);
-
-
-
+     
   return (
     <main className="sc-page">
 
