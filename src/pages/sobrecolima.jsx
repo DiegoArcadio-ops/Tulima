@@ -228,7 +228,7 @@ export default function SobreColima() {
 
           <div className="sc-historia__image">
             <img
-              src="La-palma-colima-2.jpg"
+              src="La-Palma-Colima-2.jpg"
               alt="Monumento a las palmeras con el Volcán de Fuego al fondo"
               className="sc-historia__img"
             />

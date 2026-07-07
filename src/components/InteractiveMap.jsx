@@ -55,13 +55,12 @@ export default function InteractiveMap() {
   // Referencia para guardar los datos sin perderlos en el evento del mapa
   const municipiosRef = useRef([]);
   const navigate = useNavigate();
-
 const handleVerMas = (item) => {
-  if (!item.ruta || !item.id) return;
+  if (item.ruta === undefined || item.ruta === null || !item.id) return;
   handleCloseModal();
-  navigate(`/${item.ruta}?id=${item.id}`);
+  const destino = item.ruta === '' ? '/' : `/${item.ruta}`;
+  navigate(`${destino}?id=${item.id}`);
 };
-
   useEffect(() => {
     fetch(`${BACKEND_URL}/municipios`)
       .then((res) => res.json())
@@ -306,7 +305,7 @@ const handleVerMas = (item) => {
                           <span className="top-amados-tipo">{item.tipo}</span>
                           <div className="top-amados-nombre-row">
                             <span className="top-amados-nombre">{item.nombre}</span>
-                            {item.ruta && item.id && (
+                            {item.ruta !== undefined && item.ruta !== null && item.id && (
                               <button
                                 className="top-amados-vermas"
                                 onClick={() => handleVerMas(item)}
@@ -326,9 +325,6 @@ const handleVerMas = (item) => {
                 )}
               </div>
 
-              <button className="map-modal-btn">
-                Explorar {selectedMunicipio.nombre}
-              </button>
             </div>
 
           </div>
