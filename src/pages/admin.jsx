@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut } from 'lucide-react';
+import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut, Home } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Toast } from '../components/Toast';
 
 const SECCIONES = {
@@ -221,11 +222,11 @@ export default function TulimaAdminPanel() {
               );
             })}
           </nav>
-          <div className="p-4 border-t border-slate-100">
-            <a href="/" className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-500 text-sm rounded-lg hover:bg-red-50 transition-colors">
+       <div className="p-4 border-t border-slate-100">
+            <Link to="/" className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-500 text-sm rounded-lg hover:bg-red-50 transition-colors">
               <LogOut className="w-4 h-4" />
               Salir al sitio principal
-            </a>
+            </Link>
           </div>
         </aside>
 
@@ -235,6 +236,13 @@ export default function TulimaAdminPanel() {
 
             <header className="flex justify-between items-center mb-8">
               <div>
+                <Link
+                  to="/"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-[#00a8ff] transition-colors mb-2"
+                >
+                  <Home className="w-4 h-4" />
+                  Volver al inicio
+                </Link>
                 <h1 className="text-3xl font-bold text-slate-800">{seccionActual.titulo}</h1>
                 <p className="text-slate-500 mt-1">
                   Activa o desactiva {seccionActual.titulo.toLowerCase()} en la plataforma.

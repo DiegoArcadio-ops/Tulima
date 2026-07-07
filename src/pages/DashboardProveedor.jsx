@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  MapPin, Plus, Edit2, Trash2, X, LogOut,
+  MapPin, Plus, Edit2, Trash2, X, LogOut, Home,
   Building2, Utensils, Compass, Map as MapIcon, Calendar,
   CheckCircle, Clock, XCircle, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ModalConfirm } from '../components/ModalConfirm';
 import MiniMap from '../components/MiniMap';
+import { Link } from 'react-router-dom';
 
 const BASE = 'https://tulima-backend.vercel.app';
 
@@ -438,10 +439,10 @@ const confirmarEliminar = async () => {
         </nav>
 
         <div className="p-4 border-t border-slate-100">
-          <a href="/" className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-500 text-sm rounded-lg hover:bg-red-50 transition-colors">
+          <Link to="/" className="flex items-center gap-2 px-4 py-2 text-slate-500 hover:text-red-500 text-sm rounded-lg hover:bg-red-50 transition-colors">
             <LogOut className="w-4 h-4" />
             Salir al sitio principal
-          </a>
+          </Link>
         </div>
       </aside>
 
@@ -450,6 +451,13 @@ const confirmarEliminar = async () => {
 
           <header className="flex justify-between items-start mb-6">
             <div>
+              <Link
+                to="/"
+                className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-[#00a8ff] transition-colors mb-2"
+              >
+                <Home className="w-4 h-4" />
+                Volver al inicio
+              </Link>
               <h1 className="text-2xl font-bold text-slate-800">{seccionActual.titulo}</h1>
               <p className="text-slate-500 mt-1 text-sm">
                 Gestiona tus {seccionActual.titulo.toLowerCase()} — los nuevos quedarán pendientes de aprobación.
