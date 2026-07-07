@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MapPin, Calendar, Music, Utensils, Flame, Waves, TreePine, Star, Landmark, Ship, Coffee, BookOpen, Mountain } from 'lucide-react';
 import './sobrecolima.css';
 import CalendarioFestividades from '../components/CalendarioFestividades';
@@ -146,11 +146,8 @@ const municipios = [
 ];
 
 export default function SobreColima() {
-  const [tradicionActiva, setTradicionActiva] = useState(0);
   const gastronomiaRef = useRef(null);
-
-      
-    const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
+  const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
 
     useEffect(() => {
       const tags = [...new Set(gastronomia.map(p => p.tag))];
