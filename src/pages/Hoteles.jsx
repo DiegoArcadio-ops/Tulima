@@ -8,6 +8,8 @@ import FiltrosBusqueda from '../components/FiltrosBusqueda';
 import Paginacion from '../components/Paginacion';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
+import { useSearchParams } from 'react-router-dom';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const URL = "https://tulima-backend.vercel.app/hoteles";
 const PAGE_SIZE = 9;
@@ -17,10 +19,12 @@ function Hoteles() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedHotel, setSelectedHotel] = useState(null);
+  useBodyScrollLock(!!selectedHotel);
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
   const [toast, setToast] = useState(null);
+const [searchParams, setSearchParams] = useSearchParams();
 
   // Filtros
 const [busqueda, setBusqueda] = useState('');
@@ -46,6 +50,17 @@ const [busqueda, setBusqueda] = useState('');
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_hotel != null).map(f => f.id_hotel))))
       .catch(() => {});
   }, [usuario]);
+
+useEffect(() => {
+  const id = searchParams.get('id');
+  if (id && hoteles.length > 0) {
+    const encontrado = hoteles.find(h => h.id_hotel === Number(id));
+    if (encontrado) {
+      setSelectedHotel(encontrado);
+      setSearchParams({}, { replace: true });
+    }
+  }
+}, [searchParams, hoteles, setSearchParams]);
 
   useEffect(() => {
     fetch(URL)

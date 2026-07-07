@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
 import './EventosNuevo.css';
+import { useSearchParams } from 'react-router-dom';
+import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
 const API_URL = 'https://tulima-backend.vercel.app';
 
@@ -13,10 +15,12 @@ function Eventos() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedEvento, setSelectedEvento] = useState(null);
+  useBodyScrollLock(!!selectedEvento);
   const { usuario } = useAuth();
   const [csrfToken, setCsrfToken] = useState(null);
   const [favoritos, setFavoritos] = useState(new Set());
   const [toast, setToast] = useState(null);
+ const [searchParams, setSearchParams] = useSearchParams();
 
   // Filtros
   const [busqueda, setBusqueda] = useState('');
@@ -45,6 +49,17 @@ function Eventos() {
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_evento != null).map(f => f.id_evento))))
       .catch(() => {});
   }, [usuario]);
+
+useEffect(() => {
+  const id = searchParams.get('id');
+  if (id && eventos.length > 0) {
+    const encontrado = eventos.find(ev => ev.id_evento === Number(id));
+    if (encontrado) {
+      setSelectedEvento(encontrado);
+      setSearchParams({}, { replace: true });
+    }
+  }
+}, [searchParams, eventos, setSearchParams]);
 
   useEffect(() => {
     const cargarEventos = async () => {
