@@ -156,14 +156,14 @@ const pilares = [
 ];
 
 const gastronomia = [
-  { nombre: "Tatemado de puerco", emoji: "🍖",tag:"Comida típica", desc: "Cerdo cocido lentamente en chile ancho y especias. Platillo de fiesta por excelencia, heredado de la cocina indígena colimense y presente en cada celebración familiar." },
+  { nombre: "Tatemado de puerco", emoji: "🍖", tag:"Comida típica", desc: "Cerdo cocido lentamente en chile ancho y especias. Platillo de fiesta por excelencia, heredado de la cocina indígena colimense y presente en cada celebración familiar." },
   { nombre: "Pozole colimense", emoji: "🥣", tag:"Comida típica", desc: "Versión local del clásico mexicano con maíz cacahuazintle y caldo de res o cerdo. Se sirve con orégano, tostadas y limón en puestos que abren desde el amanecer." },
   { nombre: "Sopa de mariscos", emoji: "🦐", tag:"Mariscos", desc: "Caldo rojo con camarón, almeja y pulpo recién salidos del Pacífico. Infaltable en Manzanillo, donde los mariscos llegan directo del puerto a la mesa." },
   { nombre: "Ponche de tamarindo", emoji: "🍹", tag:"Bebidas", desc: "Bebida artesanal de tamarindo colimense, dulce y refrescante, emblema del estado. El tamarindo de Tecomán es reconocido como el mejor de México." },
-  { nombre: "Dulce de leche quemada", emoji: "🍮",tag:"Postres", desc: "Postre tradicional elaborado con leche de vaca y azúcar morena, cocinado lentamente en cazuela de barro. Parte de la rica tradición dulcera de la capital." },
-  { nombre: "Enchiladas colimenses", emoji: "🌮",tag:"Comida típica", desc: "Tortillas bañadas en salsa de chile seco, rellenas de queso fresco local y cubiertas de crema. Se distinguen de otras versiones por el uso del chile colimense seco." },
-  { nombre: "Café de Comala", emoji: "☕",tag:"Café", desc: "Granos cultivados en las laderas del volcán a más de 1,000 metros de altura. El café de Comala tiene denominación de origen y es considerado uno de los mejores de México." },
-  { nombre: "Bate de Comala", emoji: "🥤",tag:"Bebidas", desc: "Atole frío de semillas de chan (chía silvestre) con miel de piloncillo. Bebida prehispánica que sigue sirviéndose en los portales de Comala como parte de la tradición botanera." },
+  { nombre: "Dulce de leche quemada", emoji: "🍮", tag:"Postres", desc: "Postre tradicional elaborado con leche de vaca y azúcar morena, cocinado lentamente en cazuela de barro. Parte de la rica tradición dulcera de la capital." },
+  { nombre: "Enchiladas colimenses", emoji: "🌮", tag:"Comida típica", desc: "Tortillas bañadas en salsa de chile seco, rellenas de queso fresco local y cubiertas de crema. Se distinguen de otras versiones por el uso del chile colimense seco." },
+  { nombre: "Café de Comala", emoji: "☕", tag:"Café", desc: "Granos cultivados en las laderas del volcán a más de 1,000 metros de altura. El café de Comala tiene denominación de origen y es considerado uno de los mejores de México." },
+  { nombre: "Bate de Comala", emoji: "🥤", tag:"Bebidas", desc: "Atole frío de semillas de chan (chía silvestre) con miel de piloncillo. Bebida prehispánica que sigue sirviéndose en los portales de Comala como parte de la tradición botanera." },
 ];
 
 const municipios = [
@@ -184,19 +184,18 @@ export default function SobreColima() {
   const gastronomiaRef = useRef(null);
   const [restaurantesPorEspecialidad, setRestaurantesPorEspecialidad] = useState({});
 
-    useEffect(() => {
-      const tags = [...new Set(gastronomia.map(p => p.tag))];
-      tags.forEach(async (tag) => {
-        try {
-          const { data } = await axios.get(`${BASE}/restaurantes?especialidad=${encodeURIComponent(tag)}`);
-          setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: data }));
-        } catch {
-          setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: [] }));
-        }
-      });
-    }, []);
+  useEffect(() => {
+    const tags = [...new Set(gastronomia.map(p => p.tag))];
+    tags.forEach(async (tag) => {
+      try {
+        const { data } = await axios.get(`${BASE}/restaurantes?especialidad=${encodeURIComponent(tag)}`);
+        setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: data }));
+      } catch {
+        setRestaurantesPorEspecialidad(prev => ({ ...prev, [tag]: [] }));
+      }
+    });
+  }, []);
 
-     
   return (
     <main className="sc-page">
 
@@ -275,51 +274,42 @@ export default function SobreColima() {
         </div>
       </section>
 
-     {/* ── HISTORIA ─────────────────────────────────────────────── */}
-<section className="sc-historia">
+      {/* ── HISTORIA ─────────────────────────────────────────────── */}
+      <section className="sc-historia">
         <div className="sc-container">
           <p className="sc-section-eyebrow">Raíces</p>
           <h2 className="sc-section-title">Cinco siglos de historia</h2>
           <div className="sc-historia__timeline">
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">2000 a.C.</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">Primeras culturas prehispánicas se asientan en el territorio. Se desarrollan tradiciones cerámicas únicas como las figuras de perros xoloitzcuintle que hoy son símbolo del estado.</p>
-              </div>
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">1523</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">Gonzalo de Sandoval funda la Villa de Colima, estableciendo el primer ayuntamiento del occidente de la Nueva España. En 1527 la villa se traslada a su ubicación actual.</p>
-              </div>
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">1533</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">Hernando de Grijalva descubre el Archipiélago de Revillagigedo desde las costas colimenses. El puerto de Manzanillo se consolida como centro comercial y de defensa durante la colonia.</p>
-              </div>
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">1857</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">La Constitución eleva a Colima a la categoría de Estado Libre y Soberano. Comienza la época de modernización porfiriana: telégrafo (1869), teléfono (1883), luz eléctrica (1906) y ferrocarril Manzanillo-Colima (1889).</p>
-              </div>
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">1940s</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">Se abren al cultivo nuevas tierras en el valle de Tecomán, iniciando el ciclo del limón y las agroindustrias que hoy hacen de Colima el principal exportador mundial de limón persa.</p>
-              </div>
-              <div className="sc-historia__item">
-                <span className="sc-historia__año">2014</span>
-                <div className="sc-historia__dot" />
-                <p className="sc-historia__desc">La ciudad de Colima es nombrada Capital Americana de la Cultura. En 2024 el estado recibe más de 1.5 millones de visitantes y registra una derrama turística superior a los 5,375 millones de pesos.</p>
-              </div>
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">2000 a.C.</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">Primeras culturas prehispánicas se asientan en el territorio. Se desarrollan tradiciones cerámicas únicas como las figuras de perros xoloitzcuintle que hoy son símbolo del estado.</p>
             </div>
-          </div>
-
-          <div className="sc-historia__image">
-            <img
-              src="La-Palma-Colima-2.jpg"
-              alt="Monumento a las palmeras con el Volcán de Fuego al fondo"
-              className="sc-historia__img"
-            />
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">1523</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">Gonzalo de Sandoval funda la Villa de Colima, estableciendo el primer ayuntamiento del occidente de la Nueva España. En 1527 la villa se traslada a su ubicación actual.</p>
+            </div>
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">1533</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">Hernando de Grijalva descubre el Archipiélago de Revillagigedo desde las costas colimenses. El puerto de Manzanillo se consolida como centro comercial y de defensa durante la colonia.</p>
+            </div>
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">1857</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">La Constitución eleva a Colima a la categoría de Estado Libre y Soberano. Comienza la época de modernización porfiriana: telégrafo (1869), teléfono (1883), luz eléctrica (1906) y ferrocarril Manzanillo-Colima (1889).</p>
+            </div>
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">1940s</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">Se abren al cultivo nuevas tierras en el valle de Tecomán, iniciando el ciclo del limón y las agroindustrias que hoy hacen de Colima el principal exportador mundial de limón persa.</p>
+            </div>
+            <div className="sc-historia__item">
+              <span className="sc-historia__año">2014</span>
+              <div className="sc-historia__dot" />
+              <p className="sc-historia__desc">La ciudad de Colima es nombrada Capital Americana de la Cultura. En 2024 el estado recibe más de 1.5 millones de visitantes y registra una derrama turística superior a los 5,375 millones de pesos.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -367,47 +357,47 @@ export default function SobreColima() {
             tradición culinaria que mezcla herencia prehispánica, colonial y contemporánea.
           </p>
           <div className="sc-gastro__grid">
-          {gastronomia.map((p) => (
-            <div key={p.nombre} className="sc-platillo">
-              <span className="sc-platillo__emoji">{p.emoji}</span>
-              <h3 className="sc-platillo__nombre">{p.nombre}</h3>
-              <p className="sc-platillo__desc">{p.desc}</p>
+            {gastronomia.map((p) => (
+              <div key={p.nombre} className="sc-platillo">
+                <span className="sc-platillo__emoji">{p.emoji}</span>
+                <h3 className="sc-platillo__nombre">{p.nombre}</h3>
+                <p className="sc-platillo__desc">{p.desc}</p>
 
-              {/* Restaurantes con esa especialidad */}
-              {restaurantesPorEspecialidad[p.tag] === undefined ? (
-                <p className="sc-platillo__rest-cargando">Cargando...</p>
-              ) : restaurantesPorEspecialidad[p.tag].length === 0 ? (
-                <p className="sc-platillo__rest-vacio">Sin restaurantes registrados aún</p>
-              ) : (
-                <div className="sc-platillo__rest-lista">
-                  {restaurantesPorEspecialidad[p.tag].map(r => (
-                    <div
-                      key={r.id_restaurante}
-                      className="sc-platillo__rest-item"
-                      onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/restaurantes?id=${r.id_restaurante}`); }}
-                    >
-                      {r.imagen && (
-                        <img
-                          src={r.imagen}
-                          alt={r.nombre}
-                          className="sc-platillo__rest-img"
-                        />
-                      )}
-                      <div className="sc-platillo__rest-info">
-                        <span className="sc-platillo__rest-nombre">{r.nombre}</span>
-                        <span className="sc-platillo__rest-municipio">
-                          📍 {r.municipio?.nombre || 'Colima'}
-                        </span>
+                {/* Restaurantes con esa especialidad */}
+                {restaurantesPorEspecialidad[p.tag] === undefined ? (
+                  <p className="sc-platillo__rest-cargando">Cargando...</p>
+                ) : restaurantesPorEspecialidad[p.tag].length === 0 ? (
+                  <p className="sc-platillo__rest-vacio">Sin restaurantes registrados aún</p>
+                ) : (
+                  <div className="sc-platillo__rest-lista">
+                    {restaurantesPorEspecialidad[p.tag].map(r => (
+                      <div
+                        key={r.id_restaurante}
+                        className="sc-platillo__rest-item"
+                        onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/restaurantes?id=${r.id_restaurante}`); }}
+                      >
+                        {r.imagen && (
+                          <img
+                            src={r.imagen}
+                            alt={r.nombre}
+                            className="sc-platillo__rest-img"
+                          />
+                        )}
+                        <div className="sc-platillo__rest-info">
+                          <span className="sc-platillo__rest-nombre">{r.nombre}</span>
+                          <span className="sc-platillo__rest-municipio">
+                            📍 {r.municipio?.nombre || 'Colima'}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
