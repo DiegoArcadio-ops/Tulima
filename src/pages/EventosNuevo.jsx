@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
+import { Heart, MapPin } from 'lucide-react';
 import './EventosNuevo.css';
 import { useSearchParams } from 'react-router-dom';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
@@ -315,8 +316,8 @@ const municipios = todosMunicipios.length
                     </p>
                   )}
 
-                {/* {selectedEvento.latitud != null && selectedEvento.longitud != null ? (
-                  <a  
+                  {selectedEvento.latitud != null && selectedEvento.longitud != null ? (
+                    <a
                     href={`https://www.google.com/maps/dir/?api=1&destination=${selectedEvento.latitud},${selectedEvento.longitud}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -325,9 +326,9 @@ const municipios = todosMunicipios.length
                     <MapPin size={16} color="#fff" />
                     Cómo llegar
                   </a>
-                ) : (
-                  <a
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedEvento.nombre_Calle}, ${selectedEvento.municipio?.nombre ?? ''}, Colima`)}`}
+                  ) : (
+                    <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedEvento.nombre_Calle}, ${selectedEvento.destino_turistico?.municipio?.nombre ?? ''}, Colima`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
@@ -335,7 +336,7 @@ const municipios = todosMunicipios.length
                     <MapPin size={16} color="#fff" />
                     Cómo llegar
                   </a>
-                )} */}
+                  )}
                 </div>
 
                 <div className="modal-detail-row">
