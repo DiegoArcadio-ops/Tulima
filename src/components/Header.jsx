@@ -88,63 +88,58 @@ const panelUsuario = (() => {
       setSeccionActiva(null);
       return;
     }
-
-    let observer;
-    let intentos = 0;
-
-    const iniciarObserver = () => {
-      const ids = ['mapa', 'destinos', 'contacto'];
-      const elementos = ids
-      .map(id => document.getElementById(id))
-      .filter(Boolean)
-      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
-
-      if (elementos.length === 0) {
-        if (intentos < 15) {
-          intentos++;
-          setTimeout(iniciarObserver, 150);
-        }
-        return;
-      }
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          const visibles = entries.filter((e) => e.isIntersecting);
-          if (visibles.length > 0) {
-            const masVisible = visibles.reduce((a, b) =>
-              b.intersectionRatio > a.intersectionRatio ? b : a
-            );
-            setSeccionActiva(masVisible.target.id);
-          } else {
-            const primera = elementos[0];
-            if (primera && window.scrollY < primera.offsetTop - 150) {
-              setSeccionActiva(null);
-            }
-          }
-        },
-        { rootMargin: '-100px 0px -60% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
-      );
-
-      elementos.forEach((el) => observer.observe(el));
-    };
-
-    const checkFooter = () => {
+  
+    let raf = null;
+  
+    const detectarSeccion = () => {
+      raf = null;
+      const LINEA_REFERENCIA = 150; // debajo del header fijo
+  
+      const secciones = ['mapa', 'destinos']
+        .map(id => document.getElementById(id))
+        .filter(Boolean)
+        .map(el => {
+          const rect = el.getBoundingClientRect();
+          return { id: el.id, top: rect.top, bottom: rect.bottom };
+        });
+  
+      if (secciones.length === 0) return;
+  
+      // ¿Llegamos al fondo real de la página? -> Contacto (footer)
       const alFinal = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
       if (alFinal) {
         setSeccionActiva('contacto');
+        return;
       }
+  
+      // La sección cuya franja contiene la línea de referencia
+      const activa = secciones.find(s => s.top <= LINEA_REFERENCIA && s.bottom > LINEA_REFERENCIA);
+  
+      if (activa) {
+        setSeccionActiva(activa.id);
+      } else if (window.scrollY < 200) {
+        setSeccionActiva(null); // arriba del todo, en el Hero
+      }
+      // Si no hay coincidencia y no estamos arriba del todo, no tocamos el estado:
+      // se mantiene la última sección activa hasta que otra la reemplace.
     };
-    
-    window.addEventListener('scroll', checkFooter, { passive: true });
-
-    iniciarObserver();
-
+  
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(detectarSeccion);
+    };
+  
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    detectarSeccion(); // estado inicial al montar
+  
     return () => {
-      if (observer) observer.disconnect();
-      window.removeEventListener('scroll', checkFooter);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, [location.pathname]);
-
+  
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
     if (link.anchor) {
