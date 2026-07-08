@@ -235,6 +235,28 @@ const handleVerMas = (item) => {
                           {p.descripcion.length > 90 ? `${p.descripcion.slice(0, 90)}...` : p.descripcion}
                         </p>
                       )}
+                      <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${p.lat},${p.lng}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 6,
+                        marginTop: 8,
+                        padding: '7px 10px',
+                        background: '#0ea5e9',
+                        color: '#fff',
+                        borderRadius: 6,
+                        fontSize: 12,
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <MapPin size={13} color="#fff" />
+                      Cómo llegar
+                    </a>
                     </div>
                   </div>
                 </Popup>
