@@ -315,7 +315,7 @@ const municipios = todosMunicipios.length
                     </p>
                   )}
 
-                {selectedEvento.latitud != null && selectedEvento.longitud != null ? (
+                {/* {selectedEvento.latitud != null && selectedEvento.longitud != null ? (
                   <a  
                     href={`https://www.google.com/maps/dir/?api=1&destination=${selectedEvento.latitud},${selectedEvento.longitud}`}
                     target="_blank"
@@ -335,7 +335,7 @@ const municipios = todosMunicipios.length
                     <MapPin size={16} color="#fff" />
                     Cómo llegar
                   </a>
-                )}
+                )} */}
                 </div>
 
                 <div className="modal-detail-row">
