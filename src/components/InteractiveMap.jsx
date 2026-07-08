@@ -20,8 +20,8 @@ const crearIcono = (emoji, color) => new L.DivIcon({
 const ICONOS_POR_TIPO = {
   hotel: crearIcono('🏨', '#00a8ff'),
   restaurante: crearIcono('🍽️', '#f97316'),
-  tour: crearIcono('🧭', '#22c55e'),
-  destino: crearIcono('📍', '#a855f7'),
+  tour: crearIcono('🚌', '#22c55e'),
+  destino: crearIcono('🚩', '#a855f7'),
   evento: crearIcono('🎉', '#e11d48'),
 };
 
@@ -80,8 +80,8 @@ const handleVerMas = (item) => {
 
   const colimaCenter = [19.15, -103.8];
   const colimaBounds = [
-    [18.6, -104.8],
-    [19.6, -103.3]
+    [18.35, -105.1],
+    [19.95, -102.95]
   ];
 
   const estiloMunicipio = {
