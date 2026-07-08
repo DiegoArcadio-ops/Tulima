@@ -94,7 +94,10 @@ const panelUsuario = (() => {
 
     const iniciarObserver = () => {
       const ids = ['mapa', 'destinos', 'contacto'];
-      const elementos = ids.map(id => document.getElementById(id)).filter(Boolean);
+      const elementos = ids
+      .map(id => document.getElementById(id))
+      .filter(Boolean)
+      .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
       if (elementos.length === 0) {
         if (intentos < 15) {
@@ -125,10 +128,20 @@ const panelUsuario = (() => {
       elementos.forEach((el) => observer.observe(el));
     };
 
+    const checkFooter = () => {
+      const alFinal = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
+      if (alFinal) {
+        setSeccionActiva('contacto');
+      }
+    };
+    
+    window.addEventListener('scroll', checkFooter, { passive: true });
+
     iniciarObserver();
 
     return () => {
       if (observer) observer.disconnect();
+      window.removeEventListener('scroll', checkFooter);
     };
   }, [location.pathname]);
 
