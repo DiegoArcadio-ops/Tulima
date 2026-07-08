@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { Toast } from '../components/Toast';
 import MiniMap from '../components/MiniMap';
