@@ -160,9 +160,9 @@ const gastronomia = [
   { nombre: "Pozole colimense", emoji: "🥣", tag:"Comida típica", desc: "Versión local del clásico mexicano con maíz cacahuazintle y caldo de res o cerdo. Se sirve con orégano, tostadas y limón en puestos que abren desde el amanecer." },
   { nombre: "Sopa de mariscos", emoji: "🦐", tag:"Mariscos", desc: "Caldo rojo con camarón, almeja y pulpo recién salidos del Pacífico. Infaltable en Manzanillo, donde los mariscos llegan directo del puerto a la mesa." },
   { nombre: "Ponche de tamarindo", emoji: "🍹", tag:"Bebidas", desc: "Bebida artesanal de tamarindo colimense, dulce y refrescante, emblema del estado. El tamarindo de Tecomán es reconocido como el mejor de México." },
-  { nombre: "Dulce de leche quemada", emoji: "🍮", tag:"Postres", desc: "Postre tradicional elaborado con leche de vaca y azúcar morena, cocinado lentamente en cazuela de barro. Parte de la rica tradición dulcera de la capital." },
+  { nombre: "Dulce de leche quemada", emoji: "🍮", tag:"Café y postres", desc: "Postre tradicional elaborado con leche de vaca y azúcar morena, cocinado lentamente en cazuela de barro. Parte de la rica tradición dulcera de la capital." },
   { nombre: "Enchiladas colimenses", emoji: "🌮", tag:"Comida típica", desc: "Tortillas bañadas en salsa de chile seco, rellenas de queso fresco local y cubiertas de crema. Se distinguen de otras versiones por el uso del chile colimense seco." },
-  { nombre: "Café de Comala", emoji: "☕", tag:"Café", desc: "Granos cultivados en las laderas del volcán a más de 1,000 metros de altura. El café de Comala tiene denominación de origen y es considerado uno de los mejores de México." },
+  { nombre: "Café de Comala", emoji: "☕", tag:"Café y postres", desc: "Granos cultivados en las laderas del volcán a más de 1,000 metros de altura. El café de Comala tiene denominación de origen y es considerado uno de los mejores de México." },
   { nombre: "Bate de Comala", emoji: "🥤", tag:"Bebidas", desc: "Atole frío de semillas de chan (chía silvestre) con miel de piloncillo. Bebida prehispánica que sigue sirviéndose en los portales de Comala como parte de la tradición botanera." },
 ];
 
