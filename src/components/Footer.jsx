@@ -61,7 +61,7 @@ export default function Footer() {
               </li>
               <li className="footer-contact-item">
   <a href="/ayuda" className="footer-link" style={{ fontWeight: '600', color: '#0ea5e9' }}>
- Ayuda
+❓Ayuda
   </a>
 </li>
             </ul>
@@ -70,7 +70,7 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p className="footer-copyright">© 2025 Tulima. Todos los derechos reservados.</p>
+          <p className="footer-copyright">© 2026 Tulima. Todos los derechos reservados.</p>
           <div className="footer-legal-links">
             <a href="#" className="footer-legal-link">
               Política de Privacidad
