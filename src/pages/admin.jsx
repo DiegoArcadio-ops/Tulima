@@ -67,20 +67,20 @@ const SECCIONES = {
       col3: { label: 'Ubicación', valor: (item) => item.municipio?.nombre || 'N/A' },
     },
   },
-  municipios: {
-    titulo: 'Municipios',
-    url: 'https://tulima-backend.vercel.app/municipios',
-    icono: MapIcon,
-    campos: [
-      { name: 'nombre', label: 'Nombre del Municipio', type: 'text' },
-      { name: 'descripcion', label: 'Descripción', type: 'textarea' },
-      { name: 'url_imagen', label: 'URL de la Imagen', type: 'text' },
-    ],
-    columnas: {
-      col2: { label: 'Categoría', valor: () => 'Municipio' },
-      col3: { label: 'Ubicación', valor: (item) => item.nombre || 'N/A' },
-    },
-  },
+  // municipios: {
+  //   titulo: 'Municipios',
+  //   url: 'https://tulima-backend.vercel.app/municipios',
+  //   icono: MapIcon,
+  //   campos: [
+  //     { name: 'nombre', label: 'Nombre del Municipio', type: 'text' },
+  //     { name: 'descripcion', label: 'Descripción', type: 'textarea' },
+  //     { name: 'url_imagen', label: 'URL de la Imagen', type: 'text' },
+  //   ],
+  //   columnas: {
+  //     col2: { label: 'Categoría', valor: () => 'Municipio' },
+  //     col3: { label: 'Ubicación', valor: (item) => item.nombre || 'N/A' },
+  //   },
+  // },
   tours: {
     titulo: 'Tours',
     url: 'https://tulima-backend.vercel.app/tours',
