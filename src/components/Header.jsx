@@ -235,7 +235,7 @@ const panelUsuario = (() => {
                   <Link to="/perfil" className="header-icon-btn" title="Mi perfil">
                     <UserCircle size={22} />
                   </Link>
-                  <button onClick={cerrarSesion} className="header-icon-btn header-logout-btn" title="Cerrar sesión">
+                  <button onClick={() => logout()} className="header-icon-btn header-logout-btn" title="Cerrar sesión">
                     <LogOut size={20} />
                   </button>
                 </>
@@ -305,7 +305,7 @@ const panelUsuario = (() => {
                   )
                 ))}
                 {usuario ? (
-                  <button onClick={cerrarSesion} className="header-mobile-link header-mobile-logout">
+                  <button onClick={() => { setIsMenuOpen(false); logout(); }} className="header-mobile-link header-mobile-logout">
                     <LogOut size={16} /> Cerrar sesión
                   </button>
                 ) : (
