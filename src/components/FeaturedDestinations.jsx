@@ -205,6 +205,28 @@ export default function FeaturedDestinations() {
                       Este destino aún no tiene ubicación exacta registrada en el mapa.
                     </p>
                   )}
+
+                  {selectedDestination.latitud != null && selectedDestination.longitud != null ? (
+                    <a  
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${selectedDestination.latitud},${selectedDestination.longitud}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
+                    >
+                      <MapPin size={16} color="#fff" />
+                      Cómo llegar
+                    </a>
+                  ) : (
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedDestination.nombre_Calle}, ${selectedDestination.municipio?.nombre ?? ''}, Colima`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
+                    >
+                      <MapPin size={16} color="#fff" />
+                      Cómo llegar
+                    </a>
+                  )}
                 </div>
               </div>
               <button className={`favorito-btn-grande ${favoritos.has(selectedDestination.id_destino) ? 'activo' : ''}`}
