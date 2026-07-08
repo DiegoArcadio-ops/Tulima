@@ -3,6 +3,7 @@ import axios from 'axios';
 import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Toast } from '../components/Toast';
+import Paginacion from '../components/Paginacion';
 
 const SECCIONES = {
   destinos: {
@@ -19,6 +20,10 @@ const SECCIONES = {
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
+    columnas: {
+      col2: { label: 'Categoría', valor: (item) => item.tipo || 'N/A' },
+      col3: { label: 'Ubicación', valor: (item) => item.municipio?.nombre || 'N/A' },
+    },
   },
   hoteles: {
     titulo: 'Hoteles',
@@ -35,6 +40,10 @@ const SECCIONES = {
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
+    columnas: {
+      col2: { label: 'Categoría', valor: (item) => item.tipo || 'N/A' },
+      col3: { label: 'Ubicación', valor: (item) => item.municipio?.nombre || 'N/A' },
+    },
   },
   restaurantes: {
     titulo: 'Restaurantes',
@@ -53,6 +62,10 @@ const SECCIONES = {
       { name: 'horarioCerrado', label: 'Horario de Cierre', type: 'time' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
+    columnas: {
+      col2: { label: 'Categoría', valor: (item) => item.tipo || 'N/A' },
+      col3: { label: 'Ubicación', valor: (item) => item.municipio?.nombre || 'N/A' },
+    },
   },
   municipios: {
     titulo: 'Municipios',
@@ -63,6 +76,10 @@ const SECCIONES = {
       { name: 'descripcion', label: 'Descripción', type: 'textarea' },
       { name: 'url_imagen', label: 'URL de la Imagen', type: 'text' },
     ],
+    columnas: {
+      col2: { label: 'Categoría', valor: () => 'Municipio' },
+      col3: { label: 'Ubicación', valor: (item) => item.nombre || 'N/A' },
+    },
   },
   tours: {
     titulo: 'Tours',
@@ -76,12 +93,20 @@ const SECCIONES = {
       { name: 'imagen', label: 'URL de la Imagen', type: 'text' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre' },
     ],
+    columnas: {
+      col2: { label: 'Categoría', valor: (item) => item.tipoTour || 'N/A' },
+      col3: { label: 'Ubicación', valor: (item) => item.municipio?.nombre || 'N/A' },
+    },
   },
   proveedores: {
     titulo: 'Proveedores',
     url: 'https://tulima-backend.vercel.app/usuarios',
     icono: Settings,
     campos: [],
+    columnas: {
+      col2: { label: 'Correo', valor: (item) => item.correo || 'N/A' },
+      col3: { label: 'RFC', valor: (item) => item.rfc || 'N/A' },
+    },
   },
 };
 
@@ -102,6 +127,8 @@ export default function TulimaAdminPanel() {
   const [csrfToken, setCsrfToken] = useState(null);
   const [toast, setToast] = useState(null);
   const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [] });
+  const [pagina, setPagina] = useState(1);
+  const PAGE_SIZE = 10;
 
   useEffect(() => {
     const fetchCsrf = async () => {
@@ -147,6 +174,7 @@ export default function TulimaAdminPanel() {
   };
 
   useEffect(() => {
+    setPagina(1);
     cargarDatos();
   }, [seccionActiva]);
 
@@ -182,6 +210,10 @@ export default function TulimaAdminPanel() {
       setToast({ mensaje: 'No se pudo cambiar el estado. Intenta de nuevo.', tipo: 'error' });
     }
   };
+
+  const datosOrdenados = [...datos].sort((a, b) => obtenerId(b) - obtenerId(a));
+  const totalPaginas = Math.ceil(datosOrdenados.length / PAGE_SIZE);
+  const datosPagina = datosOrdenados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
 
  return (
     <>
@@ -268,13 +300,13 @@ export default function TulimaAdminPanel() {
                   <thead>
                     <tr className="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
                       <th className="px-6 py-4 font-medium">Nombre</th>
-                      <th className="px-6 py-4 font-medium">Categoría</th>
-                      <th className="px-6 py-4 font-medium">Ubicación</th>
+                      <th className="px-6 py-4 font-medium">{seccionActual.columnas.col2.label}</th>
+                      <th className="px-6 py-4 font-medium">{seccionActual.columnas.col3.label}</th>
                       <th className="px-6 py-4 font-medium text-right">Estado</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
-                    {datos.map((item) => {
+                    {datosPagina.map((item) => {
                       const id = obtenerId(item);
                       return (
                         <tr key={id} className="hover:bg-slate-50/50 transition-colors">
@@ -288,11 +320,11 @@ export default function TulimaAdminPanel() {
                           </td>
                           <td className="px-6 py-4">
                             <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
-                              {item.tipo || item.tipoTour || item.tipoEvento || item.categoria?.nombre || item.correo || 'N/A'}
+                              {seccionActual.columnas.col2.valor(item)}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-slate-600">
-                            {item.municipio?.nombre || item.rfc || 'N/A'}
+                            {seccionActual.columnas.col3.valor(item)}
                           </td>
                           <td className="px-6 py-4 text-right">
                             <div className="flex justify-end items-center gap-3">
@@ -321,9 +353,14 @@ export default function TulimaAdminPanel() {
                     })}
                   </tbody>
                 </table>
-                {datos.length === 0 && (
+                {datosPagina.length === 0 && (
                   <div className="text-center py-10 text-slate-500">
                     No hay registros disponibles.
+                  </div>
+                )}
+                {datosPagina.length > 0 && (
+                  <div className="p-4 flex justify-center border-t border-slate-100">
+                    <Paginacion pagina={pagina} totalPaginas={totalPaginas} onChange={setPagina} />
                   </div>
                 )}
               </div>
