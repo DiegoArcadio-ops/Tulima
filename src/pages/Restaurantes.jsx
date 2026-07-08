@@ -183,7 +183,7 @@ const municipios = todosMunicipios.length
                 <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
                     <MapPin size={16} />
-                    <strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, CP {selectedRestaurante.codigoPostal}
+                    <strong>Dirección:</strong> {selectedRestaurante.numero_Calle} {selectedRestaurante.nombre_Calle}, {selectedRestaurante.colonia}, CP {selectedRestaurante.codigoPostal}
                   </span>
                   {selectedRestaurante.latitud != null && selectedRestaurante.longitud != null ? (
                     <MiniMap lat={selectedRestaurante.latitud} lng={selectedRestaurante.longitud} height={180} />
