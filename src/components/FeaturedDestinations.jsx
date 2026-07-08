@@ -115,9 +115,9 @@ export default function FeaturedDestinations() {
   const pagEnPantalla = filtrados.slice((pagina - 1) * PAGE_SIZE, pagina * PAGE_SIZE);
   const limpiar = () => { setBusqueda(''); setFiltroMunicipio(''); setFiltroTipo(''); setPagina(1); };
 
-  if (isLoading) return <div className="destinations-section"><h2>Cargando destinos...</h2></div>;
-  if (error) return <div className="destinations-section"><h2>Error: {error}</h2></div>;
-
+  if (isLoading) return <section id="destinos" className="destinations-section"><h2>Cargando destinos...</h2></section>;
+  if (error) return <section id="destinos" className="destinations-section"><h2>Error: {error}</h2></section>;
+ 
   return (
     <section id="destinos" className="destinations-section">
       <div className="destinations-container">
