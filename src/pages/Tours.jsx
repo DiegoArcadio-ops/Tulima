@@ -184,6 +184,28 @@ useEffect(() => {
                       Este tour aún no tiene ubicación exacta registrada en el mapa.
                     </p>
                   )}
+
+                {selectedTour.latitud != null && selectedTour.longitud != null ? (
+                  <a  
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${selectedTour.latitud},${selectedTour.longitud}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    <MapPin size={16} color="#fff" />
+                    Cómo llegar
+                  </a>
+                ) : (
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedTour.nombre_Calle}, ${selectedTour.municipio?.nombre ?? ''}, Colima`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    <MapPin size={16} color="#fff" />
+                    Cómo llegar
+                  </a>
+                )}
                 </div>
 
                 <div className="modal-detail-row"><Briefcase size={16} /><span><strong>Tipo de servicio:</strong> {selectedTour.tipoServicio ?? 'N/A'}</span></div>
