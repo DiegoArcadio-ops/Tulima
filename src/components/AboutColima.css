@@ -211,7 +211,6 @@
   background-color: #0284c7; /* Tono de azul un poco más oscuro al pasar el cursor */
   transform: translateY(-2px); /* Efecto sutil de elevación */
 }
-
 .btn-pueblo-destacado {
   display: inline-block;
   background-color: transparent;
@@ -225,8 +224,26 @@
   transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
 }
 
+.btn-pueblo-destacado:visited {
+  color: #ffffff;
+}
+
 .btn-pueblo-destacado:hover {
   background-color: #f59e0b;
   color: #0f172a;
   transform: translateY(-2px);
+}
+
+.about-pueblo-destacado-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.about-pueblo-destacado-text {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+  max-width: 16rem;
+  line-height: 1.4;
 }
