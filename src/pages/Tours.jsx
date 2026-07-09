@@ -185,6 +185,15 @@ useEffect(() => {
                     <MapPin size={16} />
                     <strong>Ubicación:</strong>
                   </span>
+                  {(selectedTour.nombre_Calle || selectedTour.colonia || selectedTour.codigoPostal) && (
+                    <p style={{ fontSize: '13px', color: '#555', margin: '0 0 8px 0' }}>
+                      {[
+                        [selectedTour.nombre_Calle, selectedTour.numero_Calle].filter(Boolean).join(' #'),
+                        selectedTour.colonia,
+                        selectedTour.codigoPostal ? `CP ${selectedTour.codigoPostal}` : null,
+                      ].filter(Boolean).join(', ')}
+                    </p>
+                  )}
                   {selectedTour.latitud != null && selectedTour.longitud != null ? (
                     <MiniMap lat={selectedTour.latitud} lng={selectedTour.longitud} height={180} />
                   ) : (
