@@ -85,10 +85,13 @@ export default function AboutColima() {
               })}
             </div>
 
-            {/* Contenedor del nuevo botón de Más información */}
+           {/* Contenedor del nuevo botón de Más información */}
             <div className="about-action">
               <a href="/sobre-colima" className="btn-more-info">
                 Más información
+              </a>
+              <a href="/el-trapiche" className="btn-pueblo-destacado">
+                Pueblo Destacado
               </a>
             </div>
 

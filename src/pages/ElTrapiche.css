@@ -1,0 +1,319 @@
+/* ═══════════════════════════════════════════════
+   ElTrapiche.css
+   Paleta consistente con SobreColima
+   ═══════════════════════════════════════════════ */
+
+.et-page {
+  --et-blue:      #0ea5e9;
+  --et-blue-dark: #0284c7;
+  --et-amber:     #f59e0b;
+  --et-dark:      #0f172a;
+  --et-dark2:     #1e293b;
+  --et-white:     #ffffff;
+  --et-gray:      #94a3b8;
+  --et-light-bg:  #f8fafc;
+
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  background: var(--et-white);
+  color: var(--et-dark);
+  overflow-x: hidden;
+}
+
+.et-container {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.et-section-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--et-blue);
+  margin-bottom: 0.6rem;
+}
+.et-section-eyebrow--light { color: var(--et-amber); }
+
+.et-section-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 800;
+  color: var(--et-dark);
+  margin: 0 0 1.5rem;
+  line-height: 1.15;
+}
+.et-section-title--light { color: var(--et-white); }
+
+/* ══════════════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════════════ */
+.et-hero {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #0f172a 0%, #164e63 55%, #0284c7 100%);
+  padding: 6rem 1.5rem 4rem;
+  text-align: center;
+}
+
+.et-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(245,158,11,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.et-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 48rem;
+}
+
+.et-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--et-blue);
+  background: rgba(14,165,233,0.12);
+  border: 1px solid rgba(14,165,233,0.35);
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  margin-bottom: 1.5rem;
+}
+
+.et-hero__title {
+  font-size: clamp(2.2rem, 6.5vw, 4.5rem);
+  font-weight: 900;
+  color: var(--et-white);
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+}
+
+.et-hero__title--accent { color: var(--et-amber); }
+
+.et-hero__sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: rgba(255,255,255,0.85);
+  line-height: 1.6;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+.et-hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.et-hero__scroll span {
+  display: block;
+  width: 1.5rem;
+  height: 2.5rem;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 9999px;
+}
+
+/* ══════════════════════════════════════════════════
+   RESUMEN
+   ══════════════════════════════════════════════════ */
+.et-resumen {
+  padding: 5rem 0;
+  background: var(--et-white);
+}
+
+.et-resumen__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 900px) {
+  .et-resumen__inner {
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: start;
+  }
+}
+
+.et-resumen__body {
+  color: var(--et-dark2);
+  line-height: 1.7;
+  margin-bottom: 1.1rem;
+  font-size: 1.02rem;
+}
+
+.et-resumen__cards {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.et-resumen__card {
+  background: var(--et-light-bg);
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.5rem;
+}
+
+.et-resumen__card-icon {
+  color: var(--et-blue);
+  margin-bottom: 0.6rem;
+}
+
+.et-resumen__card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+  color: var(--et-dark);
+}
+
+.et-resumen__card p {
+  font-size: 0.92rem;
+  color: var(--et-gray);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   HISTORIA
+   ══════════════════════════════════════════════════ */
+.et-historia {
+  padding: 5rem 0;
+  background: var(--et-dark);
+}
+
+.et-historia__body {
+  max-width: 48rem;
+}
+
+.et-historia__body p {
+  color: rgba(255,255,255,0.82);
+  line-height: 1.75;
+  font-size: 1.02rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ══════════════════════════════════════════════════
+   EVENTOS
+   ══════════════════════════════════════════════════ */
+.et-eventos {
+  padding: 5rem 0;
+  background: var(--et-light-bg);
+}
+
+.et-eventos__intro {
+  color: var(--et-gray);
+  max-width: 40rem;
+  margin: 0 0 2.5rem;
+  line-height: 1.6;
+}
+
+.et-eventos__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .et-eventos__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.et-evento-card {
+  background: var(--et-white);
+  border: 1px solid #e2e8f0;
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px -2px rgba(15,23,42,0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.et-evento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(15,23,42,0.12);
+}
+
+.et-evento-card__mes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--et-blue-dark);
+  background: rgba(14,165,233,0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+.et-evento-card__titulo {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--et-dark);
+  margin: 0 0 0.75rem;
+}
+
+.et-evento-card__desc {
+  color: var(--et-gray);
+  line-height: 1.65;
+  font-size: 0.98rem;
+  margin: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   CIERRE
+   ══════════════════════════════════════════════════ */
+.et-cierre {
+  padding: 6rem 0;
+  background: linear-gradient(160deg, #0f172a 0%, #0284c7 100%);
+  text-align: center;
+}
+
+.et-cierre__inner {
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
+.et-cierre__icon {
+  color: var(--et-amber);
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.et-cierre__title {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: var(--et-white);
+  margin: 0 0 1rem;
+}
+
+.et-cierre__text {
+  color: rgba(255,255,255,0.8);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.et-cierre__btn {
+  display: inline-block;
+  background: var(--et-amber);
+  color: var(--et-dark);
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.et-cierre__btn:hover {
+  transform: translateY(-2px);
+  background: #fbbf24;
+}
