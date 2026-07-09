@@ -1,0 +1,182 @@
+import React, { useState, useEffect } from 'react';
+import { MapPin, ChevronDown, Building2, UtensilsCrossed, Compass, CalendarDays } from 'lucide-react';
+import './MunicipioDestacado.css';
+
+const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Minatitlán', 'Chiapa'];
+
+const API_URL = 'https://tulima-backend.vercel.app';
+
+export default function MunicipioDestacado() {
+  const [puebloSeleccionado, setPuebloSeleccionado] = useState('');
+
+  const [hoteles, setHoteles] = useState([]);
+  const [restaurantes, setRestaurantes] = useState([]);
+  const [tours, setTours] = useState([]);
+  const [eventos, setEventos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch(`${API_URL}/hoteles`).then(r => r.json()).catch(() => []),
+      fetch(`${API_URL}/restaurantes`).then(r => r.json()).catch(() => []),
+      fetch(`${API_URL}/tours`).then(r => r.json()).catch(() => []),
+      fetch(`${API_URL}/eventos`).then(r => r.json()).catch(() => []),
+    ]).then(([h, r, t, e]) => {
+      setHoteles(Array.isArray(h) ? h : []);
+      setRestaurantes(Array.isArray(r) ? r : []);
+      setTours(Array.isArray(t) ? t : []);
+      setEventos(Array.isArray(e) ? e : []);
+      setCargando(false);
+    });
+  }, []);
+
+  // Filtra por el campo "pueblo" de cada negocio (lo agregará el backend)
+  const hotelesFiltrados = hoteles.filter(h => h.pueblo === puebloSeleccionado);
+  const restaurantesFiltrados = restaurantes.filter(r => r.pueblo === puebloSeleccionado);
+  const toursFiltrados = tours.filter(t => t.pueblo === puebloSeleccionado);
+  const eventosFiltrados = eventos.filter(e => e.pueblo === puebloSeleccionado);
+
+  const hayResultados =
+    hotelesFiltrados.length > 0 ||
+    restaurantesFiltrados.length > 0 ||
+    toursFiltrados.length > 0 ||
+    eventosFiltrados.length > 0;
+
+  return (
+    <section id="municipio-destacado" className="md-section">
+      <div className="md-container">
+        <span className="md-eyebrow">Municipio Destacado</span>
+        <h2 className="md-title">Cuauhtémoc</h2>
+
+        <p className="md-desc">
+          Ubicado al norte del estado, Cuauhtémoc es un municipio de tradición
+          agrícola y religiosa, conocido por sus pueblos llenos de historia,
+          sus fiestas patronales y la calidez de su gente. Explora sus
+          localidades y descubre los negocios turísticos que cada una ofrece.
+        </p>
+
+        <div className="md-selector-wrap">
+          <label htmlFor="pueblo-select" className="md-selector-label">
+            <MapPin size={16} />
+            Selecciona un pueblo
+          </label>
+
+          <div className="md-select-container">
+            <select
+              id="pueblo-select"
+              className="md-select"
+              value={puebloSeleccionado}
+              onChange={(e) => setPuebloSeleccionado(e.target.value)}
+            >
+              <option value="">Pueblo</option>
+              {PUEBLOS.map((pueblo) => (
+                <option key={pueblo} value={pueblo}>{pueblo}</option>
+              ))}
+            </select>
+            <ChevronDown size={18} className="md-select-icon" />
+          </div>
+        </div>
+
+        {puebloSeleccionado && (
+          <div className="md-resultados">
+            {cargando && <p className="md-estado-msg">Cargando negocios...</p>}
+
+            {!cargando && !hayResultados && (
+              <p className="md-estado-msg">
+                Aún no hay negocios registrados en <strong>{puebloSeleccionado}</strong>.
+              </p>
+            )}
+
+            {!cargando && hotelesFiltrados.length > 0 && (
+              <div className="md-grupo">
+                <h3 className="md-grupo-titulo"><Building2 size={18} /> Hoteles</h3>
+                <div className="md-grid">
+                  {hotelesFiltrados.map(h => (
+                    <div key={`hotel-${h.id_hotel}`} className="md-card">
+                      <img
+                        src={h.imagen}
+                        alt={h.nombre_hotel}
+                        className="md-card-img"
+                        onError={(e) => { e.target.src = 'https://placehold.co/400x260?text=Sin+Imagen'; }}
+                      />
+                      <div className="md-card-body">
+                        <span className="md-card-badge">Hotel</span>
+                        <h4 className="md-card-title">{h.nombre_hotel}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!cargando && restaurantesFiltrados.length > 0 && (
+              <div className="md-grupo">
+                <h3 className="md-grupo-titulo"><UtensilsCrossed size={18} /> Restaurantes</h3>
+                <div className="md-grid">
+                  {restaurantesFiltrados.map(r => (
+                    <div key={`rest-${r.id_restaurante}`} className="md-card">
+                      <img
+                        src={r.imagen}
+                        alt={r.nombre}
+                        className="md-card-img"
+                        onError={(e) => { e.target.src = 'https://placehold.co/400x260?text=Sin+Imagen'; }}
+                      />
+                      <div className="md-card-body">
+                        <span className="md-card-badge">Restaurante</span>
+                        <h4 className="md-card-title">{r.nombre}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!cargando && toursFiltrados.length > 0 && (
+              <div className="md-grupo">
+                <h3 className="md-grupo-titulo"><Compass size={18} /> Tours</h3>
+                <div className="md-grid">
+                  {toursFiltrados.map(t => (
+                    <div key={`tour-${t.id_provedor}`} className="md-card">
+                      <img
+                        src={t.imagen}
+                        alt={t.nombre}
+                        className="md-card-img"
+                        onError={(e) => { e.target.src = 'https://placehold.co/400x260?text=Sin+Imagen'; }}
+                      />
+                      <div className="md-card-body">
+                        <span className="md-card-badge">Tour</span>
+                        <h4 className="md-card-title">{t.nombre}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!cargando && eventosFiltrados.length > 0 && (
+              <div className="md-grupo">
+                <h3 className="md-grupo-titulo"><CalendarDays size={18} /> Eventos</h3>
+                <div className="md-grid">
+                  {eventosFiltrados.map(e => (
+                    <div key={`evento-${e.id_evento}`} className="md-card">
+                      <img
+                        src={e.imagen}
+                        alt={e.nombre_Evento}
+                        className="md-card-img"
+                        onError={(ev) => { ev.target.src = 'https://placehold.co/400x260?text=Sin+Imagen'; }}
+                      />
+                      <div className="md-card-body">
+                        <span className="md-card-badge">Evento</span>
+                        <h4 className="md-card-title">{e.nombre_Evento}</h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
