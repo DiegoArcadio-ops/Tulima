@@ -186,18 +186,23 @@
 .about-gallery-item:hover .about-gallery-img {
   transform: scale(1.1); /* hover:scale-110 */
 }
-
 /* =========================================
-   Botón de Acción (Más información)
+   Botones de Acción (Más información / Pueblo Destacado)
    ========================================= */
 .about-action {
   margin-top: 2.5rem;
 }
 
-.btn-more-info {
+.about-action__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.btn-more-info,
+.btn-pueblo-destacado {
   display: inline-block;
-  background-color: var(--primary-color);
-  color: #ffffff;
   padding: 0.75rem 1.5rem; /* px-6 py-3 */
   border-radius: 0.5rem; /* rounded-lg */
   text-decoration: none;
@@ -207,43 +212,39 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+.btn-more-info {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
 .btn-more-info:hover {
   background-color: #0284c7; /* Tono de azul un poco más oscuro al pasar el cursor */
   transform: translateY(-2px); /* Efecto sutil de elevación */
 }
+
 .btn-pueblo-destacado {
-  display: inline-block;
-  background-color: transparent;
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: 2px solid #f59e0b;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  background-color: #f59e0b;
+  color: #0f172a;
 }
 
 .btn-pueblo-destacado:visited {
-  color: #ffffff;
+  color: #0f172a;
 }
 
 .btn-pueblo-destacado:hover {
-  background-color: #f59e0b;
-  color: #0f172a;
+  background-color: #d97706;
   transform: translateY(-2px);
 }
 
-.about-pueblo-destacado-wrap {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+.about-pueblo-destacado-text {
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  max-width: 28rem;
 }
 
-.about-pueblo-destacado-text {
-  font-size: 0.9rem;
-  color: #cbd5e1;
-  max-width: 16rem;
-  line-height: 1.4;
+.about-pueblo-destacado-text strong {
+  color: #f1f5f9;
+  font-weight: 600;
 }
