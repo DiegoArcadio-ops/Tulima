@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TreePalm, Mountain, Coffee, Fish, HelpCircle } from "lucide-react";
+import { TreePalm, Mountain, Coffee, Fish, HelpCircle, MapPin, ArrowRight } from "lucide-react";
 import './AboutColima.css';
 
 
@@ -91,14 +91,16 @@ export default function AboutColima() {
                 Más información
               </a>
 
-              <div className="about-pueblo-destacado-wrap">
-                <a href="/el-trapiche" className="btn-pueblo-destacado">
-                  Pueblo Destacado
-                </a>
-                <span className="about-pueblo-destacado-text">
-                  Conoce acerca de nuestro pueblo destacado: El Trapiche
-                </span>
-              </div>
+              <a href="/el-trapiche" className="pueblo-destacado-card">
+                <div className="pueblo-destacado-card__icon">
+                  <MapPin size={20} />
+                </div>
+                <div className="pueblo-destacado-card__text">
+                  <span className="pueblo-destacado-card__label">Pueblo Destacado</span>
+                  <span className="pueblo-destacado-card__nombre">El Trapiche</span>
+                </div>
+                <ArrowRight size={18} className="pueblo-destacado-card__arrow" />
+              </a>
             </div>
 
           </div>

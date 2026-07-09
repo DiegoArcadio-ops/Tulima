@@ -165,3 +165,33 @@
   color: #0f172a;
   margin: 0;
 }
+
+.md-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.md-cat-btn {
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.md-cat-btn:hover {
+  border-color: #0ea5e9;
+  color: #0ea5e9;
+}
+
+.md-cat-btn--activo {
+  background: #0ea5e9;
+  border-color: #0ea5e9;
+  color: #ffffff;
+}
