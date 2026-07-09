@@ -6,8 +6,17 @@ const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Minatit
 
 const API_URL = 'https://tulima-backend.vercel.app';
 
+const CATEGORIAS = [
+  { key: 'todos', label: 'Todos' },
+  { key: 'hoteles', label: 'Hoteles' },
+  { key: 'restaurantes', label: 'Restaurantes' },
+  { key: 'tours', label: 'Tours' },
+  { key: 'eventos', label: 'Eventos' },
+];
+
 export default function MunicipioDestacado() {
   const [puebloSeleccionado, setPuebloSeleccionado] = useState('');
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('todos');
 
   const [hoteles, setHoteles] = useState([]);
   const [restaurantes, setRestaurantes] = useState([]);
@@ -36,11 +45,18 @@ export default function MunicipioDestacado() {
   const toursFiltrados = tours.filter(t => t.pueblo === puebloSeleccionado);
   const eventosFiltrados = eventos.filter(e => e.pueblo === puebloSeleccionado);
 
-  const hayResultados =
-    hotelesFiltrados.length > 0 ||
-    restaurantesFiltrados.length > 0 ||
-    toursFiltrados.length > 0 ||
-    eventosFiltrados.length > 0;
+  const hayResultados = (() => {
+    if (categoriaSeleccionada === 'hoteles') return hotelesFiltrados.length > 0;
+    if (categoriaSeleccionada === 'restaurantes') return restaurantesFiltrados.length > 0;
+    if (categoriaSeleccionada === 'tours') return toursFiltrados.length > 0;
+    if (categoriaSeleccionada === 'eventos') return eventosFiltrados.length > 0;
+    return (
+      hotelesFiltrados.length > 0 ||
+      restaurantesFiltrados.length > 0 ||
+      toursFiltrados.length > 0 ||
+      eventosFiltrados.length > 0
+    );
+  })();
 
   return (
     <section id="municipio-destacado" className="md-section">
@@ -66,7 +82,10 @@ export default function MunicipioDestacado() {
               id="pueblo-select"
               className="md-select"
               value={puebloSeleccionado}
-              onChange={(e) => setPuebloSeleccionado(e.target.value)}
+              onChange={(e) => {
+                setPuebloSeleccionado(e.target.value);
+                setCategoriaSeleccionada('todos');
+              }}
             >
               <option value="">Pueblo</option>
               {PUEBLOS.map((pueblo) => (
@@ -79,6 +98,18 @@ export default function MunicipioDestacado() {
 
         {puebloSeleccionado && (
           <div className="md-resultados">
+            <div className="md-categorias">
+              {CATEGORIAS.map((cat) => (
+                <button
+                  key={cat.key}
+                  className={`md-cat-btn ${categoriaSeleccionada === cat.key ? 'md-cat-btn--activo' : ''}`}
+                  onClick={() => setCategoriaSeleccionada(cat.key)}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+
             {cargando && <p className="md-estado-msg">Cargando negocios...</p>}
 
             {!cargando && !hayResultados && (
@@ -87,7 +118,7 @@ export default function MunicipioDestacado() {
               </p>
             )}
 
-            {!cargando && hotelesFiltrados.length > 0 && (
+            {!cargando && (categoriaSeleccionada === 'todos' || categoriaSeleccionada === 'hoteles') && hotelesFiltrados.length > 0 && (
               <div className="md-grupo">
                 <h3 className="md-grupo-titulo"><Building2 size={18} /> Hoteles</h3>
                 <div className="md-grid">
@@ -109,7 +140,7 @@ export default function MunicipioDestacado() {
               </div>
             )}
 
-            {!cargando && restaurantesFiltrados.length > 0 && (
+            {!cargando && (categoriaSeleccionada === 'todos' || categoriaSeleccionada === 'restaurantes') && restaurantesFiltrados.length > 0 && (
               <div className="md-grupo">
                 <h3 className="md-grupo-titulo"><UtensilsCrossed size={18} /> Restaurantes</h3>
                 <div className="md-grid">
@@ -131,7 +162,7 @@ export default function MunicipioDestacado() {
               </div>
             )}
 
-            {!cargando && toursFiltrados.length > 0 && (
+            {!cargando && (categoriaSeleccionada === 'todos' || categoriaSeleccionada === 'tours') && toursFiltrados.length > 0 && (
               <div className="md-grupo">
                 <h3 className="md-grupo-titulo"><Compass size={18} /> Tours</h3>
                 <div className="md-grid">
@@ -153,7 +184,7 @@ export default function MunicipioDestacado() {
               </div>
             )}
 
-            {!cargando && eventosFiltrados.length > 0 && (
+            {!cargando && (categoriaSeleccionada === 'todos' || categoriaSeleccionada === 'eventos') && eventosFiltrados.length > 0 && (
               <div className="md-grupo">
                 <h3 className="md-grupo-titulo"><CalendarDays size={18} /> Eventos</h3>
                 <div className="md-grid">
