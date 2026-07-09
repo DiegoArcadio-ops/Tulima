@@ -141,6 +141,14 @@ useEffect(() => {
                 </svg>
                 {tour.municipio?.nombre}
               </div>
+              {(tour.nombre_Calle || tour.colonia) && (
+                <p className="tour-direccion">
+                  {[
+                    [tour.nombre_Calle, tour.numero_Calle].filter(Boolean).join(' #'),
+                    tour.colonia,
+                  ].filter(Boolean).join(', ')}
+                </p>
+              )}
               <h3 className="tour-titulo">{tour.nombre}</h3>
               <div className="tour-footer">
                 <span className="tour-servicio">{tour.tipoServicio}</span>
