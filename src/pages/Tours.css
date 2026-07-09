@@ -71,6 +71,15 @@
   margin-bottom: 8px;
 }
 
+.tour-direccion {
+  font-size: 0.82rem;
+  color: #888;
+  margin: -4px 0 10px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .tour-titulo {
   font-size: 1.3rem;
   font-weight: 700;
