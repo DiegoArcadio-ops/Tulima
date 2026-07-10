@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, ChevronDown, Building2, UtensilsCrossed, Compass, CalendarDays } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './MunicipioDestacado.css';
 
 const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Montitlan', 'Chiapa'];
@@ -16,6 +17,7 @@ const CATEGORIAS = [
 
 export default function MunicipioDestacado() {
   const [puebloSeleccionado, setPuebloSeleccionado] = useState('');
+  const navigate = useNavigate();
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('todos');
 
   const [hoteles, setHoteles] = useState([]);
@@ -123,7 +125,12 @@ export default function MunicipioDestacado() {
                 <h3 className="md-grupo-titulo"><Building2 size={18} /> Hoteles</h3>
                 <div className="md-grid">
                   {hotelesFiltrados.map(h => (
-                    <div key={`hotel-${h.id_hotel}`} className="md-card">
+                    <div
+  key={`hotel-${h.id_hotel}`}
+  className="md-card"
+  onClick={() => navigate(`/hoteles?id=${h.id_hotel}`)}
+  style={{ cursor: 'pointer' }}
+>
                       <img
                         src={h.imagen}
                         alt={h.nombre_hotel}
@@ -145,7 +152,12 @@ export default function MunicipioDestacado() {
                 <h3 className="md-grupo-titulo"><UtensilsCrossed size={18} /> Restaurantes</h3>
                 <div className="md-grid">
                   {restaurantesFiltrados.map(r => (
-                    <div key={`rest-${r.id_restaurante}`} className="md-card">
+                    <div
+  key={`rest-${r.id_restaurante}`}
+  className="md-card"
+  onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
+  style={{ cursor: 'pointer' }}
+>
                       <img
                         src={r.imagen}
                         alt={r.nombre}
@@ -167,7 +179,12 @@ export default function MunicipioDestacado() {
                 <h3 className="md-grupo-titulo"><Compass size={18} /> Tours</h3>
                 <div className="md-grid">
                   {toursFiltrados.map(t => (
-                    <div key={`tour-${t.id_provedor}`} className="md-card">
+                    <div
+  key={`tour-${t.id_provedor}`}
+  className="md-card"
+  onClick={() => navigate(`/tours?id=${t.id_provedor}`)}
+  style={{ cursor: 'pointer' }}
+>
                       <img
                         src={t.imagen}
                         alt={t.nombre}
@@ -189,7 +206,12 @@ export default function MunicipioDestacado() {
                 <h3 className="md-grupo-titulo"><CalendarDays size={18} /> Eventos</h3>
                 <div className="md-grid">
                   {eventosFiltrados.map(e => (
-                    <div key={`evento-${e.id_evento}`} className="md-card">
+                    <div
+  key={`evento-${e.id_evento}`}
+  className="md-card"
+  onClick={() => navigate(`/eventos?id=${e.id_evento}`)}
+  style={{ cursor: 'pointer' }}
+>
                       <img
                         src={e.imagen}
                         alt={e.nombre_Evento}
