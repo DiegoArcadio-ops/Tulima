@@ -114,27 +114,27 @@ export default function AboutColima() {
               </div>
             </div>
 
+</div>
+        </div>
+
+        <div className="pueblo-spotlight">
+          <div className="pueblo-spotlight__icon">
+            <MapPin size={28} />
           </div>
 
-          <div className="pueblo-spotlight">
-            <div className="pueblo-spotlight__icon">
-              <MapPin size={28} />
-            </div>
-
-            <div className="pueblo-spotlight__content">
-              <span className="pueblo-spotlight__eyebrow">Pueblo Destacado</span>
-              <h3 className="pueblo-spotlight__title">El Trapiche</h3>
-              <p className="pueblo-spotlight__desc">
-                Una pequeña localidad del municipio de Cuauhtémoc donde la historia
-                de las antiguas haciendas azucareras convive con una de las fiestas
-                patronales más queridas de la región. Su vida gira en torno a la
-                parroquia local, la plaza principal y la calidez de su gente.
-              </p>
-              <a href="/el-trapiche" className="pueblo-spotlight__btn">
-                Conocer El Trapiche
-                <ArrowRight size={18} />
-              </a>
-            </div>
+          <div className="pueblo-spotlight__content">
+            <span className="pueblo-spotlight__eyebrow">Pueblo Destacado</span>
+            <h3 className="pueblo-spotlight__title">El Trapiche</h3>
+            <p className="pueblo-spotlight__desc">
+              Una pequeña localidad del municipio de Cuauhtémoc donde la historia
+              de las antiguas haciendas azucareras convive con una de las fiestas
+              patronales más queridas de la región. Su vida gira en torno a la
+              parroquia local, la plaza principal y la calidez de su gente.
+            </p>
+            <a href="/el-trapiche" className="pueblo-spotlight__btn">
+              Conocer El Trapiche
+              <ArrowRight size={18} />
+            </a>
           </div>
         </div>
       </div>
