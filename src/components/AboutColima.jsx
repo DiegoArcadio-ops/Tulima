@@ -117,7 +117,7 @@ export default function AboutColima() {
 </div>
         </div>
 
-        <div className="pueblo-spotlight">
+       <div className="pueblo-spotlight">
           <div className="pueblo-spotlight__icon">
             <MapPin size={28} />
           </div>
@@ -136,6 +136,12 @@ export default function AboutColima() {
               <ArrowRight size={18} />
             </a>
           </div>
+
+          <img
+            src="https://denomades.imgix.net/destinos/monteverde/2416/cana-de-azucar-en-el-trapiche.jpg?w=907&h=494&fit=crop&q=100&auto=format,compress&fm=webp"
+            alt="Caña de azúcar en El Trapiche"
+            className="pueblo-spotlight__img"
+          />
         </div>
       </div>
     </section>

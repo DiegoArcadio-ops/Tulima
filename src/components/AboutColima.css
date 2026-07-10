@@ -295,8 +295,28 @@
   transform: translateY(-2px);
 }
 
+.pueblo-spotlight__img {
+  flex-shrink: 0;
+  width: 260px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  align-self: center;
+}
+
+@media (max-width: 900px) {
+  .pueblo-spotlight__img {
+    width: 100%;
+    height: 200px;
+  }
+}
+
 @media (max-width: 640px) {
   .pueblo-spotlight {
     flex-direction: column;
+  }
+
+  .pueblo-spotlight__img {
+    order: 3;
   }
 }
