@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapPin, ChevronDown, Building2, UtensilsCrossed, Compass, CalendarDays } from 'lucide-react';
 import './MunicipioDestacado.css';
 
-const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Minatitlán', 'Chiapa'];
+const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Montitlan', 'Chiapa'];
 
 const API_URL = 'https://tulima-backend.vercel.app';
 
