@@ -78,6 +78,9 @@ const SECCIONES = {
     nombreKey: 'nombre',
     campos: [
       { name: 'nombre', label: 'Nombre del tour', type: 'text', required: true, placeholder: 'Ej. Tour al Volcán de Colima' },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Calle Madero' },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 45' },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
       { name: 'tipoTour', label: 'Tipo de tour', type: 'text', required: false, placeholder: 'Ej. Aventura, Cultural...' },
       { name: 'tipoServicio', label: 'Tipo de servicio', type: 'text', required: false, placeholder: 'Ej. Guiado, Privado...' },
       { name: 'telefono', label: 'Teléfono de contacto', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
