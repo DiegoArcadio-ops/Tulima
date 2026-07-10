@@ -161,7 +161,7 @@ export default function ElTrapiche() {
             patronal.
           </p>
           <a href="/" className="et-cierre__btn">
-            Explorar más destinos
+            Regreso al Inicio
           </a>
         </div>
       </section>
