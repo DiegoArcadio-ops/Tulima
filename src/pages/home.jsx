@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import HeroSection from "../components/HeroSection";
-import FeaturedDestinations from "../components/FeaturedDestinations";
 import InteractiveMap from "../components/InteractiveMap";
 import AboutColima from "../components/AboutColima";
 import './home.css';
@@ -21,7 +20,7 @@ export default function Home() {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
         // Correcciones: el layout puede seguir cambiando (imágenes,
-        // datos del backend en FeaturedDestinations, mapa de Leaflet)
+        // mapa de Leaflet)
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 400);
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 900);
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 1500);
@@ -38,7 +37,6 @@ export default function Home() {
     <div className="home-page-container">
       <HeroSection />
       <AboutColima />
-      <FeaturedDestinations />
       <InteractiveMap />
     </div>
   );

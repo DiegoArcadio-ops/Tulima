@@ -7,14 +7,14 @@ import './Header.css';
 
 const navLinks = [
   { to: "/", label: "Inicio" },
-  { to: "/", label: "Municipios",   anchor: "mapa" },
-  { to: "/", label: "Destinos",     anchor: "destinos" },
   { to: "/sobre-colima", label: "Sobre Colima" },
-  { to: "/", label: "Contacto",     anchor: "contacto" },
+  { to: "/", label: "Municipios",   anchor: "mapa" },
+  { to: "/destinos", label: "Destinos" },
   { to: "/restaurantes", label: "Restaurantes" },
   { to: "/hoteles", label: "Hoteles" },
   { to: "/tours", label: "Tours" },
   { to: "/eventos", label: "Eventos" },
+  { to: "/", label: "Contacto",     anchor: "contacto" },
 ];
 
 export default function Header() {
@@ -26,7 +26,7 @@ export default function Header() {
   const navRef = useRef(null);
   const [indicador, setIndicador] = useState({ left: 0, width: 0, opacity: 0 });
 
-  // Sección visible actualmente en pantalla ('mapa' | 'destinos' | 'contacto' | null)
+  // Sección visible actualmente en pantalla ('mapa' | 'contacto' | null)
   const [seccionActiva, setSeccionActiva] = useState(null);
 
 const panelUsuario = (() => {
@@ -45,13 +45,17 @@ const panelUsuario = (() => {
   // - es "Inicio" y estamos en '/' y ninguna sección está activa (o sea, arriba del todo)
   // - o la ruta coincide normalmente
   const esActivo = (link) => {
+    if (link.anchor === 'contacto') {
+      // El footer (#contacto) existe en todas las páginas.
+      return seccionActiva === 'contacto';
+    }
     if (link.anchor) {
       return location.pathname === '/' && seccionActiva === link.anchor;
     }
     if (link.to === '/') {
       return location.pathname === '/' && !seccionActiva;
     }
-    return location.pathname.startsWith(link.to);
+    return location.pathname.startsWith(link.to) && seccionActiva !== 'contacto';
   };
 
   // Mueve el indicador hacia cualquier elemento del DOM (hover o activo)
@@ -82,39 +86,40 @@ const panelUsuario = (() => {
     resetIndicador();
   }, [location.pathname, seccionActiva]);
 
-  // Observa las secciones (#mapa, #destinos, #contacto) para saber cuál está visible
+  // Observa las secciones (#mapa en Inicio, #contacto en el footer de cualquier página)
   useEffect(() => {
-    if (location.pathname !== '/') {
-      setSeccionActiva(null);
-      return;
-    }
-  
     let raf = null;
-  
+
     const detectarSeccion = () => {
       raf = null;
       const LINEA_REFERENCIA = 150; // debajo del header fijo
-  
-      const secciones = ['mapa', 'destinos']
+
+      // ¿Llegamos al fondo real de la página? -> Contacto (footer, presente en todas las páginas)
+      const alFinal = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
+      if (alFinal) {
+        setSeccionActiva('contacto');
+        return;
+      }
+
+      // El resto de las secciones ancladas (Municipios) solo existen en Inicio
+      if (location.pathname !== '/') {
+        setSeccionActiva(null);
+        return;
+      }
+
+      const secciones = ['mapa']
         .map(id => document.getElementById(id))
         .filter(Boolean)
         .map(el => {
           const rect = el.getBoundingClientRect();
           return { id: el.id, top: rect.top, bottom: rect.bottom };
         });
-  
+
       if (secciones.length === 0) return;
-  
-      // ¿Llegamos al fondo real de la página? -> Contacto (footer)
-      const alFinal = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80;
-      if (alFinal) {
-        setSeccionActiva('contacto');
-        return;
-      }
-  
+
       // La sección cuya franja contiene la línea de referencia
       const activa = secciones.find(s => s.top <= LINEA_REFERENCIA && s.bottom > LINEA_REFERENCIA);
-  
+
       if (activa) {
         setSeccionActiva(activa.id);
       } else if (window.scrollY < 200) {
@@ -142,6 +147,12 @@ const panelUsuario = (() => {
   
   const handleAnchorClick = (e, link) => {
     e.preventDefault();
+    if (link.anchor === 'contacto') {
+      // El footer vive en todas las páginas: solo bajamos hasta ahí, sin navegar a inicio.
+      const el = document.getElementById('contacto');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
     if (link.anchor) {
       if (location.pathname === '/') {
         let intentos = 0;
@@ -206,7 +217,7 @@ const panelUsuario = (() => {
                 ) : link.anchor ? (
                   <a
                     key={link.label}
-                    href={`/#${link.anchor}`}
+                    href={link.anchor === 'contacto' ? '#contacto' : `/#${link.anchor}`}
                     className={`header-nav-link ${esActivo(link) ? 'header-nav-link--active' : ''}`}
                     onClick={(e) => handleAnchorClick(e, link)}
                     onMouseEnter={(e) => moverIndicador(e.currentTarget)}
@@ -295,7 +306,7 @@ const panelUsuario = (() => {
                   ) : link.anchor ? (
                     <a
                       key={link.label}
-                      href={`/#${link.anchor}`}
+                      href={link.anchor === 'contacto' ? '#contacto' : `/#${link.anchor}`}
                       className={`header-mobile-link ${esActivo(link) ? 'header-mobile-link--active' : ''}`}
                       onClick={(e) => { setIsMenuOpen(false); handleAnchorClick(e, link); }}
                     >

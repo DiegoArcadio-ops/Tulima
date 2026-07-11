@@ -1,4 +1,5 @@
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import heroBg from '../assets/hero-background.jpg';
 import './HeroSection.css';
 
@@ -39,14 +40,15 @@ export default function HeroSection() {
           <a href="#mapa" onClick={(e) => smoothScrollTo(e, 'mapa')} className="hero-btn-primary">
             Explorar Municipios
           </a>
-          <a href="#destinos" onClick={(e) => smoothScrollTo(e, 'destinos')} className="hero-btn-secondary">
+          {/* Destinos ahora es su propia página */}
+          <Link to="/destinos" className="hero-btn-secondary">
             Ver Destinos
-          </a>
+          </Link>
         </div>
       </div>
 
       <div className="hero-scroll-indicator">
-        <button onClick={(e) => smoothScrollTo(e, 'destinos')} aria-label="Scroll to next section" className="hero-scroll-link">
+        <button onClick={(e) => smoothScrollTo(e, 'nosotros')} aria-label="Scroll to next section" className="hero-scroll-link">
           <ChevronDown className="hero-scroll-icon" />
         </button>
       </div>
