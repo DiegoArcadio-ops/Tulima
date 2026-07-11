@@ -126,10 +126,12 @@ export default function AboutColima() {
             <span className="pueblo-spotlight__eyebrow">Pueblo Destacado</span>
             <h3 className="pueblo-spotlight__title">El Trapiche</h3>
             <p className="pueblo-spotlight__desc">
-              Una pequeña localidad del municipio de Cuauhtémoc donde la historia
-              de las antiguas haciendas azucareras convive con una de las fiestas
-              patronales más queridas de la región. Su vida gira en torno a la
-              parroquia local, la plaza principal y la calidez de su gente.
+              El Trapiche es ese rincón de Cuauhtémoc donde el tiempo se saborea
+              despacio: entre el dulce legado de sus antiguas haciendas
+              azucareras y el fervor de una de las fiestas patronales más
+              queridas de la región. Aquí la vida se celebra alrededor de su
+              parroquia y su plaza principal, envuelta siempre en la calidez
+              de una gente que recibe a cada visitante como si volviera a casa.
             </p>
             <a href="/el-trapiche" className="pueblo-spotlight__btn">
               Conocer El Trapiche
