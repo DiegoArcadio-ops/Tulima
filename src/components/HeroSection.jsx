@@ -31,8 +31,7 @@ export default function HeroSection() {
         </h1>
 
         <p className="hero-description">
-          Explora los 10 municipios del estado más pequeño de México, donde playas paradisíacas, volcanes majestuosos y
-          tradiciones ancestrales te esperan.
+          Déjate abrazar por la magia de nuestros 10 municipios. Un paraíso terrenal donde el susurro de las olas, la imponente presencia de nuestros volcanes y la riqueza de nuestra historia te invitan a vivir una experiencia inolvidable.
         </p>
 
         <div className="hero-actions">

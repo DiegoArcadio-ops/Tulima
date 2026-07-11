@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TreePalm, Mountain, Coffee, Fish, HelpCircle } from "lucide-react";
+import { TreePalm, Mountain, Coffee, Fish, HelpCircle, MapPin, ArrowRight } from "lucide-react";
 import './AboutColima.css';
 
 
@@ -85,7 +85,7 @@ export default function AboutColima() {
               })}
             </div>
 
-            {/* Contenedor del nuevo botón de Más información */}
+          {/* Contenedor del botón de Más información */}
             <div className="about-action">
               <a href="/sobre-colima" className="btn-more-info">
                 Más información
@@ -114,7 +114,36 @@ export default function AboutColima() {
               </div>
             </div>
 
+</div>
+        </div>
+
+       <div className="pueblo-spotlight">
+          <div className="pueblo-spotlight__icon">
+            <MapPin size={28} />
           </div>
+
+          <div className="pueblo-spotlight__content">
+            <span className="pueblo-spotlight__eyebrow">Pueblo Destacado</span>
+            <h3 className="pueblo-spotlight__title">El Trapiche</h3>
+            <p className="pueblo-spotlight__desc">
+              El Trapiche es ese rincón de Cuauhtémoc donde el tiempo se saborea
+              despacio: entre el dulce legado de sus antiguas haciendas
+              azucareras y el fervor de una de las fiestas patronales más
+              queridas de la región. Aquí la vida se celebra alrededor de su
+              parroquia y su plaza principal, envuelta siempre en la calidez
+              de una gente que recibe a cada visitante como si volviera a casa.
+            </p>
+            <a href="/el-trapiche" className="pueblo-spotlight__btn">
+              Conocer El Trapiche
+              <ArrowRight size={18} />
+            </a>
+          </div>
+
+          <img
+            src="https://denomades.imgix.net/destinos/monteverde/2416/cana-de-azucar-en-el-trapiche.jpg?w=907&h=494&fit=crop&q=100&auto=format,compress&fm=webp"
+            alt="Caña de azúcar en El Trapiche"
+            className="pueblo-spotlight__img"
+          />
         </div>
       </div>
     </section>
