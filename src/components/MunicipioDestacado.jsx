@@ -67,10 +67,13 @@ export default function MunicipioDestacado() {
         <h2 className="md-title">Cuauhtémoc</h2>
 
         <p className="md-desc">
-          Ubicado al norte del estado, Cuauhtémoc es un municipio de tradición
-          agrícola y religiosa, conocido por sus pueblos llenos de historia,
-          sus fiestas patronales y la calidez de su gente. Explora sus
-          localidades y descubre los negocios turísticos que cada una ofrece.
+          Al norte de Colima late Cuauhtémoc, tierra de campos verdes y
+          campanarios centenarios, donde el aroma a caña de azúcar se mezcla
+          con el eco de las fiestas patronales. Sus pueblos guardan historias
+          de generaciones, tradiciones que se celebran con el corazón y una
+          calidez que solo su gente sabe ofrecer. Ven, recorre sus
+          localidades y descubre los rincones y negocios que hacen de este
+          municipio un pedacito inolvidable de México.
         </p>
 
         <div className="md-selector-wrap">
