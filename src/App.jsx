@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import Hoteles from "./pages/Hoteles";
 import Restaurantes from "./pages/Restaurantes";
 import Tours from "./pages/Tours";
+import FeaturedDestinations from "./components/FeaturedDestinations";
 import Login from "./pages/login";
 import Admin from "./pages/admin";
 import Registro from "./pages/registro";
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
+            <Route path="destinos" element={<FeaturedDestinations />} />
             <Route path="hoteles" element={<Hoteles />} />
             <Route path="restaurantes" element={<Restaurantes />} />
             <Route path="tours" element={<Tours />} />

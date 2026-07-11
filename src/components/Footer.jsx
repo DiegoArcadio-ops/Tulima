@@ -3,9 +3,9 @@ import "./Footer.css";
 
 const quickLinks = [
   { href: "/", label: "Inicio" },
+  { href: "/sobre-colima", label: "Sobre Colima" },
   { href: "/#mapa", label: "Municipios" },
-  { href: "/#destinos", label: "Destinos" },
-  { href: "/#nosotros", label: "Sobre Colima" },
+  { href: "/destinos", label: "Destinos" },
 ];
 
 const copiarCorreo = () => {

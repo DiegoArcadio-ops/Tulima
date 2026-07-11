@@ -22,7 +22,7 @@ export default function Home() {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
         // Correcciones: el layout puede seguir cambiando (imágenes,
-        // datos del backend en FeaturedDestinations, mapa de Leaflet)
+        // mapa de Leaflet)
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 400);
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 900);
         setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 1500);
@@ -40,7 +40,6 @@ export default function Home() {
       <HeroSection />
       <MunicipioDestacado />
       <AboutColima />
-      <FeaturedDestinations />
       <InteractiveMap />
     </div>
   );
