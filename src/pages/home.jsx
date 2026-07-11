@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import HeroSection from "../components/HeroSection";
 import MunicipioDestacado from "../components/MunicipioDestacado";
-import FeaturedDestinations from "../components/FeaturedDestinations";
 import InteractiveMap from "../components/InteractiveMap";
 import AboutColima from "../components/AboutColima";
 import './home.css';
