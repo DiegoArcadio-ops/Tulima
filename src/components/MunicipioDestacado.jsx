@@ -80,6 +80,9 @@ export default function MunicipioDestacado() {
               localidades y descubre los rincones y negocios que hacen de este
               municipio un pedacito inolvidable de México.
             </p>
+            <a href="/cuauhtemoc" className="md-btn-conocer">
+              Conocer Cuauhtémoc
+            </a>
           </div>
 
           <div className="md-img-frame">
