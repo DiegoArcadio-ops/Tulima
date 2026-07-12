@@ -4,6 +4,7 @@ import HeroSection from "../components/HeroSection";
 import MunicipioDestacado from "../components/MunicipioDestacado";
 import InteractiveMap from "../components/InteractiveMap";
 import AboutColima from "../components/AboutColima";
+import PuebloDestacado from "../components/PuebloDestacado";
 import './home.css';
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
       <HeroSection />
       <MunicipioDestacado />
       <AboutColima />
+      <PuebloDestacado />
       <InteractiveMap />
     </div>
   );
