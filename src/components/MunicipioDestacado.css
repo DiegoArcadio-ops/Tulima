@@ -259,3 +259,23 @@
   color: #0f172a;
   margin: 0;
 }
+
+.md-btn-conocer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1.1rem;
+  padding: 0.65rem 1.3rem;
+  border-radius: 0.6rem;
+  background-color: #0ea5e9;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.md-btn-conocer:hover {
+  background-color: #0284c7;
+  transform: translateY(-2px);
+}

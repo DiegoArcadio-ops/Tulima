@@ -19,6 +19,7 @@ import EventosNuevo from './pages/EventosNuevo';
 import Perfil from './pages/Perfil';
 import SobreColima from './pages/sobrecolima';
 import ElTrapiche from './pages/ElTrapiche';
+import Cuauhtemoc from './pages/Cuauhtemoc';
 import SeleccionRegistro from './pages/SeleccionRegistro';
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -43,6 +44,7 @@ function App() {
             <Route path="perfil" element={<Perfil />} />
             <Route path="/sobre-colima" element={<SobreColima />} />
             <Route path="/el-trapiche" element={<ElTrapiche />} />
+            <Route path="/cuauhtemoc" element={<Cuauhtemoc />} />
           </Route>
 
           <Route
