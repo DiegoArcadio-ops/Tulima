@@ -3,7 +3,7 @@ import { MapPin, ChevronDown, Building2, UtensilsCrossed, Compass, CalendarDays 
 import { useNavigate } from 'react-router-dom';
 import './MunicipioDestacado.css';
 
-const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Montitlan', 'Chiapa'];
+const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Minatitlán', 'Chiapa'];
 
 const API_URL = 'https://tulima-backend.vercel.app';
 
@@ -16,8 +16,8 @@ const CATEGORIAS = [
 ];
 
 export default function MunicipioDestacado() {
-  const [puebloSeleccionado, setPuebloSeleccionado] = useState('');
   const navigate = useNavigate();
+  const [puebloSeleccionado, setPuebloSeleccionado] = useState('');
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('todos');
 
   const [hoteles, setHoteles] = useState([]);
@@ -41,7 +41,6 @@ export default function MunicipioDestacado() {
     });
   }, []);
 
-  // Filtra por el campo "pueblo" de cada negocio (lo agregará el backend)
   const hotelesFiltrados = hoteles.filter(h => h.pueblo === puebloSeleccionado);
   const restaurantesFiltrados = restaurantes.filter(r => r.pueblo === puebloSeleccionado);
   const toursFiltrados = tours.filter(t => t.pueblo === puebloSeleccionado);
@@ -63,18 +62,34 @@ export default function MunicipioDestacado() {
   return (
     <section id="municipio-destacado" className="md-section">
       <div className="md-container">
-        <span className="md-eyebrow">Municipio Destacado</span>
-        <h2 className="md-title">Cuauhtémoc</h2>
 
-        <p className="md-desc">
-          Al norte de Colima late Cuauhtémoc, tierra de campos verdes y
-          campanarios centenarios, donde el aroma a caña de azúcar se mezcla
-          con el eco de las fiestas patronales. Sus pueblos guardan historias
-          de generaciones, tradiciones que se celebran con el corazón y una
-          calidez que solo su gente sabe ofrecer. Ven, recorre sus
-          localidades y descubre los rincones y negocios que hacen de este
-          municipio un pedacito inolvidable de México.
-        </p>
+        <div className="md-card-header">
+          <div className="md-icon">
+            <MapPin size={28} />
+          </div>
+
+          <div className="md-header-content">
+            <span className="md-eyebrow">Municipio Destacado</span>
+            <h2 className="md-title">Cuauhtémoc</h2>
+            <p className="md-desc">
+              Al norte de Colima late Cuauhtémoc, tierra de campos verdes y
+              campanarios centenarios, donde el aroma a caña de azúcar se mezcla
+              con el eco de las fiestas patronales. Sus pueblos guardan historias
+              de generaciones, tradiciones que se celebran con el corazón y una
+              calidez que solo su gente sabe ofrecer. Ven, recorre sus
+              localidades y descubre los rincones y negocios que hacen de este
+              municipio un pedacito inolvidable de México.
+            </p>
+          </div>
+
+          <div className="md-img-frame">
+            <img
+              src="https://es-academic.com/pictures/eswiki/69/Escudo_Cuauhtemoc.png"
+              alt="Escudo de Cuauhtémoc"
+              className="md-img"
+            />
+          </div>
+        </div>
 
         <div className="md-selector-wrap">
           <label htmlFor="pueblo-select" className="md-selector-label">
@@ -129,11 +144,11 @@ export default function MunicipioDestacado() {
                 <div className="md-grid">
                   {hotelesFiltrados.map(h => (
                     <div
-  key={`hotel-${h.id_hotel}`}
-  className="md-card"
-  onClick={() => navigate(`/hoteles?id=${h.id_hotel}`)}
-  style={{ cursor: 'pointer' }}
->
+                      key={`hotel-${h.id_hotel}`}
+                      className="md-card"
+                      onClick={() => navigate(`/hoteles?id=${h.id_hotel}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <img
                         src={h.imagen}
                         alt={h.nombre_hotel}
@@ -156,11 +171,11 @@ export default function MunicipioDestacado() {
                 <div className="md-grid">
                   {restaurantesFiltrados.map(r => (
                     <div
-  key={`rest-${r.id_restaurante}`}
-  className="md-card"
-  onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
-  style={{ cursor: 'pointer' }}
->
+                      key={`rest-${r.id_restaurante}`}
+                      className="md-card"
+                      onClick={() => navigate(`/restaurantes?id=${r.id_restaurante}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <img
                         src={r.imagen}
                         alt={r.nombre}
@@ -183,11 +198,11 @@ export default function MunicipioDestacado() {
                 <div className="md-grid">
                   {toursFiltrados.map(t => (
                     <div
-  key={`tour-${t.id_provedor}`}
-  className="md-card"
-  onClick={() => navigate(`/tours?id=${t.id_provedor}`)}
-  style={{ cursor: 'pointer' }}
->
+                      key={`tour-${t.id_provedor}`}
+                      className="md-card"
+                      onClick={() => navigate(`/tours?id=${t.id_provedor}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <img
                         src={t.imagen}
                         alt={t.nombre}
@@ -210,11 +225,11 @@ export default function MunicipioDestacado() {
                 <div className="md-grid">
                   {eventosFiltrados.map(e => (
                     <div
-  key={`evento-${e.id_evento}`}
-  className="md-card"
-  onClick={() => navigate(`/eventos?id=${e.id_evento}`)}
-  style={{ cursor: 'pointer' }}
->
+                      key={`evento-${e.id_evento}`}
+                      className="md-card"
+                      onClick={() => navigate(`/eventos?id=${e.id_evento}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <img
                         src={e.imagen}
                         alt={e.nombre_Evento}
