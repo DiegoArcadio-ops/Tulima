@@ -27,7 +27,7 @@ export default function HeroSection() {
         </span>
 
         <h1 className="hero-title">
-          Descubre la magia de <span className="hero-title-accent">Colima</span>
+          Descubre la magia de <span className="hero-title-accent">Cuauhtémoc</span>
         </h1>
 
         <p className="hero-description">
