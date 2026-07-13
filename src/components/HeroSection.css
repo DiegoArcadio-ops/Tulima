@@ -16,7 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 5; /* el <body> ya reserva el espacio del header fijo en móvil */
+  padding-top: 5;
+  margin-top: -5rem !important;/* el <body> ya reserva el espacio del header fijo en móvil */
 }
 
 @media (min-width: 768px) {
