@@ -11,7 +11,7 @@
    Contenedor Principal y Fondo
    ========================================= */
 .hero-section {
-  position: relative;
+  position: absolute;
   min-height: 100vh;
   display: flex;
   align-items: center;
