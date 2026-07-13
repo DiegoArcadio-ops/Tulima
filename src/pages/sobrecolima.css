@@ -958,3 +958,14 @@
     margin-top: -1rem !important;
   }
 }
+
+/* Forzar la eliminación del espacio blanco en la vista móvil */
+@media (max-width: 767px) {
+  .sc-page {
+    margin-top: -120px !important; /* Sube todo el contenedor. Cambia el 120 por más o menos si le falta */
+  }
+  
+  .sc-hero {
+    padding-top: 150px !important; /* Empuja el texto hacia abajo para que el menú no lo tape */
+  }
+}
