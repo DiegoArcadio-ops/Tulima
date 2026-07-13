@@ -132,7 +132,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sc-gray);
-  margin-top: 0.2rem;
+  margin-top: -5rem;
 }
 .sc-hero__stat-div {
   width: 1px;
