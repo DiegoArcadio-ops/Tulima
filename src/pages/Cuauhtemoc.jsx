@@ -164,7 +164,7 @@ export default function Cuauhtemoc() {
             para dar vida a una de las tradiciones más queridas de Colima.
           </p>
           <a href="/" className="cu-cierre__btn">
-            Explorar más destinos
+            Regresar al Inicio
           </a>
         </div>
       </section>
