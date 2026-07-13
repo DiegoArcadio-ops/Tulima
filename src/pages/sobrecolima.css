@@ -62,7 +62,6 @@
     url('../assets/Glorieta-De-Los-Perritos-Bailarines.jpg') center/cover no-repeat;
   padding: 6rem 1.5rem 4rem;
   text-align: center;
-  margin-top: -5rem !important;
 }
 
 .sc-hero__overlay {
@@ -132,7 +131,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--sc-gray);
-  margin-top: 0.2rem;
+  margin-top: -5rem;
 }
 .sc-hero__stat-div {
   width: 1px;
