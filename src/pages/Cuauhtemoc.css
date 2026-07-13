@@ -118,6 +118,7 @@
   border-radius: 9999px;
 }
 
+
 /* ══════ RESUMEN ══════ */
 .cu-resumen {
   padding: 5rem 0;
@@ -128,6 +129,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
+  
 }
 
 @media (min-width: 900px) {
