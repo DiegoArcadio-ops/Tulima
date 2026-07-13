@@ -39,8 +39,8 @@ export default function Home() {
     <div className="home-page-container">
       <HeroSection />
       <MunicipioDestacado />
-      <AboutColima />
       <PuebloDestacado />
+      <AboutColima />
       <InteractiveMap />
     </div>
   );
