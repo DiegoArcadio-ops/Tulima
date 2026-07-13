@@ -53,6 +53,7 @@
    ══════════════════════════════════════════════════ */
 .sc-hero {
   position: relative;
+  margin-top: -72px; /* <-- Esta línea hace la magia en móviles */
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -950,4 +951,10 @@
   font-size: 0.875rem;
   color: #a0aec0;
   line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+  .sc-hero {
+    margin-top: -1rem !important;
+  }
 }
