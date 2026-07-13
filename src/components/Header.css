@@ -43,6 +43,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  height: 4rem; /* coincide con el padding-top que reserva el <body> en móvil */
 }
 
 @media (min-width: 768px) {
