@@ -70,38 +70,49 @@ export default function ElTrapiche() {
         </div>
       </section>
 
-      {/* ── HISTORIA ─────────────────────────────────────────────── */}
+     {/* ── HISTORIA ─────────────────────────────────────────────── */}
       <section className="et-historia">
-        <div className="et-container">
-          <p className="et-section-eyebrow et-section-eyebrow--light">Raíces</p>
-          <h2 className="et-section-title et-section-title--light">Historia de El Trapiche</h2>
-          <div className="et-historia__body">
-            <p>
-              Durante la época colonial, la región de Cuauhtémoc formó parte de
-              haciendas dedicadas al cultivo de la caña de azúcar. En estas
-              propiedades se instalaban los trapiches: ingenios artesanales
-              movidos por tracción animal o hidráulica que molían la caña para
-              obtener su jugo, base del azúcar y el piloncillo que se
-              comerciaban en toda la región. Con el paso del tiempo, el
-              asentamiento de trabajadores y familias alrededor de estos
-              ingenios dio origen al pueblo que hoy conocemos, y que conservó
-              el nombre del oficio que le dio vida.
-            </p>
-            <p>
-              Con el paso de las décadas, El Trapiche creció como una
-              comunidad rural ligada al campo y a la vida parroquial. La
-              devoción religiosa se convirtió en uno de los pilares de la
-              identidad del pueblo, dando origen a celebraciones que se
-              transmiten de generación en generación y que, hasta la
-              actualidad, siguen marcando el calendario anual de la localidad.
-            </p>
-            <p>
-              Actualmente, El Trapiche es reconocido dentro del municipio de
-              Cuauhtémoc por la calidez de su gente y por conservar vivas sus
-              tradiciones religiosas y populares, que cada año convocan a
-              cabalgatas, música de banda, jaripeos y a la comunidad completa
-              en torno a su parroquia.
-            </p>
+        <div className="et-container et-historia__inner">
+          <div className="et-historia__text">
+            <p className="et-section-eyebrow et-section-eyebrow--light">Raíces</p>
+            <h2 className="et-section-title et-section-title--light">Historia de El Trapiche</h2>
+            <div className="et-historia__body">
+              <p>
+                Durante la época colonial, la región de Cuauhtémoc formó parte de
+                haciendas dedicadas al cultivo de la caña de azúcar. En estas
+                propiedades se instalaban los trapiches: ingenios artesanales
+                movidos por tracción animal o hidráulica que molían la caña para
+                obtener su jugo, base del azúcar y el piloncillo que se
+                comerciaban en toda la región. Con el paso del tiempo, el
+                asentamiento de trabajadores y familias alrededor de estos
+                ingenios dio origen al pueblo que hoy conocemos, y que conservó
+                el nombre del oficio que le dio vida.
+              </p>
+              <p>
+                Con el paso de las décadas, El Trapiche creció como una
+                comunidad rural ligada al campo y a la vida parroquial. La
+                devoción religiosa se convirtió en uno de los pilares de la
+                identidad del pueblo, dando origen a celebraciones que se
+                transmiten de generación en generación y que, hasta la
+                actualidad, siguen marcando el calendario anual de la localidad.
+              </p>
+              <p>
+                Actualmente, El Trapiche es reconocido dentro del municipio de
+                Cuauhtémoc por la calidez de su gente y por conservar vivas sus
+                tradiciones religiosas y populares, que cada año convocan a
+                cabalgatas, música de banda, jaripeos y a la comunidad completa
+                en torno a su parroquia.
+              </p>
+            </div>
+          </div>
+
+          <div className="et-historia__img-wrap">
+            <img
+              src="https://comercolima.com/wp-content/uploads/2026/02/leetx-google-photo-47058-1.jpg"
+              alt="Historia de El Trapiche, antigua hacienda azucarera"
+              className="et-historia__img"
+              onError={(e) => { e.target.src = 'https://placehold.co/600x400?text=El+Trapiche'; }}
+            />
           </div>
         </div>
       </section>
