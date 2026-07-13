@@ -16,25 +16,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 1rem; /* el <body> ya reserva el espacio del header fijo en móvil */
+  padding-top: 0; /* el <body> ya reserva el espacio del header fijo en móvil */
 }
 
 @media (min-width: 768px) {
   .hero-section {
     padding-top: 5rem; /* aquí el <body> solo reserva 1rem, así que compensamos aquí */
-  }
-}
-.hero-section {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .hero-section {
-    padding-top: 5rem; /* md:pt-20 */
   }
 }
 
