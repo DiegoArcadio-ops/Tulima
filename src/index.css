@@ -16,7 +16,7 @@ html, body {
   color: #020617;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  padding-top: 4rem;
+  padding-top: 72px;
 }
 
 @media (min-width: 768px) {
