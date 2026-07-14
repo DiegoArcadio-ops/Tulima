@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/", label: "Inicio" },
   { to: "/", label: "Cuauhtémoc",   anchor: "municipio-destacado" },
   { to: "/", label: "El Trapiche",  anchor: "pueblo-destacado" },
-  { to: "/sobre-colima", label: "Sobre Colima", anchor: "sobre-colima" },
+  { to: "/sobre-colima", label: "Sobre Colima", anchor: "nosotros" },
   { to: "/", label: "Municipios",   anchor: "mapa" },
   { to: "/destinos", label: "Destinos" },
   { to: "/restaurantes", label: "Restaurantes" },
