@@ -109,7 +109,7 @@ const panelUsuario = (() => {
         return;
       }
 
-      const secciones = ['municipio-destacado', 'pueblo-destacado', 'mapa', 'sobre-colima']
+      const secciones = ['municipio-destacado', 'pueblo-destacado', 'mapa', 'nosotros']
         .map(id => document.getElementById(id))
         .filter(Boolean)
         .map(el => {
