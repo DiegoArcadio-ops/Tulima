@@ -9,7 +9,7 @@ const navLinks = [
   { to: "/", label: "Inicio" },
   { to: "/", label: "Cuauhtémoc",   anchor: "municipio-destacado" },
   { to: "/", label: "El Trapiche",  anchor: "pueblo-destacado" },
-  { to: "/sobre-colima", label: "Sobre Colima" },
+  { to: "/sobre-colima", label: "Sobre Colima", anchor: "sobre-colima" },
   { to: "/", label: "Municipios",   anchor: "mapa" },
   { to: "/destinos", label: "Destinos" },
   { to: "/restaurantes", label: "Restaurantes" },
@@ -109,7 +109,7 @@ const panelUsuario = (() => {
         return;
       }
 
-      const secciones = ['municipio-destacado', 'pueblo-destacado', 'mapa']
+      const secciones = ['municipio-destacado', 'pueblo-destacado', 'mapa', 'sobre-colima']
         .map(id => document.getElementById(id))
         .filter(Boolean)
         .map(el => {
