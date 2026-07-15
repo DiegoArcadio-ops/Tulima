@@ -494,7 +494,7 @@ const confirmarEliminar = async () => {
               </Link>
               <h1 className="text-2xl font-bold text-slate-800">{seccionActual.titulo}</h1>
               <p className="text-slate-500 mt-1 text-sm">
-                Gestiona tus {seccionActual.titulo.toLowerCase()} — los nuevos quedarán pendientes de aprobación.
+                Gestiona tus {seccionActual.titulo.toLowerCase()}
               </p>
             </div>
 {datos.length === 0 && (
