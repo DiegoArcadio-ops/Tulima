@@ -326,79 +326,117 @@ export default function TulimaAdminPanel() {
               </div>
             ) : (
               <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
-                      <th className="px-6 py-4 font-medium">Nombre</th>
-                      <th className="px-6 py-4 font-medium">{seccionActual.columnas.col2.label}</th>
-                      <th className="px-6 py-4 font-medium">{seccionActual.columnas.col3.label}</th>
-                      <th className="px-6 py-4 font-medium text-right">Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {datosPagina.map((item) => {
-                      const id = obtenerId(item);
-                      return (
-                        <tr key={id} className="hover:bg-slate-50/50 transition-colors">
-                          <td className="px-6 py-4">
-                            <div className="font-semibold text-slate-800">
-                              {obtenerNombre(item)}
-                            </div>
-                            {item.nombreUsuario && (
-                              <div className="text-xs text-slate-400 mt-0.5">@{item.nombreUsuario}</div>
-                            )}
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
+                <div className="lg:hidden divide-y divide-slate-100">
+                  {datosPagina.map((item) => {
+                    const id = obtenerId(item);
+                    return (
+                      <div key={id} className="p-4 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-800 text-sm truncate">
+                            {obtenerNombre(item)}
+                          </p>
+                          {item.nombreUsuario && (
+                            <p className="text-xs text-slate-400">@{item.nombreUsuario}</p>
+                          )}
+                          <div className="flex items-center gap-2 mt-1 flex-wrap">
+                            <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
                               {seccionActual.columnas.col2.valor(item)}
                             </span>
-                          </td>
-                          <td className="px-6 py-4 text-slate-600">
-                            {seccionActual.columnas.col3.valor(item)}
-                          </td>
-                          <td className="px-6 py-4 text-right">
-                            <div className="flex justify-end items-center gap-3">
-                              <span className={`text-xs font-medium px-3 py-1 rounded-full ${
-                                item.activo
-                                  ? 'bg-green-100 text-green-700'
-                                  : 'bg-red-100 text-red-600'
-                              }`}>
-                                {item.activo ? 'Activo' : 'Inactivo'}
-                              </span>
-                              <button
-                                onClick={() => toggleActivo(item)}
-                                title={item.activo ? 'Desactivar' : 'Activar'}
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-                                  item.activo ? 'bg-[#00a8ff]' : 'bg-slate-200'
-                                }`}
-                              >
-                                <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
-                                  item.activo ? 'translate-x-6' : 'translate-x-1'
-                                }`} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                {datosPagina.length === 0 && (
-                  <div className="text-center py-10 text-slate-500">
-                    No hay registros disponibles.
-                  </div>
-                )}
-                {datosPagina.length > 0 && (
-                  <div className="p-4 flex justify-center border-t border-slate-100">
-                    <Paginacion pagina={pagina} totalPaginas={totalPaginas} onChange={setPagina} />
-                  </div>
-                )}
+                            <span className="text-xs text-slate-500">
+                              {seccionActual.columnas.col3.valor(item)}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className={`text-xs font-medium px-2 py-1 rounded-full ${
+                            item.activo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                          }`}>
+                            {item.activo ? 'Activo' : 'Inactivo'}
+                          </span>
+                          <button
+                            onClick={() => toggleActivo(item)}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              item.activo ? 'bg-[#00a8ff]' : 'bg-slate-200'
+                            }`}
+                          >
+                            <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                              item.activo ? 'translate-x-6' : 'translate-x-1'
+                            }`} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <table className="hidden lg:table w-full text-left border-collapse">
+    <thead>
+      <tr className="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
+        <th className="px-6 py-4 font-medium">Nombre</th>
+        <th className="px-6 py-4 font-medium">{seccionActual.columnas.col2.label}</th>
+        <th className="px-6 py-4 font-medium">{seccionActual.columnas.col3.label}</th>
+        <th className="px-6 py-4 font-medium text-right">Estado</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-slate-100">
+      {datosPagina.map((item) => {
+        const id = obtenerId(item);
+        return (
+          <tr key={id} className="hover:bg-slate-50/50 transition-colors">
+            <td className="px-6 py-4">
+              <div className="font-semibold text-slate-800">{obtenerNombre(item)}</div>
+              {item.nombreUsuario && (
+                <div className="text-xs text-slate-400 mt-0.5">@{item.nombreUsuario}</div>
+              )}
+            </td>
+            <td className="px-6 py-4">
+              <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
+                {seccionActual.columnas.col2.valor(item)}
+              </span>
+            </td>
+            <td className="px-6 py-4 text-slate-600">
+              {seccionActual.columnas.col3.valor(item)}
+            </td>
+            <td className="px-6 py-4 text-right">
+              <div className="flex justify-end items-center gap-3">
+                <span className={`text-xs font-medium px-3 py-1 rounded-full ${
+                  item.activo ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                }`}>
+                  {item.activo ? 'Activo' : 'Inactivo'}
+                </span>
+                <button
+                  onClick={() => toggleActivo(item)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                    item.activo ? 'bg-[#00a8ff]' : 'bg-slate-200'
+                  }`}
+                >
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${
+                    item.activo ? 'translate-x-6' : 'translate-x-1'
+                  }`} />
+                </button>
               </div>
-            )}
-          </div>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+
+  {datosPagina.length === 0 && (
+    <div className="text-center py-10 text-slate-500">
+      No hay registros disponibles.
+    </div>
+  )}
+  {datosPagina.length > 0 && (
+    <div className="p-4 flex justify-center border-t border-slate-100">
+      <Paginacion pagina={pagina} totalPaginas={totalPaginas} onChange={setPagina} />
+      </div>
+                )}
+              </div> 
+            )}          
+          </div>        
         </main>
 
-      </div>
+      </div> 
     </>
   );
 }
