@@ -772,20 +772,44 @@ const confirmarEliminar = async () => {
                       type={campo.type}
                       name={campo.name}
                       value={formData[campo.name] || ''}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        let val = e.target.value;
+                        // Para campos numéricos con maxLength, corta si supera el largo
+                        if (campo.type === 'number' && campo.maxLength && val.length > campo.maxLength) {
+                          val = val.slice(0, campo.maxLength);
+                        }
+                        setFormData(prev => ({ ...prev, [campo.name]: val }));
+                      }}
                       placeholder={campo.placeholder}
                       required={campo.required}
-                      maxLength={campo.maxLength || undefined}
+                      maxLength={campo.type !== 'number' ? campo.maxLength : undefined}
+                      max={campo.max}
+                      min={campo.min}
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00a8ff]/40 focus:border-[#00a8ff] transition-all"
                     />
                     {campo.maxLength && (
-                      <p className={`text-[11px] mt-0.5 text-right ${
-                        (formData[campo.name] || '').length >= campo.maxLength
-                          ? 'text-red-400'
-                          : 'text-slate-400'
-                      }`}>
-                        {(formData[campo.name] || '').length}/{campo.maxLength}
-                      </p>
+                      <div className="flex justify-end mt-0.5">
+                        {(String(formData[campo.name] || '').length >= Math.floor(campo.maxLength * 0.9)) && (
+                          <span className={`text-[11px] mr-1 ${
+                            String(formData[campo.name] || '').length >= campo.maxLength
+                              ? 'text-red-500 font-medium'
+                              : 'text-amber-500'
+                          }`}>
+                            {String(formData[campo.name] || '').length >= campo.maxLength
+                              ? '¡Límite alcanzado!'
+                              : 'Casi al límite'}
+                          </span>
+                        )}
+                        <span className={`text-[11px] ${
+                          String(formData[campo.name] || '').length >= campo.maxLength
+                            ? 'text-red-500 font-medium'
+                            : String(formData[campo.name] || '').length >= Math.floor(campo.maxLength * 0.9)
+                            ? 'text-amber-500'
+                            : 'text-slate-400'
+                        }`}>
+                          {String(formData[campo.name] || '').length}/{campo.maxLength}
+                        </span>
+                      </div>
                     )}
                   </div>
                 );
