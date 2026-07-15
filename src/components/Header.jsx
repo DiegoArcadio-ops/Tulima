@@ -299,6 +299,15 @@ const panelUsuario = (() => {
                     <LayoutDashboard size={16} /> {panelUsuario.label}
                   </Link>
                 )}
+                {usuario && (
+                  <Link
+                    to="/perfil"
+                    className="header-mobile-link"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <UserCircle size={16} /> Mi perfil
+                  </Link>
+                )}
                 {navLinks.map((link) => (
                   link.label === "TuliA" ? (
                     <button

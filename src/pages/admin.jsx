@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut, Home } from 'lucide-react';
+import { MapPin, LayoutDashboard, Map, Settings, Utensils, Building2, Map as MapIcon, Compass, X, LogOut, Home , Menu} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Toast } from '../components/Toast';
 import Paginacion from '../components/Paginacion';
@@ -128,6 +128,7 @@ export default function TulimaAdminPanel() {
   const [toast, setToast] = useState(null);
   const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [] });
   const [pagina, setPagina] = useState(1);
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
   const PAGE_SIZE = 10;
 
   useEffect(() => {
@@ -221,8 +222,26 @@ export default function TulimaAdminPanel() {
 
       <div className="flex h-screen bg-slate-50 font-sans">
 
+            {sidebarAbierto && (
+          <div
+            className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+            onClick={() => setSidebarAbierto(false)}
+          />
+        )}
+
         {/* BARRA LATERAL */}
-        <aside className="w-64 bg-white border-r border-slate-200 flex flex-col z-10">
+        <aside className={`
+            fixed top-0 left-0 h-full z-30 w-64 bg-white border-r border-slate-200 flex flex-col
+            transition-transform duration-300
+            ${sidebarAbierto ? 'translate-x-0' : '-translate-x-full'}
+            lg:relative lg:translate-x-0 lg:z-10
+          `}>
+            <button
+              className="lg:hidden absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-600"
+              onClick={() => setSidebarAbierto(false)}
+            >
+              <X className="w-5 h-5" />
+            </button>
           <div className="p-6 flex items-center gap-2">
             <MapPin className="text-[#00a8ff] w-8 h-8" />
             <span className="text-2xl font-bold text-slate-800">Tulima</span>
@@ -264,7 +283,18 @@ export default function TulimaAdminPanel() {
 
         {/* ÁREA PRINCIPAL */}
         <main className="flex-1 overflow-y-auto relative">
-          <div className="p-8 max-w-6xl mx-auto">
+        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-10">
+          <button
+            onClick={() => setSidebarAbierto(true)}
+            className="p-2 rounded-lg hover:bg-slate-100 text-slate-600"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <MapPin className="text-[#00a8ff] w-5 h-5" />
+          <span className="font-bold text-slate-800">Tulima</span>
+          <span className="bg-slate-100 text-slate-500 text-xs px-2 py-1 rounded-md font-medium">Admin</span>
+        </div>
+         <div className="p-4 lg:p-8 max-w-6xl mx-auto">
 
             <header className="flex justify-between items-center mb-8">
               <div>

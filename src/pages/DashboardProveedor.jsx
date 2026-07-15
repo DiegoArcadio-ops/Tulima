@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   MapPin, Plus, Edit2, Trash2, X, LogOut, Home,
   Building2, Utensils, Compass, Map as MapIcon, Calendar,
-  CheckCircle, Clock, XCircle, ChevronRight
+  CheckCircle, Clock, XCircle, ChevronRight, Menu
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { ModalConfirm } from '../components/ModalConfirm';
@@ -169,6 +169,7 @@ export default function DashboardProveedor() {
   const [guardando, setGuardando] = useState(false);
   const [toast, setToast] = useState(null);
   const [modalConfirm, setModalConfirm] = useState(null);
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
 
   // ── 2. DERIVADOS ──
   const seccionesVisibles = usuario?.tipo_servicio
@@ -386,8 +387,25 @@ const confirmarEliminar = async () => {
           <span className="max-w-xs">{toast.mensaje}</span>
         </div>
       )}
+      {sidebarAbierto && (
+          <div
+            className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+            onClick={() => setSidebarAbierto(false)}
+          />
+        )}
 
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col z-10 flex-shrink-0">
+      <aside className={`
+        fixed top-0 left-0 h-full z-30 w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0
+        transition-transform duration-300
+        ${sidebarAbierto ? 'translate-x-0' : '-translate-x-full'}
+        lg:relative lg:translate-x-0 lg:z-10
+      `}>
+        <button
+          className="lg:hidden absolute top-4 right-4 p-1 text-slate-400 hover:text-slate-600"
+          onClick={() => setSidebarAbierto(false)}
+        >
+          <X className="w-5 h-5" />
+        </button>
         <div className="p-6 flex items-center gap-2">
           <MapPin className="text-[#00a8ff] w-7 h-7" />
           <span className="text-xl font-bold text-slate-800">Tulima</span>
@@ -450,7 +468,18 @@ const confirmarEliminar = async () => {
       </aside>
 
       <main className="flex-1 overflow-y-auto">
-        <div className="p-8 max-w-5xl mx-auto">
+        <div className="lg:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-slate-200 sticky top-0 z-10">
+          <button
+            onClick={() => setSidebarAbierto(true)}
+            className="p-2 rounded-lg hover:bg-slate-100 text-slate-600"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <MapPin className="text-[#00a8ff] w-5 h-5" />
+          <span className="font-bold text-slate-800">Tulima</span>
+          <span className="text-xs bg-[#00a8ff]/10 text-[#00a8ff] px-2 py-0.5 rounded-md font-medium">Proveedor</span>
+        </div>
+        <div className="p-4 lg:p-8 max-w-5xl mx-auto">
 
           <header className="flex justify-between items-start mb-6">
             <div>
