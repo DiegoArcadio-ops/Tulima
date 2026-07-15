@@ -220,7 +220,7 @@ export default function TulimaAdminPanel() {
     <>
       {toast && <Toast mensaje={toast.mensaje} tipo={toast.tipo} onClose={() => setToast(null)} />}
 
-      <div className="flex h-screen bg-slate-50 font-sans">
+      <div className="flex h-screen bg-slate-50 font-sans fixed inset-0">
 
             {sidebarAbierto && (
           <div

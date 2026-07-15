@@ -366,7 +366,7 @@ const confirmarEliminar = async () => {
 
   // ── 5. GUARD — va ANTES del return principal ──
   if (!seccionActual) return (
-    <div className="flex h-screen items-center justify-center bg-slate-50">
+    <div className="flex bg-slate-50 font-sans fixed inset-0 overflow-hidden">
       <div className="text-slate-400 text-sm">Cargando...</div>
     </div>
   );
