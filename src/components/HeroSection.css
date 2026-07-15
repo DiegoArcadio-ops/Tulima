@@ -17,12 +17,12 @@
   align-items: center;
   justify-content: center;
   padding-top: 5;
-  margin-top: -2.5rem !important;/* el <body> ya reserva el espacio del header fijo en móvil */
+  margin-top: -5rem !important;/* el <body> ya reserva el espacio del header fijo en móvil */
 }
 
 @media (min-width: 768px) {
   .hero-section {
-    padding-top: 5rem; /* aquí el <body> solo reserva 1rem, así que compensamos aquí */
+    padding-top: 4rem; /* aquí el <body> solo reserva 1rem, así que compensamos aquí */
   }
 }
 
