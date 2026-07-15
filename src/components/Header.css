@@ -46,7 +46,7 @@
   height: 4rem; /* coincide con el padding-top que reserva el <body> en móvil */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-inner { height: 4.5rem; }
 }
 
@@ -61,7 +61,7 @@
   margin-left: 2rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-user-right {
     display: flex;
   }
@@ -152,9 +152,9 @@
   letter-spacing: -0.02em;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-logo-icon { height: 1.75rem; width: 1.75rem; }
-  .header-logo-text { font-size: 1.4rem; }  
+  .header-logo-text { font-size: 1.4rem; }
   .header-container {
     position: relative;
     padding: 0 1.5rem;
@@ -168,15 +168,14 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-desktop-nav {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.1rem;
-    position: relative;
-    flex: 1 1 auto;
-    min-width: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     isolation: isolate;
   }
 }
@@ -267,7 +266,7 @@
   background: rgba(0,0,0,0.05);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-mobile-toggle { display: none; }
 }
 
@@ -293,7 +292,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1200px) {
   .header-mobile-nav { display: none; }
 }
 
@@ -398,4 +397,23 @@
   color: var(--primary-color);
   background-color: rgba(0, 168, 255, 0.08);
   border-radius: 6px;
+}
+
+@media (min-width: 1200px) and (max-width: 1400px) {
+  .header-nav-link {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.35rem;
+  }
+
+  .header-greeting-name {
+    max-width: 80px;
+  }
+
+  .header-greeting-text {
+    display: none; /* oculta el "Hola," para ahorrar espacio */
+  }
+
+  .header-desktop-nav {
+    gap: 0rem;
+  }
 }
