@@ -373,8 +373,7 @@ const confirmarEliminar = async () => {
 
   // ── 6. RENDER ──
   return (
-    <div className="flex h-screen bg-slate-50 font-sans overflow-hidden">
-
+   <> 
       {toast && (
         <div className={`fixed top-5 right-5 z-[100] flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg text-sm font-medium ${
           toast.tipo === 'error'
@@ -387,6 +386,8 @@ const confirmarEliminar = async () => {
           <span className="max-w-xs">{toast.mensaje}</span>
         </div>
       )}
+
+      <div className="flex h-screen bg-slate-50 font-sans fixed inset-0 overflow-hidden">
       {sidebarAbierto && (
           <div
             className="fixed inset-0 bg-black/40 z-20 lg:hidden"
@@ -754,7 +755,7 @@ const confirmarEliminar = async () => {
           </div>
         </div>
       )}
-
+  </div>
  {modalConfirm && (
         <ModalConfirm
           mensaje={modalConfirm.mensaje}
@@ -762,7 +763,7 @@ const confirmarEliminar = async () => {
           onCancelar={() => setModalConfirm(null)}
         />
       )}
-
-    </div>
+    </>
+    
   );
 }
