@@ -172,11 +172,11 @@
     align-items: center;
     justify-content: center;
     gap: 0.1rem;
-    position: static;
+    position: relative;
     transform: none;
     left: auto;
     isolation: isolate;
-    overflow: hidden;
+    overflow: visible;
   }
 }
 
