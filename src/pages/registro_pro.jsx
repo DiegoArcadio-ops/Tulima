@@ -71,7 +71,7 @@ function RegistroProveedor() {
       });
 
       if (respuesta.status === 201) {
-        setExito('¡Solicitud enviada! El administrador revisará y activará tu cuenta. Te notificaremos por correo.');
+        setExito('¡Cuenta creada exitosamente! Redirigiendo al inicio de sesión...');
         setTimeout(() => navigate('/login'), 3000);
       }
     } catch (err) {
@@ -285,7 +285,7 @@ function RegistroProveedor() {
               {/* Aviso de aprobación */}
               <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-700">
                 <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                <span>Tu cuenta quedará <strong>pendiente de aprobación</strong> por el administrador antes de poder iniciar sesión.</span>
+                <span>Tu cuenta se activará <strong>de inmediato</strong> al completar el registro y podrás iniciar sesión enseguida.</span>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -299,7 +299,7 @@ function RegistroProveedor() {
                   type="submit"
                   className="flex-1 py-2.5 px-4 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-xl transition-all"
                 >
-                  Enviar solicitud
+                  Crear cuenta
                 </button>
               </div>
             </form>

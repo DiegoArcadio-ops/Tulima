@@ -326,7 +326,7 @@ export default function DashboardProveedor() {
         mostrarToast('Registro actualizado correctamente');
       } else {
         await axios.post(seccionActual.url, payload, config);
-        mostrarToast('Registro enviado — quedará visible tras la aprobación del administrador');
+        mostrarToast('Registro creado y publicado correctamente');
       }
 
       setModalAbierto(false);
@@ -511,7 +511,7 @@ const confirmarEliminar = async () => {
           <div className="mb-6 flex items-start gap-3 bg-[#00a8ff]/5 border border-[#00a8ff]/20 rounded-xl p-4">
             <Clock className="w-4 h-4 text-[#00a8ff] flex-shrink-0 mt-0.5" />
             <p className="text-sm text-slate-600">
-              Los registros nuevos aparecen como <span className="font-medium text-amber-600">Pendiente</span> hasta que el administrador los active. Una vez activos son visibles para los turistas.
+              Los registros queagregues serán <span className="font-medium text-amber-600">visibles de inmediato</span> para los turistas de la plataforma.
               {datos.length > 0 && (
 <> Solo puedes tener <span className="font-medium">un {seccionActual.singular.toLowerCase()}</span> por cuenta — si quieres registrar uno distinto, primero elimina el actual.</>              )}
             </p>
@@ -538,7 +538,43 @@ const confirmarEliminar = async () => {
             </div>
           ) : (
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-              <table className="w-full text-left">
+              <div className="lg:hidden divide-y divide-slate-100">
+                  {datos.map(item => (
+                    <div key={obtenerId(item)} className="p-4 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-slate-800 text-sm truncate">
+                          {item[seccionActual.nombreKey] || item.nombre || item.nombre_hotel || item.nombre_Evento}
+                        </p>
+                        {(item.tipo || item.tipoTour || item.tipoEvento) && (
+                          <p className="text-xs text-slate-400 mt-0.5">
+                            {item.tipo || item.tipoTour || item.tipoEvento}
+                          </p>
+                        )}
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          📍 {item.municipio?.nombre || item.destino_turistico?.municipio?.nombre || '—'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <BadgeEstado activo={item.activo} />
+                        <div className="flex gap-1">
+                          <button
+                            onClick={() => abrirModalEditar(item)}
+                            className="p-2 text-slate-400 hover:text-[#00a8ff] hover:bg-[#00a8ff]/10 rounded-lg transition-colors"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => eliminar(item)}
+                            className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <table className="hidden lg:table w-full text-left">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 text-xs font-medium uppercase tracking-wide">
                     <th className="px-6 py-3">Nombre</th>
@@ -598,7 +634,7 @@ const confirmarEliminar = async () => {
                 <h3 className="text-lg font-semibold text-slate-800">
 {modoEdicion ? 'Editar' : 'Nuevo'} {seccionActual.singular}                </h3>
                 {!modoEdicion && (
-                  <p className="text-xs text-slate-400 mt-0.5">Quedará pendiente hasta que el admin lo apruebe</p>
+                  <p className="text-xs text-slate-400 mt-0.5">Se publicará de inmediato en la plataforma</p>
                 )}
               </div>
               <button
@@ -749,7 +785,7 @@ const confirmarEliminar = async () => {
                 disabled={guardando}
                 className="px-5 py-2.5 bg-[#00a8ff] hover:bg-[#0097e6] disabled:opacity-60 text-white font-medium rounded-xl transition-all text-sm"
               >
-                {guardando ? 'Guardando...' : modoEdicion ? 'Guardar cambios' : 'Enviar para revisión'}
+                {guardando ? 'Guardando...' : modoEdicion ? 'Guardar cambios' : 'Publicar'}
               </button>
             </div>
 
