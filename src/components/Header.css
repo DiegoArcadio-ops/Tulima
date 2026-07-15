@@ -29,7 +29,7 @@
 }
 
 .header-container {
-  max-width: 80rem;
+  max-width: 90rem;
   margin: 0 auto;
   padding: 0 1rem;
   position: relative;
@@ -41,13 +41,19 @@
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  height: 4rem; /* coincide con el padding-top que reserva el <body> en móvil */
+  height: 4rem;
+  gap: 0.5rem;
 }
 
 @media (min-width: 1200px) {
-  .header-inner { height: 4.5rem; }
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    height: 4.5rem;
+  }
 }
 
 /* =========================================
@@ -56,14 +62,14 @@
 .header-user-right {
   display: none;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.75rem;
   flex-shrink: 0;
-  margin-left: 2rem;
 }
 
 @media (min-width: 1200px) {
   .header-user-right {
     display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -125,18 +131,14 @@
 }
 
 /* =========================================
-   Logo: centro
+   Logo
    ========================================= */
-.header-logo { /* Ahora a la izquierda */
+.header-logo {
   display: flex;
   align-items: center;
   gap: 0.4rem;
   text-decoration: none;
   flex-shrink: 0;
-}
-
-@media (min-width: 768px) {
-  /* Esta regla ya no es necesaria, el layout flexible se encarga de la posición del logo. */
 }
 
 .header-logo-icon {
@@ -155,10 +157,6 @@
 @media (min-width: 1200px) {
   .header-logo-icon { height: 1.75rem; width: 1.75rem; }
   .header-logo-text { font-size: 1.4rem; }
-  .header-container {
-    position: relative;
-    padding: 0 1.5rem;
-  }
 }
 
 /* =========================================
@@ -172,18 +170,20 @@
   .header-desktop-nav {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.1rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    transform: none;
+    left: auto;
     isolation: isolate;
+    overflow: hidden;
   }
 }
 
 .header-nav-link {
   background: none;
   border: none;
-  font-size: 0.78rem; /* ligeramente reducido */
+  font-size: 0.78rem;
   color: var(--header-text-muted);
   font-weight: 500;
   text-decoration: none;
@@ -196,6 +196,29 @@
 
 .header-nav-link:hover {
   color: var(--primary-color);
+}
+
+.header-nav-link--active {
+  color: var(--primary-color);
+  background-color: transparent;
+}
+
+.header-nav-link--active:hover {
+  background-color: rgba(0, 168, 255, 0.15);
+}
+
+/* Indicador deslizante */
+.header-nav-indicator {
+  position: absolute;
+  height: 100%;
+  border-radius: 6px;
+  background-color: rgba(0, 168, 255, 0.12);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* =========================================
@@ -260,6 +283,7 @@
   cursor: pointer;
   border-radius: 0.5rem;
   transition: background 0.2s;
+  margin-left: auto;
 }
 
 .header-mobile-toggle:hover {
@@ -350,70 +374,8 @@
   background: rgba(239,68,68,0.05);
 }
 
-.header-nav-link {
-  background: none;
-  border: none;
-  font-size: 0.875rem;
-  color: var(--header-text-muted);
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.2s, background-color 0.2s;
-  padding: 0.3rem 0.75rem;
-  border-radius: 6px;
-  white-space: nowrap;
-}
-
-.header-nav-link:hover {
-  color: var(--primary-color);
-}
-
-.header-nav-link--active {
-  color: var(--primary-color);
-  background-color: transparent
-}
-
-/* Indicador deslizante */
-.header-nav-indicator {
-  position: absolute;
-  bottom: -2px; /* justo debajo de los links */
-  height: 100%;
-  border-radius: 6px;
-  background-color: rgba(0, 168, 255, 0.12);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.2s ease;
-  pointer-events: none; /* no bloquea clics */
-  top: 50%;
-  transform: translateY(-50%);
-  bottom: unset;
-}
-
-.header-nav-link--active:hover {
-  background-color: rgba(0, 168, 255, 0.15);
-}
-
 .header-mobile-link--active {
   color: var(--primary-color);
   background-color: rgba(0, 168, 255, 0.08);
   border-radius: 6px;
-}
-
-@media (min-width: 1200px) and (max-width: 1400px) {
-  .header-nav-link {
-    font-size: 0.72rem;
-    padding: 0.25rem 0.35rem;
-  }
-
-  .header-greeting-name {
-    max-width: 80px;
-  }
-
-  .header-greeting-text {
-    display: none; /* oculta el "Hola," para ahorrar espacio */
-  }
-
-  .header-desktop-nav {
-    gap: 0rem;
-  }
 }
