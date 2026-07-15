@@ -22,7 +22,7 @@
 
 @media (min-width: 768px) {
   .hero-section {
-    padding-top: 4rem; /* aquí el <body> solo reserva 1rem, así que compensamos aquí */
+    padding-top: 6rem; /* aquí el <body> solo reserva 1rem, así que compensamos aquí */
   }
 }
 
