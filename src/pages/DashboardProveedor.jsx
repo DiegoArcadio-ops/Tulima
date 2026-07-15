@@ -511,7 +511,7 @@ const confirmarEliminar = async () => {
           <div className="mb-6 flex items-start gap-3 bg-[#00a8ff]/5 border border-[#00a8ff]/20 rounded-xl p-4">
             <Clock className="w-4 h-4 text-[#00a8ff] flex-shrink-0 mt-0.5" />
             <p className="text-sm text-slate-600">
-              Los registros queagregues serán <span className="font-medium text-amber-600">visibles de inmediato</span> para los turistas de la plataforma.
+              Los registros que agregues serán <span className="font-medium text-amber-600">visibles de inmediato</span> para los turistas de la plataforma.
               {datos.length > 0 && (
 <> Solo puedes tener <span className="font-medium">un {seccionActual.singular.toLowerCase()}</span> por cuenta — si quieres registrar uno distinto, primero elimina el actual.</>              )}
             </p>
