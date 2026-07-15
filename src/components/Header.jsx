@@ -85,7 +85,10 @@ const panelUsuario = (() => {
 
   // Reposiciona el indicador cuando cambia la ruta o la sección activa
   useEffect(() => {
-    resetIndicador();
+    const timer = setTimeout(() => {
+      resetIndicador();
+    }, 50);
+    return () => clearTimeout(timer);
   }, [location.pathname, seccionActiva]);
 
   // Observa las secciones (#mapa en Inicio, #contacto en el footer de cualquier página)
