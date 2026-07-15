@@ -28,7 +28,7 @@ const SECCIONES = {
       { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
       { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@hotel.com' },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', required: false, placeholder: 'Describe tu hotel brevemente...' },
-      { name: 'tipo', label: 'Tipo de hotel', type: 'select', catalogo: 'tipos_hoteles', valueKey: 'id_tipo', labelKey: 'nombre', required: false },
+      { name: 'tipo', label: 'Tipo de hotel', type: 'select', catalogo: 'tipos', valueKey: 'id_tipo', labelKey: 'nombre', required: false },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'estrellas', label: 'Estrellas', type: 'number', required: false, placeholder: 'Ej. 5', min: 1, max: 5 },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
