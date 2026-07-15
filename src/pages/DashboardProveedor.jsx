@@ -21,16 +21,16 @@ const SECCIONES = {
     icono: Building2,
     nombreKey: 'nombre_hotel',
     campos: [
-      { name: 'nombre_hotel', label: 'Nombre del hotel', type: 'text', required: true, placeholder: 'Ej. Hotel Volcán Colima' },
-      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Av. Rey Coliman' },
-      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 123' },
-      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
-      { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
-      { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@hotel.com' },
+      { name: 'nombre_hotel', label: 'Nombre del hotel', type: 'text', required: true, placeholder: 'Ej. Hotel Volcán Colima', maxLength: 25 },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Av. Rey Coliman', maxLength: 50 },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 123', maxLength: 5 },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000', maxLength: 5 },
+      { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567', maxLength: 10 },
+      { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@hotel.com', maxLength: 50 },
       { name: 'descripcion', label: 'Descripción', type: 'textarea', required: false, placeholder: 'Describe tu hotel brevemente...' },
       { name: 'tipo', label: 'Tipo de hotel', type: 'select', required: false, opciones: ['Ciudad', 'Playa', 'Montaña', 'Boutique', 'Resort', 'Hostal', 'Otro'].map(t => ({ value: t, label: t })) },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
-      { name: 'estrellas', label: 'Estrellas', type: 'number', required: false, placeholder: 'Ej. 5', min: 1, max: 5 },
+      { name: 'estrellas', label: 'Estrellas', type: 'number', required: false, placeholder: 'Ej. 5', min: 1, max: 5, maxLength: 1 },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
     ],
@@ -43,13 +43,13 @@ const SECCIONES = {
     icono: Utensils,
     nombreKey: 'nombre',
     campos: [
-      { name: 'nombre', label: 'Nombre del restaurante', type: 'text', required: true, placeholder: 'Ej. Mariscos El Pacífico' },
+      { name: 'nombre', label: 'Nombre del restaurante', type: 'text', required: true, placeholder: 'Ej. Mariscos El Pacífico', maxLength: 50 },
       { name: 'tipo', label: 'Tipo de restaurante', type: 'select', required: false, opciones: ['Restaurante', 'Cafetería', 'Bar', 'Snack', 'Fonda', 'Otro'].map(t => ({ value: t, label: t })) },
-      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Calle Madero' },
-      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 45' },
-      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
-      { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
-      { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@restaurante.com' },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Calle Madero', maxLength: 50 },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 45', maxLength: 5 },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000', maxLength: 5 },
+      { name: 'telefono', label: 'Teléfono', type: 'text', required: false, placeholder: 'Ej. 3121234567', maxLength: 10 },
+      { name: 'email', label: 'Correo electrónico', type: 'email', required: false, placeholder: 'Ej. contacto@restaurante.com', maxLength: 50 },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Horario de apertura', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Horario de cierre', type: 'time', required: false },
@@ -78,13 +78,13 @@ const SECCIONES = {
     icono: Compass,
     nombreKey: 'nombre',
     campos: [
-      { name: 'nombre', label: 'Nombre del tour', type: 'text', required: true, placeholder: 'Ej. Tour al Volcán de Colima' },
-      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Calle Madero' },
-      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 45' },
-      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
-      { name: 'tipoTour', label: 'Tipo de tour', type: 'text', required: false, placeholder: 'Ej. Aventura, Cultural...' },
-      { name: 'tipoServicio', label: 'Tipo de servicio', type: 'text', required: false, placeholder: 'Ej. Guiado, Privado...' },
-      { name: 'telefono', label: 'Teléfono de contacto', type: 'text', required: false, placeholder: 'Ej. 3121234567' },
+      { name: 'nombre', label: 'Nombre del tour', type: 'text', required: true, placeholder: 'Ej. Tour al Volcán de Colima', maxLength: 30 },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Calle Madero', maxLength: 50 },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 45', maxLength: 5 },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000', maxLength: 5 },
+      { name: 'tipoTour', label: 'Tipo de tour', type: 'text', required: false, placeholder: 'Ej. Aventura, Cultural...', maxLength: 50 },
+      { name: 'tipoServicio', label: 'Tipo de servicio', type: 'text', required: false, placeholder: 'Ej. Guiado, Privado...', maxLength: 50 },
+      { name: 'telefono', label: 'Teléfono de contacto', type: 'text', required: false, placeholder: 'Ej. 3121234567', maxLength: 10 },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'ubicacion', label: 'Ubicación exacta en el mapa', type: 'map', required: false },
@@ -98,10 +98,10 @@ const SECCIONES = {
     icono: MapIcon,
     nombreKey: 'nombre',
     campos: [
-      { name: 'nombre', label: 'Nombre del destino', type: 'text', required: true, placeholder: 'Ej. Laguna La Maria' },
-      { name: 'nombre_Calle', label: 'Calle o lugar', type: 'text', required: false, placeholder: 'Ej. Plaza Principal' },
-      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: false, placeholder: 'Ej. 1' },
-      { name: 'codifoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000' },
+      { name: 'nombre', label: 'Nombre del destino', type: 'text', required: true, placeholder: 'Ej. Laguna La Maria', maxLength: 100 },
+      { name: 'nombre_Calle', label: 'Calle o lugar', type: 'text', required: false, placeholder: 'Ej. Plaza Principal', maxLength: 50 },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: false, placeholder: 'Ej. 1', maxLength: 5 },
+      { name: 'codifoPostal', label: 'Código postal', type: 'number', required: false, placeholder: 'Ej. 28000', maxLength: 5 },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'horarioAbierto', label: 'Hora de inicio', type: 'time', required: false },
       { name: 'horarioCerrado', label: 'Hora de fin', type: 'time', required: false },
@@ -117,14 +117,14 @@ const SECCIONES = {
     icono: Calendar,
     nombreKey: 'nombre_Evento',
     campos: [
-      { name: 'nombre_Evento', label: 'Nombre del evento', type: 'text', required: true, placeholder: 'Ej. Festival del Fuego 2026' },
-      { name: 'tipoEvento', label: 'Tipo de evento', type: 'text', required: false, placeholder: 'Ej. Cultural, Gastronómico...' },
-      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Av. Niños Héroes' },
-      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 10' },
-      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: true, placeholder: 'Ej. 28000' },
+      { name: 'nombre_Evento', label: 'Nombre del evento', type: 'text', required: true, placeholder: 'Ej. Festival del Fuego 2026', maxLength: 50 },
+      { name: 'tipoEvento', label: 'Tipo de evento', type: 'text', required: false, placeholder: 'Ej. Cultural, Gastronómico...', maxLength: 50 },
+      { name: 'nombre_Calle', label: 'Calle', type: 'text', required: true, placeholder: 'Ej. Av. Niños Héroes', maxLength: 50 },
+      { name: 'numero_Calle', label: 'Número exterior', type: 'number', required: true, placeholder: 'Ej. 10', maxLength: 5 },
+      { name: 'codigoPostal', label: 'Código postal', type: 'number', required: true, placeholder: 'Ej. 28000', maxLength: 5 },
       { name: 'fechaInicio', label: 'Fecha de inicio', type: 'date', required: true },
       { name: 'fechaTermino', label: 'Fecha de término', type: 'date', required: true },
-      { name: 'disponibilidad', label: 'Disponibilidad', type: 'text', required: false, placeholder: 'Ej. Lugares limitados, Entrada libre...' },
+      { name: 'disponibilidad', label: 'Disponibilidad', type: 'text', required: false, placeholder: 'Ej. Lugares limitados, Entrada libre...', maxLength: 20 },
       { name: 'imagen', label: 'Imagen', type: 'file', required: false, placeholder: 'Sube una foto desde tu dispositivo' },
       { name: 'id_municipio', label: 'Municipio', type: 'select', catalogo: 'municipios', valueKey: 'id_municipio', labelKey: 'nombre', required: true },
       { name: 'id_destino', label: 'Destino turístico', type: 'select', catalogo: 'destinos', valueKey: 'id_destino', labelKey: 'nombre', required: true },
@@ -660,8 +660,18 @@ const confirmarEliminar = async () => {
                       placeholder={campo.placeholder}
                       rows="3"
                       required={campo.required}
+                      maxLength={campo.maxLength || undefined}
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00a8ff]/40 focus:border-[#00a8ff] transition-all resize-none"
                     />
+                    {campo.maxLength && (
+                      <p className={`text-[11px] mt-0.5 text-right ${
+                        (formData[campo.name] || '').length >= campo.maxLength
+                          ? 'text-red-400'
+                          : 'text-slate-400'
+                      }`}>
+                        {(formData[campo.name] || '').length}/{campo.maxLength}
+                      </p>
+                    )}
                   </div>
                 );
                 if (campo.type === 'select') {
@@ -765,8 +775,18 @@ const confirmarEliminar = async () => {
                       onChange={handleChange}
                       placeholder={campo.placeholder}
                       required={campo.required}
+                      maxLength={campo.maxLength || undefined}
                       className="w-full px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00a8ff]/40 focus:border-[#00a8ff] transition-all"
                     />
+                    {campo.maxLength && (
+                      <p className={`text-[11px] mt-0.5 text-right ${
+                        (formData[campo.name] || '').length >= campo.maxLength
+                          ? 'text-red-400'
+                          : 'text-slate-400'
+                      }`}>
+                        {(formData[campo.name] || '').length}/{campo.maxLength}
+                      </p>
+                    )}
                   </div>
                 );
               })}
