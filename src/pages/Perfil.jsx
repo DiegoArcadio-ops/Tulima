@@ -139,7 +139,7 @@ export default function Perfil() {
     if (filtroBusq.trim()) {
       const mun = (
         fav.hotel?.municipio?.nombre || fav.restaurante?.municipio?.nombre ||
-        fav.provedor_tour?.municipio?.nombre || fav.destino_turistico?.municipio?.nombre || fav.evento?.destino_turistico?.municipio?.nombre || ''
+        fav.provedor_tour?.municipio?.nombre || fav.destino_turistico?.municipio?.nombre || fav.evento?.municipio?.nombre || ''
       ).toLowerCase();
       const nombre = (
         fav.hotel?.nombre_hotel || fav.restaurante?.nombre ||
@@ -446,7 +446,7 @@ function TarjetaFavorito({ fav }) {
   const municipio = fav.hotel?.municipio?.nombre
     || fav.restaurante?.municipio?.nombre
     || fav.provedor_tour?.municipio?.nombre
-    || fav.evento?.destino_turistico?.municipio?.nombre
+    || fav.evento?.municipio?.nombre
     || fav.destino_turistico?.municipio?.nombre || '';
 
   const imagen = fav.hotel?.imagen
