@@ -23,7 +23,6 @@ const FILTROS_FAV = [
 ];
 
 export default function Perfil() {
-  const { usuario } = useAuth();
   const navigate = useNavigate();
 
   const [tabActiva, setTabActiva] = useState('datos');

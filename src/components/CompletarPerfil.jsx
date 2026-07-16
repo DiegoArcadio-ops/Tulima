@@ -34,7 +34,7 @@ export default function CompletarPerfil({ onCompletado }) {
     }
   };
 
-  const handleOmitir = () => onCompletado();
+  const handleOmitir = () => onCompletado(false);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
