@@ -35,37 +35,25 @@ function Login() {
     e.preventDefault();
     setError('');
     setCargando(true);
-
+  
     try {
       const token = await getToken();
       const config = { headers: { 'X-CSRF-Token': token }, withCredentials: true };
-
-      // Intento 1: login de usuario / admin (por nombreUsuario o correo)
-      try {
-        const res = await axios.post(`${API}/login`,
-          { nombreUsuario: identificador, contraseña },
-          config
-        );
-        return redirigir(res.data.usuario);
-      } catch (errUsuario) {
-        // Si no es 401 es un error inesperado, lo lanzamos
-        if (errUsuario.response?.status !== 401) throw errUsuario;
+  
+      const res = await axios.post(`${API}/login`,
+        { nombreUsuario: identificador, contraseña },
+        config
+      );
+      return redirigir(res.data.usuario);
+  
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError('Usuario o contraseña incorrectos.');
+      } else if (err.response?.status === 400) {
+        setError(err.response.data?.errors?.[0]?.msg || 'Revisa los datos ingresados.');
+      } else {
+        setError('Ocurrió un error inesperado. Intenta de nuevo.');
       }
-
-      // Intento 2: login de proveedor (por correo)
-      try {
-        const res = await axios.post(`${API}/login-proveedor`,
-          { correo: identificador, contraseña },
-          config
-        );
-        return redirigir(res.data.usuario);
-      } catch (errProveedor) {
-        if (errProveedor.response?.status !== 401) throw errProveedor;
-        setError('Credenciales incorrectas. Verifica tu usuario y contraseña.');
-      }
-
-    } catch {
-      setError('Ocurrió un error inesperado. Intenta de nuevo.');
     } finally {
       setCargando(false);
     }

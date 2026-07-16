@@ -112,13 +112,13 @@ useEffect(() => {
   const tipos = [...new Set(eventos.map(e => e.tipoEvento).filter(Boolean))];
 const municipios = todosMunicipios.length
     ? todosMunicipios.map(m => m.nombre).sort((a, b) => a.localeCompare(b))
-    : [...new Set(eventos.map(e => e.destino_turistico?.municipio?.nombre).filter(Boolean))];
+    : [...new Set(eventos.map(e => e.municipio?.nombre).filter(Boolean))];
   // Filtrado
   const eventosFiltrados = eventos.filter(ev => {
     const nombre = (ev.nombre_Evento || '').toLowerCase();
     const matchBusqueda = nombre.includes(busqueda.toLowerCase());
     const matchTipo = !filtroTipo || ev.tipoEvento === filtroTipo;
-    const matchMunicipio = !filtroMunicipio || ev.destino_turistico?.municipio?.nombre === filtroMunicipio;
+    const matchMunicipio = !filtroMunicipio || ev.municipio?.nombre === filtroMunicipio;
     return matchBusqueda && matchTipo && matchMunicipio;
   });
 
@@ -235,15 +235,10 @@ const municipios = todosMunicipios.length
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
-                  {evento.destino_turistico?.municipio?.nombre ?? 'Colima'}
+                  {evento.municipio?.nombre ?? 'Colima'}
                 </div>
 
                 <div className="evento-footer">
-                  {evento.disponibilidad && (
-                    <div className="evento-disponibilidad">
-                      🎟️ {evento.disponibilidad}
-                    </div>
-                  )}
                   <button className={`favorito-btn ${favoritos.has(evento.id_evento) ? 'activo' : ''}`}
                     onClick={e => toggleFavorito(evento.id_evento, e)} aria-label="Añadir a favoritos">
                     <Heart className="favorito-icono" />
@@ -299,7 +294,7 @@ const municipios = todosMunicipios.length
               <div className="modal-details">
                 <div className="modal-detail-row">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span><strong>Municipio:</strong> {selectedEvento.destino_turistico?.municipio?.nombre ?? 'N/A'}</span>
+                  <span><strong>Municipio:</strong> {selectedEvento.municipio?.nombre ?? 'N/A'}</span>
                 </div>
 
                 <div className="modal-detail-row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
@@ -327,7 +322,7 @@ const municipios = todosMunicipios.length
                   </a>
                   ) : (
                     <a
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedEvento.nombre_Calle}, ${selectedEvento.destino_turistico?.municipio?.nombre ?? ''}, Colima`)}`}
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedEvento.nombre_Calle}, ${selectedEvento.municipio?.nombre ?? ''}, Colima`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 10, padding: '10px 14px', background: '#0ea5e9', color: '#fff', borderRadius: 8, fontSize: 14, fontWeight: 600, textDecoration: 'none' }}
@@ -345,10 +340,6 @@ const municipios = todosMunicipios.length
                 <div className="modal-detail-row">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
                   <span><strong>Fecha fin:</strong> {formatFecha(selectedEvento.fechaTermino)}</span>
-                </div>
-                <div className="modal-detail-row">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>
-                  <span><strong>Disponibilidad:</strong> {selectedEvento.disponibilidad ?? 'N/A'}</span>
                 </div>
               </div>
               <button className={`favorito-btn-grande ${favoritos.has(selectedEvento.id_evento) ? 'activo' : ''}`}
