@@ -34,6 +34,7 @@ export default function Perfil() {
   const [guardando, setGuardando] = useState(false);
   const [exito, setExito]         = useState('');
   const [error, setError]         = useState('');
+  const { usuario, isLoading: authCargando } = useAuth();
 
   // Filtros favoritos
   const [filtroTipo, setFiltroTipo]   = useState('todos');
@@ -47,9 +48,10 @@ export default function Perfil() {
   const [verPass, setVerPass] = useState(false);
 
   useEffect(() => {
+    if (authCargando) return; // esperar a que AuthContext confirme la sesión
     if (!usuario) { navigate('/login'); return; }
     cargarDatos();
-  }, [usuario]);
+  }, [usuario, authCargando]);
 
   const cargarDatos = async () => {
     setCargando(true);
