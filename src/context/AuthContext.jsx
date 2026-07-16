@@ -83,6 +83,20 @@ export const AuthProvider = ({ children }) => {
 
   const value = { usuario, isLoading, login, logout };
 
+  const refrescarUsuario = async () => {
+    try {
+      const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
+      if (respuesta.data) {
+        setUsuario(respuesta.data);
+        localStorage.setItem('usuarioTulima', JSON.stringify(respuesta.data));
+      }
+    } catch (error) {
+      console.error('No se pudo refrescar el usuario:', error);
+    }
+  };
+  
+  const value = { usuario, isLoading, login, logout, refrescarUsuario };
+
   return (
     <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
   );

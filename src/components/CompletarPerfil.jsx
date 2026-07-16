@@ -26,7 +26,7 @@ export default function CompletarPerfil({ onCompletado }) {
           headers: { 'X-CSRF-Token': csrf.csrfToken }
         }
       );
-      onCompletado();
+      onCompletado(true);
     } catch {
       setError('Ocurrió un error. Intenta de nuevo.');
     } finally {
