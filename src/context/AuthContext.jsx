@@ -81,8 +81,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = { usuario, isLoading, login, logout };
-
   const refrescarUsuario = async () => {
     try {
       const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
