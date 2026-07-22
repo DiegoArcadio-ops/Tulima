@@ -205,18 +205,18 @@ export default function DashboardProveedor() {
     fetchCsrf();
 
     const cargarCatalogos = async () => {
-      const [resMun, resCat, resDest] = await Promise.allSettled([
+      const [resMun, resDest] = await Promise.allSettled([
         axios.get(`${BASE}/municipios`),
-        axios.get(`${BASE}/categorias`),
         axios.get(`${BASE}/destinos`),
       ]);
       setCatalogos({
         municipios: resMun.status === 'fulfilled' ? resMun.value.data : [],
-        categorias: resCat.status === 'fulfilled' ? resCat.value.data : [],
+        categorias: [],
         destinos: resDest.status === 'fulfilled' ? resDest.value.data : [],
       });
     };
     cargarCatalogos();
+  }, []);
   }, []);
 
   useEffect(() => {
@@ -320,7 +320,6 @@ export default function DashboardProveedor() {
       if (payload.longitud !== undefined) payload.longitud = Number(payload.longitud);
 
       if (!modoEdicion) {
-        payload.estadoConvenio = true;
         payload.activo = false;
       }
 
