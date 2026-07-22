@@ -218,13 +218,12 @@ export default function TulimaAdminPanel() {
 
   useEffect(() => {
     const cargarCatalogos = async () => {
-      const [resMun, resCat] = await Promise.allSettled([
+      const [resMun] = await Promise.allSettled([
         axios.get('https://tulima-backend.vercel.app/municipios'),
-        axios.get('https://tulima-backend.vercel.app/categorias'),
       ]);
       setCatalogos({
         municipios: resMun.status === 'fulfilled' ? resMun.value.data : [],
-        categorias: resCat.status === 'fulfilled' ? resCat.value.data : [],
+        categorias: [],
       });
     };
     cargarCatalogos();
@@ -292,24 +291,31 @@ export default function TulimaAdminPanel() {
   
     const cargarResumen = async () => {
       setIsLoadingDashboard(true);
-      const claves = Object.keys(SECCIONES);
-      const resultados = await Promise.allSettled(
-        claves.map(key => axios.get(`${SECCIONES[key].url}/admin/todos`, { withCredentials: true }))
-      );
-  
-      const stats = {};
-      claves.forEach((key, i) => {
-        const r = resultados[i];
-        const lista = r.status === 'fulfilled' ? r.value.data : [];
-        stats[key] = {
-          total: lista.length,
-          activos: lista.filter(d => d.activo).length,
-          inactivos: lista.filter(d => !d.activo).length,
-        };
-      });
-  
-      setDashboardStats(stats);
-      setIsLoadingDashboard(false);
+      setDashboardStats(null);
+      try {
+        const claves = Object.keys(SECCIONES);
+        const resultados = await Promise.allSettled(
+          claves.map(key => axios.get(`${SECCIONES[key].url}/admin/todos`, { withCredentials: true }))
+        );
+    
+        const stats = {};
+        claves.forEach((key, i) => {
+          const r = resultados[i];
+          const lista = Array.isArray(r.value?.data) ? r.value.data : [];
+          stats[key] = {
+            total: lista.length,
+            activos: lista.filter(d => d.activo === true).length,
+            inactivos: lista.filter(d => d.activo !== true).length,
+          };
+        });
+    
+        setDashboardStats(stats);
+      } catch (err) {
+        console.error('Error al cargar resumen:', err);
+        setDashboardStats({});
+      } finally {
+        setIsLoadingDashboard(false);
+      }
     };
   
     cargarResumen();
@@ -430,11 +436,15 @@ export default function TulimaAdminPanel() {
               </div>
             </header>
             {esDashboard ? (
-                isLoadingDashboard ? (
+                isLoadingDashboard || (esDashboard && !dashboardStats) ? (
                   <div className="flex justify-center items-center py-20 text-slate-500">
                     Cargando resumen...
                   </div>
-                ) : !dashboardStats ? null : (
+                ) : dashboardStats && Object.keys(dashboardStats).length === 0 ? (
+                  <div className="flex justify-center items-center py-20 text-red-400">
+                    No se pudo cargar el resumen. Verifica tu sesión e intenta de nuevo.
+                  </div>
+                ) : (
                   <DashboardResumen stats={dashboardStats} />
                               
                 ) 
