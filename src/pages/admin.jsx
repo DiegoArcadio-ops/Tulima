@@ -119,6 +119,77 @@ const obtenerNombre = (item) =>
   (item.primerNombre ? `${item.primerNombre} ${item.apellidoPaterno || ''}`.trim() : null) ||
   '—';
 
+  function DashboardResumen({ stats }) {
+    const categorias = [
+      { key: 'hoteles', label: 'Hoteles', icono: Building2 },
+      { key: 'restaurantes', label: 'Restaurantes', icono: Utensils },
+      { key: 'tours', label: 'Tours', icono: Compass },
+      { key: 'destinos', label: 'Destinos', icono: Map },
+      { key: 'proveedores', label: 'Proveedores', icono: Settings },
+    ];
+  
+    const totales = categorias.reduce(
+      (acc, c) => {
+        const s = stats[c.key] || { total: 0, activos: 0, inactivos: 0 };
+        acc.total += s.total;
+        acc.activos += s.activos;
+        acc.inactivos += s.inactivos;
+        return acc;
+      },
+      { total: 0, activos: 0, inactivos: 0 }
+    );
+  
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <p className="text-sm text-slate-500">Registros totales</p>
+            <p className="text-3xl font-bold text-slate-800 mt-1">{totales.total}</p>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <p className="text-sm text-slate-500">Activos</p>
+            <p className="text-3xl font-bold text-green-600 mt-1">{totales.activos}</p>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6">
+            <p className="text-sm text-slate-500">Inactivos / pendientes</p>
+            <p className="text-3xl font-bold text-red-500 mt-1">{totales.inactivos}</p>
+          </div>
+        </div>
+  
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100">
+            <h2 className="font-semibold text-slate-800">Por categoría</h2>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {categorias.map(c => {
+              const s = stats[c.key] || { total: 0, activos: 0, inactivos: 0 };
+              const Icono = c.icono;
+              const pct = s.total > 0 ? Math.round((s.activos / s.total) * 100) : 0;
+              return (
+                <div key={c.key} className="px-6 py-4 flex items-center gap-4">
+                  <div className="w-9 h-9 rounded-lg bg-[#00a8ff]/10 flex items-center justify-center flex-shrink-0">
+                    <Icono className="w-4 h-4 text-[#00a8ff]" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-medium text-slate-700 text-sm">{c.label}</span>
+                      <span className="text-sm text-slate-500">
+                        {s.activos} activos · {s.inactivos} inactivos · {s.total} total
+                      </span>
+                    </div>
+                    <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#00a8ff] rounded-full" style={{ width: `${pct}%` }} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 export default function TulimaAdminPanel() {
   const [seccionActiva, setSeccionActiva] = useState('hoteles');
   const [datos, setDatos] = useState([]);
@@ -129,6 +200,8 @@ export default function TulimaAdminPanel() {
   const [catalogos, setCatalogos] = useState({ municipios: [], categorias: [] });
   const [pagina, setPagina] = useState(1);
   const [sidebarAbierto, setSidebarAbierto] = useState(false);
+  const [dashboardStats, setDashboardStats] = useState(null);
+  const [isLoadingDashboard, setIsLoadingDashboard] = useState(false);
   const PAGE_SIZE = 10;
 
   useEffect(() => {
@@ -157,7 +230,8 @@ export default function TulimaAdminPanel() {
     cargarCatalogos();
   }, []);
 
-  const seccionActual = SECCIONES[seccionActiva];
+  const esDashboard = seccionActiva === 'dashboard';
+  const seccionActual = esDashboard ? null : SECCIONES[seccionActiva];
 
   const cargarDatos = async () => {
     setIsLoading(true);
@@ -175,6 +249,7 @@ export default function TulimaAdminPanel() {
   };
 
   useEffect(() => {
+    if (esDashboard) return;
     setPagina(1);
     cargarDatos();
   }, [seccionActiva]);
@@ -211,6 +286,34 @@ export default function TulimaAdminPanel() {
       setToast({ mensaje: 'No se pudo cambiar el estado. Intenta de nuevo.', tipo: 'error' });
     }
   };
+
+  useEffect(() => {
+    if (!esDashboard) return;
+  
+    const cargarResumen = async () => {
+      setIsLoadingDashboard(true);
+      const claves = Object.keys(SECCIONES);
+      const resultados = await Promise.allSettled(
+        claves.map(key => axios.get(`${SECCIONES[key].url}/admin/todos`, { withCredentials: true }))
+      );
+  
+      const stats = {};
+      claves.forEach((key, i) => {
+        const r = resultados[i];
+        const lista = r.status === 'fulfilled' ? r.value.data : [];
+        stats[key] = {
+          total: lista.length,
+          activos: lista.filter(d => d.activo).length,
+          inactivos: lista.filter(d => !d.activo).length,
+        };
+      });
+  
+      setDashboardStats(stats);
+      setIsLoadingDashboard(false);
+    };
+  
+    cargarResumen();
+  }, [seccionActiva]);
 
   const datosOrdenados = [...datos].sort((a, b) => obtenerId(b) - obtenerId(a));
   const totalPaginas = Math.ceil(datosOrdenados.length / PAGE_SIZE);
@@ -249,10 +352,17 @@ export default function TulimaAdminPanel() {
           </div>
 
           <nav className="flex-1 px-4 space-y-2 mt-4 text-slate-600">
-            <a href="#" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-50 hover:text-[#00a8ff] transition-colors">
-              <LayoutDashboard className="w-5 h-5" />
-              <span>Dashboard</span>
-            </a>
+          <button
+            onClick={() => { setSeccionActiva('dashboard'); setSidebarAbierto(false); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-colors ${
+              esDashboard
+                ? 'bg-[#00a8ff]/10 text-[#00a8ff]'
+                : 'hover:bg-slate-50 hover:text-[#00a8ff] text-slate-600'
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5" />
+            <span>Dashboard</span>
+          </button>
 
             {Object.entries(SECCIONES).map(([key, config]) => {
               const Icono = config.icono;
@@ -305,9 +415,13 @@ export default function TulimaAdminPanel() {
                   <Home className="w-4 h-4" />
                   Volver al inicio
                 </Link>
-                <h1 className="text-3xl font-bold text-slate-800">{seccionActual.titulo}</h1>
+                <h1 className="text-3xl font-bold text-slate-800">
+                  {esDashboard ? 'Dashboard' : seccionActual.titulo}
+                </h1>
                 <p className="text-slate-500 mt-1">
-                  Activa o desactiva {seccionActual.titulo.toLowerCase()} en la plataforma.
+                  {esDashboard
+                    ? 'Resumen general del estado de la plataforma.'
+                    : `Activa o desactiva ${seccionActual.titulo.toLowerCase()} en la plataforma.`}
                 </p>
               </div>
               <div className="flex items-center gap-2 bg-slate-100 text-slate-500 px-4 py-2.5 rounded-full text-sm">
@@ -315,8 +429,16 @@ export default function TulimaAdminPanel() {
                 Modo moderación
               </div>
             </header>
-
-            {isLoading ? (
+            {esDashboard ? (
+                isLoadingDashboard ? (
+                  <div className="flex justify-center items-center py-20 text-slate-500">
+                    Cargando resumen...
+                  </div>
+                ) : !dashboardStats ? null : (
+                  <DashboardResumen stats={dashboardStats} />
+                              
+                ) 
+               ) : isLoading ? (
               <div className="flex justify-center items-center py-20 text-slate-500">
                 Cargando {seccionActual.titulo.toLowerCase()}...
               </div>
