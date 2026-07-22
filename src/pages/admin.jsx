@@ -448,7 +448,7 @@ export default function TulimaAdminPanel() {
                   <DashboardResumen stats={dashboardStats} />
                               
                 ) 
-               ) : !seleccionActual ? null : isLoading ? (
+               ) : !seccionActual ? null : isLoading ? (
               <div className="flex justify-center items-center py-20 text-slate-500">
                 Cargando {seccionActual?.titulo?.toLowerCase()}...
               </div>
