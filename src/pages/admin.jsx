@@ -236,7 +236,7 @@ export default function TulimaAdminPanel() {
     setIsLoading(true);
     setError(null);
     try {
-      const urlAdmin = seccionActual.url + '/admin/todos';
+      const urlAdmin = seccionActual?.url + '/admin/todos';
       const respuesta = await axios.get(urlAdmin, { withCredentials: true });
       setDatos(respuesta.data);
     } catch (err) {
@@ -271,10 +271,10 @@ export default function TulimaAdminPanel() {
 
       if (!nuevoEstado) {
         // DESACTIVAR — usa DELETE (ya implementado en el backend)
-        await axios.delete(`${seccionActual.url}/${id}`, config);
+        await axios.delete(`${seccionActual?.url}/${id}`, config);
       } else {
         // ACTIVAR — usa PUT con solo activo: true
-        await axios.put(`${seccionActual.url}/${id}`, { activo: true }, config);
+        await axios.put(`${seccionActual?.url}/${id}`, { activo: true }, config);
       }
     } catch (err) {
       console.error('Error al cambiar estado:', err);
@@ -422,12 +422,12 @@ export default function TulimaAdminPanel() {
                   Volver al inicio
                 </Link>
                 <h1 className="text-3xl font-bold text-slate-800">
-                  {esDashboard ? 'Dashboard' : seccionActual.titulo}
+                  {esDashboard ? 'Dashboard' : seccionActual?.titulo}
                 </h1>
                 <p className="text-slate-500 mt-1">
                   {esDashboard
                     ? 'Resumen general del estado de la plataforma.'
-                    : `Activa o desactiva ${seccionActual.titulo.toLowerCase()} en la plataforma.`}
+                    : `Activa o desactiva ${seccionActual?.titulo?.toLowerCase()} en la plataforma.`}
                 </p>
               </div>
               <div className="flex items-center gap-2 bg-slate-100 text-slate-500 px-4 py-2.5 rounded-full text-sm">
@@ -448,9 +448,9 @@ export default function TulimaAdminPanel() {
                   <DashboardResumen stats={dashboardStats} />
                               
                 ) 
-               ) : isLoading ? (
+               ) : !seleccionActual ? null : isLoading ? (
               <div className="flex justify-center items-center py-20 text-slate-500">
-                Cargando {seccionActual.titulo.toLowerCase()}...
+                Cargando {seccionActual?.titulo?.toLowerCase()}...
               </div>
             ) : error ? (
               <div className="bg-red-50 text-red-600 p-4 rounded-xl border border-red-100">
@@ -472,10 +472,10 @@ export default function TulimaAdminPanel() {
                           )}
                           <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">
-                              {seccionActual.columnas.col2.valor(item)}
+                              {seccionActual?.columnas.col2.valor(item)}
                             </span>
                             <span className="text-xs text-slate-500">
-                              {seccionActual.columnas.col3.valor(item)}
+                              {seccionActual?.columnas.col3.valor(item)}
                             </span>
                           </div>
                         </div>
@@ -504,8 +504,8 @@ export default function TulimaAdminPanel() {
     <thead>
       <tr className="bg-slate-50 text-slate-500 text-sm border-b border-slate-200">
         <th className="px-6 py-4 font-medium">Nombre</th>
-        <th className="px-6 py-4 font-medium">{seccionActual.columnas.col2.label}</th>
-        <th className="px-6 py-4 font-medium">{seccionActual.columnas.col3.label}</th>
+        <th className="px-6 py-4 font-medium">{seccionActual?.columnas.col2.label}</th>
+        <th className="px-6 py-4 font-medium">{seccionActual?.columnas.col3.label}</th>
         <th className="px-6 py-4 font-medium text-right">Estado</th>
       </tr>
     </thead>
@@ -522,11 +522,11 @@ export default function TulimaAdminPanel() {
             </td>
             <td className="px-6 py-4">
               <span className="inline-block bg-slate-100 text-slate-600 text-xs px-3 py-1 rounded-full font-medium">
-                {seccionActual.columnas.col2.valor(item)}
+                {seccionActual?.columnas.col2.valor(item)}
               </span>
             </td>
             <td className="px-6 py-4 text-slate-600">
-              {seccionActual.columnas.col3.valor(item)}
+              {seccionActual?.columnas.col3.valor(item)}
             </td>
             <td className="px-6 py-4 text-right">
               <div className="flex justify-end items-center gap-3">
