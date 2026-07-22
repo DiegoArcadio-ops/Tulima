@@ -217,7 +217,6 @@ export default function DashboardProveedor() {
     };
     cargarCatalogos();
   }, []);
-  }, []);
 
   useEffect(() => {
     if (seccionActual) cargarDatos();
