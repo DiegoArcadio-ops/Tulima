@@ -11,7 +11,7 @@ import MiniMap from '../components/MiniMap';
 import { useSearchParams } from 'react-router-dom';
 import useBodyScrollLock from '../hooks/useBodyScrollLock';
 
-const URL = "https://tulima-backend.vercel.app/tours";
+const URL = "https://api.tulima.site/tours";
 const PAGE_SIZE = 9;
 
 function Tours() {
@@ -34,19 +34,19 @@ const [filtroTipo, setFiltroTipo] = useState('');
   const [todosMunicipios, setTodosMunicipios] = useState([]);
 
   useEffect(() => {
-    axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })
+    axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true })
       .then(({ data }) => setCsrfToken(data.csrfToken)).catch(() => {});
   }, []);
 
   useEffect(() => {
-    axios.get('https://tulima-backend.vercel.app/municipios')
+    axios.get('https://api.tulima.site/municipios')
       .then(({ data }) => setTodosMunicipios(data))
       .catch(() => {});
   }, []);
 
   useEffect(() => {
     if (!usuario) return;
-    axios.get('https://tulima-backend.vercel.app/favoritos', { withCredentials: true })
+    axios.get('https://api.tulima.site/favoritos', { withCredentials: true })
       .then(res => setFavoritos(new Set(res.data.filter(f => f.id_provedor_tour != null).map(f => f.id_provedor_tour))))
       .catch(() => {});
   }, [usuario]);
@@ -80,11 +80,11 @@ useEffect(() => {
     esFavorito ? nuevo.delete(id) : nuevo.add(id);
     setFavoritos(nuevo);
     try {
-      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const token = csrfToken ?? (await axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true })).data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };
       const data = { tipo: 'tour', id };
-      if (esFavorito) await axios.delete('https://tulima-backend.vercel.app/favoritos', { ...config, data });
-      else await axios.post('https://tulima-backend.vercel.app/favoritos', data, config);
+      if (esFavorito) await axios.delete('https://api.tulima.site/favoritos', { ...config, data });
+      else await axios.post('https://api.tulima.site/favoritos', data, config);
     } catch {
   setFavoritos(favoritos);
   setToast({ mensaje: 'No se pudo actualizar el favorito.', tipo: 'error' });

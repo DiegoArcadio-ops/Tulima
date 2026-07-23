@@ -5,7 +5,7 @@ import './MunicipioDestacado.css';
 
 const PUEBLOS = ['Quesería', 'El Trapiche', 'Alcaraces', 'Buenavista', 'Minatitlán', 'Chiapa'];
 
-const API_URL = 'https://tulima-backend.vercel.app';
+const API_URL = 'https://api.tulima.site'; 
 
 const CATEGORIAS = [
   { key: 'todos', label: 'Todos' },

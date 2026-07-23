@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import './Perfil.css';
 
-const API = 'https://tulima-backend.vercel.app';
+const API = 'https://api.tulima.site';
 
 const TABS = [
   { id: 'datos',     label: 'Mis datos',      icon: User },

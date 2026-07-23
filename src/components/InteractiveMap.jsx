@@ -16,7 +16,7 @@ import colimaGeoData from "../data/colimaMunicipios.json";
 import "./InteractiveMap.css";
 import useBodyScrollLock from "../hooks/useBodyScrollLock";
 
-const BACKEND_URL = "https://tulima-backend.vercel.app";
+const BACKEND_URL = "https://api.tulima.site";
 
 // Íconos por tipo de servicio (emoji dentro de un pin de color)
 const crearIcono = (emoji, color) =>

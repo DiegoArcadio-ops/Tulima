@@ -30,7 +30,7 @@ function Registro() {
     setExito('');
 
     try {
-      const respuesta = await axios.post('https://tulima-backend.vercel.app/usuarios', {
+      const respuesta = await axios.post('https://api.tulima.site/usuarios', {
         primerNombre: formData.primerNombre,
         segundoNombre: formData.segundoNombre,
         apellidoPaterno: formData.apellidoPaterno,

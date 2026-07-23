@@ -5,7 +5,7 @@ import './sobrecolima.css';
 import CalendarioFestividades from '../components/CalendarioFestividades';
 import axios from 'axios';
 
-const BASE = 'https://tulima-backend.vercel.app';
+const BASE = 'https://api.tulima.site';
 
 const tradiciones = [
   {

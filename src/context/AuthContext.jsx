@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Luego, verifica con el backend para confirmar la sesión (esto funciona para Google Login)
-        const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
+        const respuesta = await axios.get('https://api.tulima.site/auth/me', { withCredentials: true });
         
         if (respuesta.data) {
           const usuarioActual = respuesta.data;
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     // 2. Inmediatamente después, busca el perfil completo para obtener todos los datos.
     // Esto soluciona el problema de que el saludo no muestre el nombre hasta recargar.
     try {
-      const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
+      const respuesta = await axios.get('https://api.tulima.site/auth/me', { withCredentials: true });
       if (respuesta.data) {
         const usuarioCompleto = respuesta.data;
         setUsuario(usuarioCompleto);
@@ -67,8 +67,8 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Para mayor seguridad, obtenemos el token CSRF justo antes de la petición
-      const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
-      await axios.post('https://tulima-backend.vercel.app/logout', {}, {
+      const { data } = await axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true });
+      await axios.post('https://api.tulima.site/logout', {}, {
         headers: { 'X-CSRF-Token': data.csrfToken },
         withCredentials: true
       });
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
   const refrescarUsuario = async () => {
     try {
-      const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', { withCredentials: true });
+      const respuesta = await axios.get('https://api.tulima.site/auth/me', { withCredentials: true });
       if (respuesta.data) {
         setUsuario(respuesta.data);
         localStorage.setItem('usuarioTulima', JSON.stringify(respuesta.data));
