@@ -10,7 +10,7 @@ import { ModalConfirm } from '../components/ModalConfirm';
 import MiniMap from '../components/MiniMap';
 import { Link } from 'react-router-dom';
 
-const BASE = 'https://tulima-backend.vercel.app';
+const BASE = 'https://api.tulima.site';
 
 const SECCIONES = {
   hoteles: {

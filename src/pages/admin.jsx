@@ -8,7 +8,7 @@ import Paginacion from '../components/Paginacion';
 const SECCIONES = {
   destinos: {
     titulo: 'Destinos',
-    url: 'https://tulima-backend.vercel.app/destinos',
+    url: 'https://api.tulima.site/destinos',
     icono: Map,
     campos: [
       { name: 'nombre', label: 'Nombre del Destino', type: 'text' },
@@ -27,7 +27,7 @@ const SECCIONES = {
   },
   hoteles: {
     titulo: 'Hoteles',
-    url: 'https://tulima-backend.vercel.app/hoteles',
+    url: 'https://api.tulima.site/hoteles',
     icono: Building2,
     campos: [
       { name: 'nombre_hotel', label: 'Nombre del Hotel', type: 'text' },
@@ -47,7 +47,7 @@ const SECCIONES = {
   },
   restaurantes: {
     titulo: 'Restaurantes',
-    url: 'https://tulima-backend.vercel.app/restaurantes',
+    url: 'https://api.tulima.site/restaurantes',
     icono: Utensils,
     campos: [
       { name: 'nombre', label: 'Nombre del Restaurante', type: 'text' },
@@ -83,7 +83,7 @@ const SECCIONES = {
   // },
   tours: {
     titulo: 'Tours',
-    url: 'https://tulima-backend.vercel.app/tours',
+    url: 'https://api.tulima.site/tours',
     icono: Compass,
     campos: [
       { name: 'nombre', label: 'Nombre del Tour', type: 'text' },
@@ -100,7 +100,7 @@ const SECCIONES = {
   },
   proveedores: {
     titulo: 'Proveedores',
-    url: 'https://tulima-backend.vercel.app/usuarios',
+    url: 'https://api.tulima.site/usuarios',
     icono: Settings,
     campos: [],
     columnas: {
@@ -207,7 +207,7 @@ export default function TulimaAdminPanel() {
   useEffect(() => {
     const fetchCsrf = async () => {
       try {
-        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+        const { data } = await axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true });
         setCsrfToken(data.csrfToken);
       } catch (e) {
         console.warn('No se pudo obtener CSRF token', e);
@@ -219,7 +219,7 @@ export default function TulimaAdminPanel() {
   useEffect(() => {
     const cargarCatalogos = async () => {
       const [resMun] = await Promise.allSettled([
-        axios.get('https://tulima-backend.vercel.app/municipios'),
+        axios.get('https://api.tulima.site/municipios'),
       ]);
       setCatalogos({
         municipios: resMun.status === 'fulfilled' ? resMun.value.data : [],
@@ -264,7 +264,7 @@ export default function TulimaAdminPanel() {
 
     try {
       const token = csrfToken ?? (await axios.get(
-        'https://tulima-backend.vercel.app/api/csrf-token',
+        'https://api.tulima.site/api/csrf-token',
         { withCredentials: true }
       )).data.csrfToken;
       const config = { withCredentials: true, headers: { 'X-CSRF-Token': token } };

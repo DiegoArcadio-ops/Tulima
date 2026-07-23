@@ -8,7 +8,7 @@ export default function RutaProtegidaAdmin({ children }) {
   useEffect(() => {
     const verificarPermisos = async () => {
       try {
-        const respuesta = await axios.get('https://tulima-backend.vercel.app/auth/me', {
+        const respuesta = await axios.get('https://api.tulima.site/auth/me', {
           withCredentials: true 
         });
 

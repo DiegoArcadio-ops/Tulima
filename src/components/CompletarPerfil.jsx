@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-const BASE = 'https://tulima-backend.vercel.app';
+const BASE = 'https://api.tulima.site';
 
 export default function CompletarPerfil({ onCompletado }) {
   const [form, setForm] = useState({ telefono: '', genero: '', edad: '' });

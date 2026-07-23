@@ -33,7 +33,7 @@ function RegistroProveedor() {
   useEffect(() => {
     const fetchCsrf = async () => {
       try {
-        const { data } = await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true });
+        const { data } = await axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true });
         setCsrfToken(data.csrfToken);
       } catch (e) {
         console.warn('No se pudo obtener CSRF token', e);
@@ -53,9 +53,9 @@ function RegistroProveedor() {
     setExito('');
 
     try {
-      const token = csrfToken ?? (await axios.get('https://tulima-backend.vercel.app/api/csrf-token', { withCredentials: true })).data.csrfToken;
+      const token = csrfToken ?? (await axios.get('https://api.tulima.site/api/csrf-token', { withCredentials: true })).data.csrfToken;
 
-      const respuesta = await axios.post('https://tulima-backend.vercel.app/proveedores', {
+      const respuesta = await axios.post('https://api.tulima.site/proveedores', {
         primerNombre:      formData.primerNombre,
         nombreUsuario:     formData.nombreUsuario,
         correoCorporativo: formData.correo,

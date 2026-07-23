@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'https://tulima-backend.vercel.app';
+const API = 'https://api.tulima.site';
 
 function Login() {
   const navigate = useNavigate();
